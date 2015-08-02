@@ -1,12 +1,11 @@
-﻿<Properties StartupItem="RaceTiming/RaceTiming.csproj">
+﻿<Properties StartupItem="RaceTimingApp/RaceTimingApp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="RaceTiming/RaceTimingForm.cs">
-    <Files>
-      <File FileName="RaceTiming/RaceTimingForm.cs" Line="19" Column="2" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <DisabledProjects>
+    <String>RaceTiming/RaceTiming.csproj</String>
+  </DisabledProjects>
 </Properties>
