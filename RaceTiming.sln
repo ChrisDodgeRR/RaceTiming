@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceTimingApp", "RaceTimingApp\RaceTimingApp.csproj", "{E55F563E-69DB-4189-B2A9-786616BCD97F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceTiming.Data", "RaceTiming.Data\RaceTiming.Data.csproj", "{1C3475A7-E6AD-4491-976B-8BB51DA5AE02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceTimingWinApp", "RaceTimingWinApp\RaceTimingWinApp.csproj", "{5D7F68A3-FCBE-4402-926B-BCFA5E28E9A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceTiming.Core", "RaceTiming.Core\RaceTiming.Core.csproj", "{9F882FB6-0F98-4B6D-BFFD-32AC7C9FE420}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,9 +13,17 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E55F563E-69DB-4189-B2A9-786616BCD97F}.Debug|x86.ActiveCfg = Debug|x86
-		{E55F563E-69DB-4189-B2A9-786616BCD97F}.Debug|x86.Build.0 = Debug|x86
-		{E55F563E-69DB-4189-B2A9-786616BCD97F}.Release|x86.ActiveCfg = Release|x86
-		{E55F563E-69DB-4189-B2A9-786616BCD97F}.Release|x86.Build.0 = Release|x86
+		{1C3475A7-E6AD-4491-976B-8BB51DA5AE02}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1C3475A7-E6AD-4491-976B-8BB51DA5AE02}.Debug|x86.Build.0 = Debug|Any CPU
+		{1C3475A7-E6AD-4491-976B-8BB51DA5AE02}.Release|x86.ActiveCfg = Release|Any CPU
+		{1C3475A7-E6AD-4491-976B-8BB51DA5AE02}.Release|x86.Build.0 = Release|Any CPU
+		{5D7F68A3-FCBE-4402-926B-BCFA5E28E9A2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5D7F68A3-FCBE-4402-926B-BCFA5E28E9A2}.Debug|x86.Build.0 = Debug|Any CPU
+		{5D7F68A3-FCBE-4402-926B-BCFA5E28E9A2}.Release|x86.ActiveCfg = Release|Any CPU
+		{5D7F68A3-FCBE-4402-926B-BCFA5E28E9A2}.Release|x86.Build.0 = Release|Any CPU
+		{9F882FB6-0F98-4B6D-BFFD-32AC7C9FE420}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9F882FB6-0F98-4B6D-BFFD-32AC7C9FE420}.Debug|x86.Build.0 = Debug|Any CPU
+		{9F882FB6-0F98-4B6D-BFFD-32AC7C9FE420}.Release|x86.ActiveCfg = Release|Any CPU
+		{9F882FB6-0F98-4B6D-BFFD-32AC7C9FE420}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
