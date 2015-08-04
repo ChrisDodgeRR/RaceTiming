@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="DbController.cs" />
     <Compile Include="DatabaseRoot.cs" />
+    <Compile Include="Model\Race.cs" />
     <Compile Include="Model\Runner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

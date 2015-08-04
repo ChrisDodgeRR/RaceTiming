@@ -42,10 +42,19 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Volante">
+      <HintPath>..\packages\Volante.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClockLabel.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RaceDetailsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RaceDetailsDialog.Designer.cs">
+      <DependentUpon>RaceDetailsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="RaceTimingForm.cs">
       <SubType>Form</SubType>
@@ -55,6 +64,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="RaceDetailsDialog.resx">
+      <DependentUpon>RaceDetailsDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RaceTimingForm.resx">
       <DependentUpon>RaceTimingForm.cs</DependentUpon>
     </EmbeddedResource>
