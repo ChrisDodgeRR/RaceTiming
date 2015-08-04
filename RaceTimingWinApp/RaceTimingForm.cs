@@ -149,9 +149,23 @@ namespace RedRat.RaceTimingWinApp
             SetTitle();
         }
 
-        private void ImportRunnerDataToolStripMenuItemClick(object sender, EventArgs e)
+        private void ImportRunnerDataToolStripMenuItemClick( object sender, EventArgs e )
         {
-            // ToDo: Open CSV file
+            if (!CheckHaveDb()) return;
+
+            var openFileDlg = new OpenFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "Excel CSV files (*.csv)|*.csv|All files (*.*)|*.*",
+                Title = "Open a race entrant CSV file..."
+            };
+
+            if ( openFileDlg.ShowDialog() != DialogResult.OK )
+            {
+                // OK - user wants to quit
+                return;
+            }
+            appController.LoadCsvFile( openFileDlg.FileName );
         }
 
         private void ExitToolStripMenuItemClick(object sender, EventArgs e)
@@ -185,6 +199,21 @@ namespace RedRat.RaceTimingWinApp
             };
 
             appController.UpdateCurrentRace( race );
+        }
+
+        #endregion
+
+        #region View Menu
+
+        private void RaceEntrantsToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            if (!CheckHaveDb()) return;
+
+            var runners = appController.GetRunners();
+            foreach ( var runner in runners )
+            {
+                Console.WriteLine(runner);
+            }
         }
 
         #endregion

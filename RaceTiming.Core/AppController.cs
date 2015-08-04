@@ -1,5 +1,8 @@
 ﻿
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using RedRat.RaceTiming.Data;
 using RedRat.RaceTiming.Data.Model;
@@ -68,6 +71,37 @@ namespace RedRat.RaceTiming.Core
         public void UpdateCurrentRace( Race newRaceDetails )
         {
             db.UpdateRace( CurrentRace.Oid, newRaceDetails );
+        }
+
+        public IList<Runner> GetRunners()
+        {
+            return db.GetRunners();
+        }
+
+        /// <summary>
+        /// Loads a CSV file containing race entrant information.
+        /// </summary>
+        public void LoadCsvFile( string filename )
+        {
+            // ToDo: Long term, make this more configurable. At the moment we're only interested
+            //       in Runner's World files.
+
+            // ToDo - AD:
+            // 1. Open and read the file.
+            // 2. Create runner objects
+            // 3. Check that they don't already exist in the DB (use firstname, lastname and DoB)
+            // 4. If they don't exist, then add them.
+            var runner = new Runner
+            {
+                FirstName = "Chris", 
+                LastName = "Dodge",
+                Gender = Runner.GenderEnum.Male,
+                DateOfBirth = DateTime.Parse( "25/01/1965" ),
+                Club = "Saffron Striders",
+                Address = "Somewhere",
+            };
+
+            db.AddRunner( runner );
         }
     }
 }

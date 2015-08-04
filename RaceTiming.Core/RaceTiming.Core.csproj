@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RaceTiming.Data\RaceTiming.Data.csproj">
-      <Project>{1C3475A7-E6AD-4491-976B-8BB51DA5AE02}</Project>
+      <Project>{1c3475a7-e6ad-4491-976b-8bb51da5ae02}</Project>
       <Name>RaceTiming.Data</Name>
     </ProjectReference>
   </ItemGroup>

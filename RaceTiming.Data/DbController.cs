@@ -10,6 +10,8 @@ namespace RedRat.RaceTiming.Data
     /// <summary>
     /// Manages the race data, interacting with the database.
     /// We use the Volante embedded DB - http://blog.kowalczyk.info/software/volante/database.html.
+    /// Note: For Mono, Volante.dll has been built with the "MONO" flag as it otherwise uses the
+    ///       "FlushFileBuffers " system call, which isn't support on the Mac.
     /// </summary>
     public class DbController : IDisposable
     {
@@ -41,32 +43,39 @@ namespace RedRat.RaceTiming.Data
                 db = DatabaseFactory.CreateDatabase();
                 db.Open( filename );
 
-                if ( db.Root != null )
-                {
-                    dbRoot = (DatabaseRoot) db.Root;
-                }
-                else
+                if ( db.Root == null )
                 {
                     // Only create root the first time
-                    CreateDb();
+                    db.Root = new DatabaseRoot();
                 }
+                dbRoot = (DatabaseRoot) db.Root;
+                CheckAndCreateIndexes();
                 dbFilename = filename;
                 isDbOpen = true;
             }
         }
 
-        private void CreateDb()
+        /// <summary>
+        /// Indexes should already be in place, but if not then this will create them. It means we can update
+        /// existing DB files if more are added.
+        /// </summary>
+        private void CheckAndCreateIndexes()
         {
             lock ( dbLock )
             {
-                dbRoot = new DatabaseRoot
+                if ( dbRoot.raceNameIndex == null )
                 {
-                    raceNameIndex = db.CreateIndex<string, Race>( IndexType.NonUnique ),
-                    runnerFirstNameIndex = db.CreateIndex<string, Runner>( IndexType.NonUnique ),
-                };
-                db.Root = dbRoot;
-                // changing the root marks database as modified but it's
-                // only modified in memory. Commit to persist changes to disk.
+                    dbRoot.raceNameIndex = db.CreateIndex<string, Race>( IndexType.NonUnique );
+                }
+
+                if ( dbRoot.runnerFirstNameIndex == null )
+                {
+                    dbRoot.runnerFirstNameIndex = db.CreateIndex<string, Runner>( IndexType.NonUnique );
+                }
+                if ( dbRoot.runnerLastNameIndex == null )
+                {
+                    dbRoot.runnerLastNameIndex = db.CreateIndex<string, Runner>( IndexType.NonUnique );
+                }
                 db.Commit();
             }
         }
@@ -120,27 +129,33 @@ namespace RedRat.RaceTiming.Data
                 race.Description = newDetails.Description;
                 race.Distance = newDetails.Distance;
                 race.Date = newDetails.Date;
-                race.Modify(); // Inform DB that it's been modified
-                db.Commit(); // Push changes back to DB
+                race.Modify();  // Inform DB that it's been modified
+                db.Commit();    // Push changes back to DB
             }
         }
 
         #endregion
 
+        #region Runner Methods
 
-        public void TestInsertData()
+        public void AddRunner(Runner runner)
         {
-            var runner = new Runner {FirstName = "Chris", LastName = "Dodge"};
-            dbRoot.runnerFirstNameIndex.Put( runner.FirstName, runner );
-            db.Commit();
-        }
-
-        public void PrintRunners()
-        {
-            foreach (var runner in dbRoot.runnerFirstNameIndex)
+            lock (dbLock)
             {
-                Console.WriteLine("{0}: {1}", runner.FirstName, runner.LastName);
+                dbRoot.runnerFirstNameIndex.Put(runner.FirstName, runner);
+                dbRoot.runnerLastNameIndex.Put(runner.LastName, runner);
+                db.Commit();
             }
         }
+
+        public IList<Runner> GetRunners()
+        {
+            lock (dbLock)
+            {
+                return dbRoot.runnerFirstNameIndex.ToList();
+            }            
+        }
+
+        #endregion
     }
 }
