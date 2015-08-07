@@ -6,19 +6,23 @@ using System.Data.Common;
 using System.IO;
 using RedRat.RaceTiming.Data;
 using RedRat.RaceTiming.Data.Model;
+using RedRat.RaceTiming.Core.Web;
 
 namespace RedRat.RaceTiming.Core
 {
     /// <summary>
     /// This is the main application controller. The UI is a thin wrapper round this.
     /// </summary>
-    public class AppController
+    public class AppController : IAppController
     {
         private DbController db;
+		private WebController web;
 
         public AppController()
         {
             db = new DbController();
+			web = new WebController(this);
+			web.Start();
         }
 
         public bool IsDbOpen
@@ -58,9 +62,15 @@ namespace RedRat.RaceTiming.Core
             get
             {
                 var races = db.GetRaces();
+				// If we don't yet have a race, return a dummy one.
+				if ( races.Count == 0 )
+				{
+					return new Race { Name = "-- No Race set --" };
+				}
+
                 // We should only have one race - current logic imposes this.
                 // DB should in principle support having multiple races.
-                if ( races.Count != 1 )
+                if ( races.Count > 1 )
                 {
                     throw new Exception( string.Format( "Should have only one race object. Currently have {0}.", races.Count ) );
                 }

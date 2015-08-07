@@ -1,0 +1,15 @@
+﻿
+
+
+<h2>Race Timing System</h2>
+
+The current race is: @!Model.CurrentRace.Name 
+
+Here you can:
+
+<ul>
+	<li>View runners</li>
+	<li>View Results</li>
+	<li>Regsiter a new runner</li>
+	<li>Enter runner finishing position</li>
+</ul>
