@@ -3,9 +3,9 @@
 
 <h2>Race Timing System</h2>
 
-The current race is: @!Model.CurrentRace.Name 
+<p>The current race is: @!Model.RaceName</p>
 
-Here you can:
+<p>Here you can:</p>
 
 <ul>
 	<li>View runners</li>

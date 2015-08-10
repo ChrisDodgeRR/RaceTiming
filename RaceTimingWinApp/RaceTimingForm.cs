@@ -3,7 +3,9 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using RedRat.RaceTiming.Core;
+using RedRat.RaceTiming.Core.Web;
 using RedRat.RaceTiming.Data.Model;
+using TinyIoC;
 
 namespace RedRat.RaceTimingWinApp
 {
@@ -21,8 +23,6 @@ namespace RedRat.RaceTimingWinApp
             Application.EnableVisualStyles();
             InitializeComponent();
 
-            appController = new AppController();
-
             // Add the clock label
             var clockLabel = new ClockLabel
             {
@@ -33,11 +33,16 @@ namespace RedRat.RaceTimingWinApp
                 Size = new Size( 512, 166 ),
             };
             Controls.Add( clockLabel );
-            SetTitle();
 
             Application.ThreadException += (o, e) => ShowExceptionMessageBox(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (o, e) => ShowExceptionMessageBox((Exception)e.ExceptionObject);
-        }
+
+            appController = new ControllerFactory().AppController;
+			SetTitle();
+
+            var webController = new WebController();
+            webController.Start();
+		}
 
         private void SetTitle()
         {
@@ -48,6 +53,7 @@ namespace RedRat.RaceTimingWinApp
         private void ShowExceptionMessageBox( Exception ex )
         {
             MessageBox.Show( "Exception from application: " + ex.Message );
+            Console.WriteLine(ex);
         }
 
         /// <summary>
@@ -172,6 +178,7 @@ namespace RedRat.RaceTimingWinApp
         {
             // ToDo: Put up message box to confirm.
             Close();
+			Application.Exit ();
         }
 
         #endregion
@@ -199,6 +206,7 @@ namespace RedRat.RaceTimingWinApp
             };
 
             appController.UpdateCurrentRace( race );
+            SetTitle();
         }
 
         #endregion

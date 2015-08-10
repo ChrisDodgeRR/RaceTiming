@@ -51,10 +51,10 @@
     <Compile Include="AppController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\WebController.cs" />
-    <Compile Include="Web\RtBootStrapper.cs" />
     <Compile Include="Web\ViewsModule.cs" />
     <Compile Include="ViewModels\IndexModel.cs" />
-    <Compile Include="IAppController.cs" />
+    <Compile Include="Web\RtWebBootStrapper.cs" />
+    <Compile Include="ControllerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RaceTiming.Data\RaceTiming.Data.csproj">

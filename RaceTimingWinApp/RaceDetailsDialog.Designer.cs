@@ -74,7 +74,7 @@
             // distanceNumericUpDown
             // 
             this.distanceNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.distanceNumericUpDown.DecimalPlaces = 3;
+            this.distanceNumericUpDown.DecimalPlaces = 2;
             this.distanceNumericUpDown.Increment = new decimal(new int[] {
             1,
             0,

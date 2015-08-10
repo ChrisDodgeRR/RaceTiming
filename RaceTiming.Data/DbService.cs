@@ -13,16 +13,17 @@ namespace RedRat.RaceTiming.Data
     /// Note: For Mono, Volante.dll has been built with the "MONO" flag as it otherwise uses the
     ///       "FlushFileBuffers " system call, which isn't support on the Mac.
     /// </summary>
-    public class DbController : IDisposable
+    public class DbService : IDisposable
     {
         private IDatabase db;
         private string dbFilename;
-        private DatabaseRoot dbRoot;
+        private RtDatabaseRoot dbRoot;
         private bool isDbOpen;
         private object dbLock = new object();
 
-        public DbController()
+        public DbService()
         {
+			Console.WriteLine("Created DB controller...");
             isDbOpen = false;
         }
 
@@ -46,13 +47,21 @@ namespace RedRat.RaceTiming.Data
                 if ( db.Root == null )
                 {
                     // Only create root the first time
-                    db.Root = new DatabaseRoot();
+                    dbRoot = new RtDatabaseRoot();
                 }
-                dbRoot = (DatabaseRoot) db.Root;
+                else
+                {
+                    dbRoot = (RtDatabaseRoot)db.Root;
+                }
                 CheckAndCreateIndexes();
+                db.Root = dbRoot;
+                db.Commit();
+
                 dbFilename = filename;
-                isDbOpen = true;
+                isDbOpen = true;            
             }
+
+			Console.WriteLine("Number of races: " + dbRoot.raceNameIndex.Count);
         }
 
         /// <summary>
@@ -76,7 +85,6 @@ namespace RedRat.RaceTiming.Data
                 {
                     dbRoot.runnerLastNameIndex = db.CreateIndex<string, Runner>( IndexType.NonUnique );
                 }
-                db.Commit();
             }
         }
 
@@ -84,9 +92,12 @@ namespace RedRat.RaceTiming.Data
         {
             if ( db == null ) return;
 
-            db.Close();
-            isDbOpen = false;
-            db = null;
+			lock (dbLock)
+			{
+				db.Close();
+				isDbOpen = false;
+				db = null;
+			}
         }
 
         /// <summary>
@@ -110,6 +121,7 @@ namespace RedRat.RaceTiming.Data
 
         public IList<Race> GetRaces()
         {
+			if (!IsDbOpen) return new List<Race>();
             lock ( dbLock )
             {
                 return dbRoot.raceNameIndex.ToList();

@@ -42,11 +42,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbController.cs" />
-    <Compile Include="DatabaseRoot.cs" />
+    <Compile Include="RtDatabaseRoot.cs" />
     <Compile Include="Model\Race.cs" />
     <Compile Include="Model\Runner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DbService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

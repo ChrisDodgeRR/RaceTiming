@@ -1,5 +1,4 @@
 ﻿using Nancy.Hosting.Self;
-using RedRat.RaceTiming.Core;
 
 using System;
 
@@ -11,12 +10,9 @@ namespace RedRat.RaceTiming.Core.Web
 	public class WebController
 	{
 		protected NancyHost webHost;
-		protected AppController appController;
 
-		public WebController(AppController appController)
-		{
-			this.appController = appController;
-		}
+		public WebController()
+		{}
 
 		public void Start()
 		{

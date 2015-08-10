@@ -23,7 +23,14 @@ namespace RedRat.RaceTimingWinApp
             raceNameTextBox.Text = race.Name;
             raceDescriptionTextBox.Text = race.Description;
             distanceNumericUpDown.Value = (decimal)race.Distance;
-            raceDateTimePicker.Value = race.Date;
+			if (race.Date < raceDateTimePicker.MinDate || race.Date > raceDateTimePicker.MaxDate)
+			{
+				raceDateTimePicker.Value = DateTime.Now;
+			}
+			else
+			{
+				raceDateTimePicker.Value = race.Date;
+			}
         }
 
         private void OkButtonClick(object sender, EventArgs e)

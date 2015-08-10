@@ -4,9 +4,11 @@ using Nancy.TinyIoc;
 
 using System;
 
+using RedRat.RaceTiming.Data;
+
 namespace RedRat.RaceTiming.Core.Web
 {
-	public class RtBootStrapper: DefaultNancyBootstrapper
+	public class RtWebBootStrapper: DefaultNancyBootstrapper
 	{
 		protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
 		{
@@ -14,4 +16,3 @@ namespace RedRat.RaceTiming.Core.Web
 		}
 	}
 }
-

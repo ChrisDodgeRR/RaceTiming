@@ -13,17 +13,15 @@ namespace RedRat.RaceTiming.Core
     /// <summary>
     /// This is the main application controller. The UI is a thin wrapper round this.
     /// </summary>
-    public class AppController : IAppController
+    public class AppController
     {
-        private DbController db;
-		private WebController web;
+        private DbService db;
 
-        public AppController()
+		public AppController(DbService db)
         {
-            db = new DbController();
-			web = new WebController(this);
-			web.Start();
-        }
+			Console.WriteLine("Created App controller...");
+            this.db = db;
+		}
 
         public bool IsDbOpen
         {
@@ -62,10 +60,12 @@ namespace RedRat.RaceTiming.Core
             get
             {
                 var races = db.GetRaces();
-				// If we don't yet have a race, return a dummy one.
+				// If we don't yet have a race, create a new one.
 				if ( races.Count == 0 )
 				{
-					return new Race { Name = "-- No Race set --" };
+					var race = new Race { Name = "-- New Race --" };
+					db.AddRace(race);
+                    return race;
 				}
 
                 // We should only have one race - current logic imposes this.
@@ -80,7 +80,7 @@ namespace RedRat.RaceTiming.Core
 
         public void UpdateCurrentRace( Race newRaceDetails )
         {
-            db.UpdateRace( CurrentRace.Oid, newRaceDetails );
+			db.UpdateRace(CurrentRace.Oid, newRaceDetails);
         }
 
         public IList<Runner> GetRunners()
