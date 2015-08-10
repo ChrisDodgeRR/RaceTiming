@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using RedRat.RaceTiming.Core;
 using RedRat.RaceTiming.Core.Web;
 using RedRat.RaceTiming.Data.Model;
-using TinyIoC;
 
 namespace RedRat.RaceTimingWinApp
 {
@@ -17,6 +15,7 @@ namespace RedRat.RaceTimingWinApp
     public partial class RaceTimingForm : Form
     {
         private AppController appController;
+        private TimerControlDialog timerControl;
 
         public RaceTimingForm()
         {
@@ -38,7 +37,8 @@ namespace RedRat.RaceTimingWinApp
             AppDomain.CurrentDomain.UnhandledException += (o, e) => ShowExceptionMessageBox((Exception)e.ExceptionObject);
 
             appController = new ControllerFactory().AppController;
-			SetTitle();
+            appController.ClockTime.ClockChangeHandler += clockLabel.ClockChangeEventListener;
+            SetTitle();
 
             var webController = new WebController();
             webController.Start();
@@ -225,5 +225,24 @@ namespace RedRat.RaceTimingWinApp
         }
 
         #endregion
+
+        #region Timer Menu
+
+        private void TimerControlToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            if ( timerControl == null )
+            {
+                timerControl = new TimerControlDialog(appController);
+                timerControl.Show();
+                timerControl.Closed += ( o, args ) => { timerControl = null; };
+            }
+            else
+            {
+                timerControl.BringToFront();
+            }
+        }
+
+        #endregion
+
     }
 }

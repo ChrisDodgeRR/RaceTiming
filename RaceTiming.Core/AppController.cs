@@ -1,12 +1,9 @@
 ﻿
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
 using RedRat.RaceTiming.Data;
 using RedRat.RaceTiming.Data.Model;
-using RedRat.RaceTiming.Core.Web;
 
 namespace RedRat.RaceTiming.Core
 {
@@ -16,16 +13,21 @@ namespace RedRat.RaceTiming.Core
     public class AppController
     {
         private DbService db;
+        private readonly ClockTime clockTime = new ClockTime();
 
 		public AppController(DbService db)
         {
-			Console.WriteLine("Created App controller...");
             this.db = db;
 		}
 
         public bool IsDbOpen
         {
             get { return db.IsDbOpen; }
+        }
+
+        public ClockTime ClockTime
+        {
+            get { return clockTime; }
         }
 
         public void CreateNewRace( Race race, string dbFilename )

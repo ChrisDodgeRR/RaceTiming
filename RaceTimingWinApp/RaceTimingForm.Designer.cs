@@ -38,11 +38,12 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.raceDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.raceEntrantsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.raceEntrantsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -122,12 +123,29 @@
             // raceDetailsToolStripMenuItem
             // 
             this.raceDetailsToolStripMenuItem.Name = "raceDetailsToolStripMenuItem";
-            this.raceDetailsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.raceDetailsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.raceDetailsToolStripMenuItem.Text = "Race Details";
             this.raceDetailsToolStripMenuItem.Click += new System.EventHandler(this.RaceDetailsToolStripMenuItemClick);
             // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.raceEntrantsToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // raceEntrantsToolStripMenuItem
+            // 
+            this.raceEntrantsToolStripMenuItem.Name = "raceEntrantsToolStripMenuItem";
+            this.raceEntrantsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.raceEntrantsToolStripMenuItem.Text = "Race Entrants";
+            this.raceEntrantsToolStripMenuItem.Click += new System.EventHandler(this.RaceEntrantsToolStripMenuItemClick);
+            // 
             // timingToolStripMenuItem
             // 
+            this.timingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.timerControlToolStripMenuItem});
             this.timingToolStripMenuItem.Name = "timingToolStripMenuItem";
             this.timingToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.timingToolStripMenuItem.Text = "Timing";
@@ -146,20 +164,12 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // viewToolStripMenuItem
+            // timerControlToolStripMenuItem
             // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.raceEntrantsToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "View";
-            // 
-            // raceEntrantsToolStripMenuItem
-            // 
-            this.raceEntrantsToolStripMenuItem.Name = "raceEntrantsToolStripMenuItem";
-            this.raceEntrantsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.raceEntrantsToolStripMenuItem.Text = "Race Entrants";
-            this.raceEntrantsToolStripMenuItem.Click += new System.EventHandler(this.RaceEntrantsToolStripMenuItemClick);
+            this.timerControlToolStripMenuItem.Name = "timerControlToolStripMenuItem";
+            this.timerControlToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.timerControlToolStripMenuItem.Text = "Timer Control";
+            this.timerControlToolStripMenuItem.Click += new System.EventHandler(this.TimerControlToolStripMenuItemClick);
             // 
             // RaceTimingForm
             // 
@@ -194,6 +204,7 @@
         private System.Windows.Forms.ToolStripMenuItem raceDetailsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem raceEntrantsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem timerControlToolStripMenuItem;
     }
 }
 

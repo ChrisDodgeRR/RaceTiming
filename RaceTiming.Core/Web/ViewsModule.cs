@@ -14,18 +14,19 @@ namespace RedRat.RaceTiming.Core.Web
 			};
 		}
 
-        private IndexModel CreateIndexModel(ControllerFactory controllerFactory)
-        {
-			var model = new IndexModel ();
-            if (controllerFactory.AppController.CurrentRace == null) 
-			{
-				model.RaceName = " No race loaded";
-			} else 
-			{
-                model.RaceName = controllerFactory.AppController.CurrentRace.Name;
-			}
-			return model;
-		}
+	    private IndexModel CreateIndexModel( ControllerFactory controllerFactory )
+	    {
+	        var model = new IndexModel();
+	        if ( controllerFactory.AppController.CurrentRace == null )
+	        {
+	            model.RaceName = "No race loaded";
+	        }
+	        else
+	        {
+	            model.RaceName = controllerFactory.AppController.CurrentRace.Name;
+	        }
+	        return model;
+	    }
 	}
 }
 

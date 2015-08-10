@@ -88,6 +88,14 @@ namespace RedRat.RaceTiming.Data
             }
         }
 
+        private void CheckHaveDb()
+        {
+            if ( !IsDbOpen )
+            {
+                throw new NoDatabaseException( "No databse." );
+            }
+        }
+
         public void Close()
         {
             if ( db == null ) return;
@@ -112,6 +120,7 @@ namespace RedRat.RaceTiming.Data
 
         public void AddRace( Race race )
         {
+            CheckHaveDb();
             lock ( dbLock )
             {
                 dbRoot.raceNameIndex.Put( race.Name, race );
@@ -121,7 +130,7 @@ namespace RedRat.RaceTiming.Data
 
         public IList<Race> GetRaces()
         {
-			if (!IsDbOpen) return new List<Race>();
+            CheckHaveDb();
             lock ( dbLock )
             {
                 return dbRoot.raceNameIndex.ToList();
@@ -130,6 +139,7 @@ namespace RedRat.RaceTiming.Data
 
         public void UpdateRace( int oid, Race newDetails )
         {
+            CheckHaveDb();
             lock ( dbLock )
             {
                 var race = GetRaces().FirstOrDefault( r => r.Oid == oid );
@@ -152,6 +162,7 @@ namespace RedRat.RaceTiming.Data
 
         public void AddRunner(Runner runner)
         {
+            CheckHaveDb();
             lock (dbLock)
             {
                 dbRoot.runnerFirstNameIndex.Put(runner.FirstName, runner);
@@ -162,6 +173,7 @@ namespace RedRat.RaceTiming.Data
 
         public IList<Runner> GetRunners()
         {
+            CheckHaveDb();
             lock (dbLock)
             {
                 return dbRoot.runnerFirstNameIndex.ToList();
