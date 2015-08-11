@@ -41,10 +41,13 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.raceEntrantsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clockControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.menuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -57,7 +60,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(536, 24);
+            this.menuStrip.Size = new System.Drawing.Size(664, 24);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -145,10 +148,17 @@
             // timingToolStripMenuItem
             // 
             this.timingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.timerControlToolStripMenuItem});
+            this.clockControlToolStripMenuItem});
             this.timingToolStripMenuItem.Name = "timingToolStripMenuItem";
             this.timingToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.timingToolStripMenuItem.Text = "Timing";
+            // 
+            // clockControlToolStripMenuItem
+            // 
+            this.clockControlToolStripMenuItem.Name = "clockControlToolStripMenuItem";
+            this.clockControlToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clockControlToolStripMenuItem.Text = "Clock Control";
+            this.clockControlToolStripMenuItem.Click += new System.EventHandler(this.ClockControlToolStripMenuItemClick);
             // 
             // helpToolStripMenuItem
             // 
@@ -164,24 +174,29 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // timerControlToolStripMenuItem
+            // splitContainer1
             // 
-            this.timerControlToolStripMenuItem.Name = "timerControlToolStripMenuItem";
-            this.timerControlToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.timerControlToolStripMenuItem.Text = "Timer Control";
-            this.timerControlToolStripMenuItem.Click += new System.EventHandler(this.TimerControlToolStripMenuItemClick);
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Size = new System.Drawing.Size(664, 345);
+            this.splitContainer1.SplitterDistance = 473;
+            this.splitContainer1.TabIndex = 2;
             // 
             // RaceTimingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(536, 369);
+            this.ClientSize = new System.Drawing.Size(664, 369);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "RaceTimingForm";
             this.Text = "Race Timing";
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -204,7 +219,8 @@
         private System.Windows.Forms.ToolStripMenuItem raceDetailsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem raceEntrantsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem timerControlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clockControlToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
 

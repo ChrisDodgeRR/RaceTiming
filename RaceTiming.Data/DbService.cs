@@ -92,7 +92,7 @@ namespace RedRat.RaceTiming.Data
         {
             if ( !IsDbOpen )
             {
-                throw new NoDatabaseException( "No databse." );
+                throw new NoDatabaseException( "No database." );
             }
         }
 

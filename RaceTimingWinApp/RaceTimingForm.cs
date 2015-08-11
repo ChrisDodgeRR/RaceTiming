@@ -15,7 +15,7 @@ namespace RedRat.RaceTimingWinApp
     public partial class RaceTimingForm : Form
     {
         private AppController appController;
-        private TimerControlDialog timerControl;
+        private ClockControlDialog clockControl;
 
         public RaceTimingForm()
         {
@@ -29,9 +29,9 @@ namespace RedRat.RaceTimingWinApp
                 Font = new Font( "Microsoft Sans Serif", 25F, FontStyle.Regular, GraphicsUnit.Millimeter, 0 ),
                 Location = new Point( 12, 24 ),
                 Name = "clockLabel",
-                Size = new Size( 512, 166 ),
+                Size = new Size(splitContainer1.Panel1.Size.Width, 166),
             };
-            Controls.Add( clockLabel );
+            splitContainer1.Panel1.Controls.Add( clockLabel );
 
             Application.ThreadException += (o, e) => ShowExceptionMessageBox(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (o, e) => ShowExceptionMessageBox((Exception)e.ExceptionObject);
@@ -226,19 +226,19 @@ namespace RedRat.RaceTimingWinApp
 
         #endregion
 
-        #region Timer Menu
+        #region Timing Menu
 
-        private void TimerControlToolStripMenuItemClick(object sender, EventArgs e)
+        private void ClockControlToolStripMenuItemClick(object sender, EventArgs e)
         {
-            if ( timerControl == null )
+            if ( clockControl == null )
             {
-                timerControl = new TimerControlDialog(appController);
-                timerControl.Show();
-                timerControl.Closed += ( o, args ) => { timerControl = null; };
+                clockControl = new ClockControlDialog(appController);
+                clockControl.Show();
+                clockControl.Closed += ( o, args ) => { clockControl = null; };
             }
             else
             {
-                timerControl.BringToFront();
+                clockControl.BringToFront();
             }
         }
 

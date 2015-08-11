@@ -21,22 +21,27 @@ namespace RedRat.RaceTimingWinApp
 
         private void LabelSizeChanged( object sender, System.EventArgs e )
         {
+            Redraw();
+        }
+
+        public void Redraw()
+        {
             // This could probably be improved...
             var newFont = Font;
-            var textSize = TextRenderer.MeasureText( Text, Font );
+            var textSize = TextRenderer.MeasureText(Text, Font);
 
-            while ( ClientRectangle.Width > textSize.Width && ClientRectangle.Height > textSize.Height )
+            while (ClientRectangle.Width > textSize.Width && ClientRectangle.Height > textSize.Height)
             {
-                newFont = new Font( Font.FontFamily, newFont.Size + 1 );
-                textSize = TextRenderer.MeasureText( Text, newFont );
+                newFont = new Font(Font.FontFamily, newFont.Size + 1);
+                textSize = TextRenderer.MeasureText(Text, newFont);
             }
-            while ( ClientRectangle.Width < textSize.Width || ClientRectangle.Height < textSize.Height )
+            while (ClientRectangle.Width < textSize.Width || ClientRectangle.Height < textSize.Height)
             {
-                newFont = new Font( Font.FontFamily, newFont.Size - 1 );
-                textSize = TextRenderer.MeasureText( Text, newFont );
+                newFont = new Font(Font.FontFamily, newFont.Size - 1);
+                textSize = TextRenderer.MeasureText(Text, newFont);
             }
 
-            Font = newFont;
+            Font = newFont;            
         }
 
         public void ClockChangeEventListener( object sender, TimeSpan time )
