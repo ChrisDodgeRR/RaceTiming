@@ -44,6 +44,9 @@
     <Reference Include="Volante">
       <HintPath>..\packages\Volante.dll</HintPath>
     </Reference>
+    <Reference Include="ObjectListView">
+      <HintPath>..\packages\ObjectListView.Official.2.8.1\lib\net20\ObjectListView.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClockLabel.cs">

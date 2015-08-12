@@ -19,7 +19,7 @@ namespace RedRat.RaceTimingWinApp
             SizeChanged += LabelSizeChanged;
         }
 
-        private void LabelSizeChanged( object sender, System.EventArgs e )
+        private void LabelSizeChanged( object sender, EventArgs e )
         {
             Redraw();
         }

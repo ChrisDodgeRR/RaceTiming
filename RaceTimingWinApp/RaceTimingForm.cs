@@ -32,12 +32,14 @@ namespace RedRat.RaceTimingWinApp
                 Size = new Size(splitContainer1.Panel1.Size.Width, 166),
             };
             splitContainer1.Panel1.Controls.Add( clockLabel );
+            spaceBarLabel.Visible = false;
 
             Application.ThreadException += (o, e) => ShowExceptionMessageBox(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (o, e) => ShowExceptionMessageBox((Exception)e.ExceptionObject);
 
             appController = new ControllerFactory().AppController;
             appController.ClockTime.ClockChangeHandler += clockLabel.ClockChangeEventListener;
+            appController.ClockTime.ClockRunningHandler += ClockTimeOnClockRunningHandler;
             SetTitle();
 
             var webController = new WebController();
@@ -243,6 +245,20 @@ namespace RedRat.RaceTimingWinApp
         }
 
         #endregion
+
+        private void ClockTimeOnClockRunningHandler(object sender, bool clockRunning)
+        {
+            spaceBarLabel.Visible = clockRunning;            
+        }
+
+        private void RaceTimingFormKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ( e.KeyChar == ' ' )
+            {
+                Console.WriteLine("Event!");
+            }
+            e.Handled = true;
+        }
 
     }
 }

@@ -11,6 +11,7 @@ namespace RedRat.RaceTiming.Core
     public class ClockTime
     {
         public event EventHandler<TimeSpan> ClockChangeHandler;
+        public event EventHandler<bool> ClockRunningHandler;
 
         private Timer timer;
         private TimeSpan time;
@@ -32,12 +33,14 @@ namespace RedRat.RaceTiming.Core
         {
             timer.Start();
             clockRunning = true;
+            NotifyClockRunning();
         }
 
         public void Stop()
         {
             timer.Stop();
             clockRunning = false;
+            NotifyClockRunning();
         }
 
         public void Reset()
@@ -88,6 +91,14 @@ namespace RedRat.RaceTiming.Core
             if ( ClockChangeHandler != null )
             {
                 ClockChangeHandler( this, time );
+            }
+        }
+
+        private void NotifyClockRunning()
+        {
+            if (ClockRunningHandler != null)
+            {
+                ClockRunningHandler(this, clockRunning);
             }
         }
     }
