@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace RedRat.RaceTimingWinApp
@@ -47,6 +48,14 @@ namespace RedRat.RaceTimingWinApp
         public void ClockChangeEventListener( object sender, TimeSpan time )
         {
             Invoke( new Action( () => { Text = time.ToString( labelFormat ); } ) );
+        }
+
+        public void Blink()
+        {
+            var currentBackColor = BackColor;
+            Invoke(new Action( () => BackColor = Color.Red));
+            Thread.Sleep(150);
+            Invoke(new Action(() => BackColor = currentBackColor));
         }
     }
 }

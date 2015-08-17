@@ -14,11 +14,13 @@ namespace RedRat.RaceTiming.Core
     {
         private DbService db;
         private readonly ClockTime clockTime = new ClockTime();
+        private readonly ResultsQueue resultQueue;
 
 		public AppController(DbService db)
         {
             this.db = db;
-		}
+            resultQueue = new ResultsQueue( this );
+        }
 
         public bool IsDbOpen
         {
@@ -114,6 +116,14 @@ namespace RedRat.RaceTiming.Core
             };
 
             db.AddRunner( runner );
+        }
+
+        /// <summary>
+        /// Adds a new race result time.
+        /// </summary>
+        public void AddTime(bool female)
+        {
+            resultQueue.Enqueue( new ResultsQueue.ResultSlot {datetime = DateTime.Now, female = female} );
         }
     }
 }

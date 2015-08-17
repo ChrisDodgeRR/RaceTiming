@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using RedRat.RaceTiming.Core;
 using RedRat.RaceTiming.Core.Web;
@@ -14,8 +16,9 @@ namespace RedRat.RaceTimingWinApp
     //
     public partial class RaceTimingForm : Form
     {
-        private AppController appController;
+        private readonly AppController appController;
         private ClockControlDialog clockControl;
+        private readonly ClockLabel clockLabel;
 
         public RaceTimingForm()
         {
@@ -23,7 +26,7 @@ namespace RedRat.RaceTimingWinApp
             InitializeComponent();
 
             // Add the clock label
-            var clockLabel = new ClockLabel
+            clockLabel = new ClockLabel
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
                 Font = new Font( "Microsoft Sans Serif", 25F, FontStyle.Regular, GraphicsUnit.Millimeter, 0 ),
@@ -255,10 +258,12 @@ namespace RedRat.RaceTimingWinApp
         {
             if ( e.KeyChar == ' ' )
             {
-                Console.WriteLine("Event!");
+                // If the control key is pressed, then a female runner
+                var female = ( ModifierKeys & Keys.Control ) == Keys.Control;
+                appController.AddTime( female );
+                Task.Run( () => clockLabel.Blink() );
             }
             e.Handled = true;
         }
-
     }
 }
