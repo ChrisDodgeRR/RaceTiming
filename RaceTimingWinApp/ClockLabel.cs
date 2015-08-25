@@ -50,10 +50,10 @@ namespace RedRat.RaceTimingWinApp
             Invoke( new Action( () => { Text = time.ToString( labelFormat ); } ) );
         }
 
-        public void Blink()
+        public void Blink( bool female )
         {
             var currentBackColor = BackColor;
-            Invoke(new Action( () => BackColor = Color.Red));
+            Invoke(new Action( () => BackColor = female ? Color.Red : Color.Green ));
             Thread.Sleep(150);
             Invoke(new Action(() => BackColor = currentBackColor));
         }

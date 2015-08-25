@@ -42,6 +42,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Result.cs" />
     <Compile Include="NoDatabaseException.cs" />
     <Compile Include="RtDatabaseRoot.cs" />
     <Compile Include="Model\Race.cs" />

@@ -56,6 +56,11 @@ namespace RedRat.RaceTiming.Core
             }
         }
 
+        public TimeSpan CurrentTime
+        {
+            get { return time; }
+        }
+
         public void AddTime( TimeSpan deltaTime, bool isSeconds )
         {
             // If we are changing the seconds, it looks better to stop them and restart.

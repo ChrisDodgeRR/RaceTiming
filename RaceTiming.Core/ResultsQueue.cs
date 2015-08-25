@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,7 +16,11 @@ namespace RedRat.RaceTiming.Core
         public struct ResultSlot
         {
             public bool female;
-            public DateTime datetime;
+            public TimeSpan datetime;
+            public override string ToString()
+            {
+                return string.Format( "{0} - {1}", datetime, female ? "F" : "M" );
+            }
         }
 
         private readonly AppController appController;
@@ -26,7 +31,6 @@ namespace RedRat.RaceTiming.Core
         {
             this.appController = appController;
             appController.ClockTime.ClockRunningHandler += ClockRunningHandler;
-
         }
 
         public void ClockRunningHandler(object sender, bool clockRunning)
@@ -47,7 +51,7 @@ namespace RedRat.RaceTiming.Core
 
         private void ProcessResultQueue()
         {
-            Console.WriteLine("Result processing queue started...");
+            Trace.WriteLineIf(AppController.traceSwitch.TraceInfo, "Result processing queue started...");
             processTaskRunning = true;
             while (processTaskRunning)
             {
@@ -57,17 +61,17 @@ namespace RedRat.RaceTiming.Core
                     if ( this.Count > 0 )
                     {
                         var res = this.Dequeue();
-                        Console.WriteLine( "Have result: " + res.datetime );
+                        Trace.WriteLineIf(AppController.traceSwitch.TraceInfo, "Race result: " + res);
                     }
                     // Delay so we don't spin in a loop.
-                    Thread.Sleep( 1000 );
+                    Thread.Sleep( 500 );
                 }
                 catch ( Exception ex )
                 {
-                    Console.Error.WriteLine( "Error processing result queue: " + ex.Message );
+                    Trace.WriteLineIf(AppController.traceSwitch.TraceError, "Error processing result queue: " + ex.Message);
                 }
             }
-            Console.WriteLine("Result processing queue terminating...");
+            Trace.WriteLineIf(AppController.traceSwitch.TraceInfo, "Result processing queue terminating...");
         }
     }
 }

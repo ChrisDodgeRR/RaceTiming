@@ -52,6 +52,7 @@
     <Compile Include="ClockLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Olv\OlvResult.cs" />
     <Compile Include="RaceDetailsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +116,9 @@
       <Project>{9F882FB6-0F98-4B6D-BFFD-32AC7C9FE420}</Project>
       <Name>RaceTiming.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

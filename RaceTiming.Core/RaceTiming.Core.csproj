@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="AppController.cs" />
     <Compile Include="ClockTime.cs" />
+    <Compile Include="Logging\LogController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultsQueue.cs" />
     <Compile Include="Util\CurrentOS.cs" />

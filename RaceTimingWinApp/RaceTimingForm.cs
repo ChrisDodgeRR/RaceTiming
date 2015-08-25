@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BrightIdeasSoftware;
 using RedRat.RaceTiming.Core;
 using RedRat.RaceTiming.Core.Web;
 using RedRat.RaceTiming.Data.Model;
@@ -19,6 +20,8 @@ namespace RedRat.RaceTimingWinApp
         private readonly AppController appController;
         private ClockControlDialog clockControl;
         private readonly ClockLabel clockLabel;
+        private readonly ObjectListView resultListView;
+        private bool clockRunning;
 
         public RaceTimingForm()
         {
@@ -36,6 +39,13 @@ namespace RedRat.RaceTimingWinApp
             };
             splitContainer1.Panel1.Controls.Add( clockLabel );
             spaceBarLabel.Visible = false;
+
+            resultListView = new ObjectListView()
+            {
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                Size = splitContainer1.Panel2.Size, 
+            };
+            splitContainer1.Panel2.Controls.Add( resultListView );
 
             Application.ThreadException += (o, e) => ShowExceptionMessageBox(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (o, e) => ShowExceptionMessageBox((Exception)e.ExceptionObject);
@@ -235,9 +245,14 @@ namespace RedRat.RaceTimingWinApp
 
         private void ClockControlToolStripMenuItemClick(object sender, EventArgs e)
         {
+            if (!CheckHaveDb()) return;
+
             if ( clockControl == null )
             {
-                clockControl = new ClockControlDialog(appController);
+                clockControl = new ClockControlDialog( appController )
+                {
+                    Icon = Icon,
+                };
                 clockControl.Show();
                 clockControl.Closed += ( o, args ) => { clockControl = null; };
             }
@@ -251,19 +266,33 @@ namespace RedRat.RaceTimingWinApp
 
         private void ClockTimeOnClockRunningHandler(object sender, bool clockRunning)
         {
+            this.clockRunning = clockRunning;
             spaceBarLabel.Visible = clockRunning;            
         }
 
         private void RaceTimingFormKeyPress(object sender, KeyPressEventArgs e)
         {
+            if ( !clockRunning ) return;
+
             if ( e.KeyChar == ' ' )
             {
                 // If the control key is pressed, then a female runner
                 var female = ( ModifierKeys & Keys.Control ) == Keys.Control;
                 appController.AddTime( female );
-                Task.Run( () => clockLabel.Blink() );
+                Task.Run( () => clockLabel.Blink( female ) );
             }
             e.Handled = true;
+        }
+
+        private void RaceTimingFormFormClosing(object sender, FormClosingEventArgs e)
+        {
+            if ( MessageBox.Show( "Are you sure you want to exit?", "Close the Application?", MessageBoxButtons.YesNo, MessageBoxIcon.Question )
+                != DialogResult.Yes )
+            {
+                e.Cancel = true;
+
+                // ToDo: Warn again if clock is running...
+            }
         }
     }
 }

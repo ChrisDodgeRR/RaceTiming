@@ -1,7 +1,9 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using RedRat.RaceTiming.Core.Logging;
 using RedRat.RaceTiming.Data;
 using RedRat.RaceTiming.Data.Model;
 
@@ -12,14 +14,22 @@ namespace RedRat.RaceTiming.Core
     /// </summary>
     public class AppController
     {
+        public static TraceSwitch traceSwitch = new TraceSwitch("RT", "Race Timing");
+
         private DbService db;
         private readonly ClockTime clockTime = new ClockTime();
         private readonly ResultsQueue resultQueue;
+        private readonly LogController logController;
 
 		public AppController(DbService db)
         {
             this.db = db;
             resultQueue = new ResultsQueue( this );
+            logController = new LogController();
+
+            // Tracing
+            Trace.Listeners.Add( logController );
+            traceSwitch.Level = TraceLevel.Info;
         }
 
         public bool IsDbOpen
@@ -54,6 +64,7 @@ namespace RedRat.RaceTiming.Core
                 db.Close();
             }
             db.Open( dbFilename );
+            logController.Open( Path.ChangeExtension( dbFilename, ".log" ) );
         }
 
         /// <summary>
@@ -123,7 +134,7 @@ namespace RedRat.RaceTiming.Core
         /// </summary>
         public void AddTime(bool female)
         {
-            resultQueue.Enqueue( new ResultsQueue.ResultSlot {datetime = DateTime.Now, female = female} );
+            resultQueue.Enqueue( new ResultsQueue.ResultSlot {datetime = clockTime.CurrentTime, female = female} );
         }
     }
 }

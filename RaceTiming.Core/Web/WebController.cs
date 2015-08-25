@@ -1,6 +1,6 @@
-﻿using Nancy.Hosting.Self;
-
-using System;
+﻿using System;
+using System.Diagnostics;
+using Nancy.Hosting.Self;
 using RedRat.RaceTiming.Core.Util;
 
 namespace RedRat.RaceTiming.Core.Web
@@ -37,7 +37,7 @@ namespace RedRat.RaceTiming.Core.Web
 
 			webHost.Start();
 
-			Console.WriteLine("Web server started....");
+			Trace.WriteLineIf( AppController.traceSwitch.TraceInfo, "Web server started....");
 		}
 	}
 }

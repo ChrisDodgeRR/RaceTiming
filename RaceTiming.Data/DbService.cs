@@ -23,7 +23,6 @@ namespace RedRat.RaceTiming.Data
 
         public DbService()
         {
-			Console.WriteLine("Created DB controller...");
             isDbOpen = false;
         }
 
@@ -60,8 +59,6 @@ namespace RedRat.RaceTiming.Data
                 dbFilename = filename;
                 isDbOpen = true;            
             }
-
-			Console.WriteLine("Number of races: " + dbRoot.raceNameIndex.Count);
         }
 
         /// <summary>
