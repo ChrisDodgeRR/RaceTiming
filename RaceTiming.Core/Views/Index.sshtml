@@ -1,15 +1,8 @@
-﻿
+﻿@Master['Master.sshtml']
 
-
+@Section['Content']
 <h2>Race Timing System</h2>
 
 <p>The current race is: @!Model.RaceName</p>
 
-<p>Here you can:</p>
-
-<ul>
-	<li>View runners</li>
-	<li>View Results</li>
-	<li>Regsiter a new runner</li>
-	<li>Enter runner finishing position</li>
-</ul>
+@EndSection

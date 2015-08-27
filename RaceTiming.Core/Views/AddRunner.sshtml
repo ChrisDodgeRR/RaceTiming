@@ -1,0 +1,6 @@
+﻿@Master['Master.sshtml']
+
+@Section['Content']
+<h2>New Race Entrants</h2>
+
+@EndSection

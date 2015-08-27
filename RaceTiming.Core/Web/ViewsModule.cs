@@ -1,18 +1,21 @@
 ﻿using Nancy;
-using RedRat.RaceTiming.Data.Model;
-using System;
 
 namespace RedRat.RaceTiming.Core.Web
 {
 	public class ViewsModule : NancyModule
 	{
-		// ToDo: Pass in the app controller.
 		public ViewsModule (ControllerFactory controllerFactory)
 		{
-			Get ["/"] = parameters => {
-                return View ["Index", CreateIndexModel(controllerFactory)];
-			};
-		}
+			Get ["/"] = parameters => View ["Index", CreateIndexModel(controllerFactory)];
+
+            Get["/addrunner"] = parameters => View["AddRunner"];
+
+            Get["/positions"] = parameters => View["EditPositions"];
+
+            Get["/runners"] = parameters => View["Runners"];
+
+            Get["/results"] = parameters => View["Results"];
+        }
 
 	    private IndexModel CreateIndexModel( ControllerFactory controllerFactory )
 	    {

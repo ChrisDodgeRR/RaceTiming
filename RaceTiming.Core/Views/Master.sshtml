@@ -1,0 +1,27 @@
+﻿<html>
+<body>
+    <header class="navbar navbar-inverse" role="banner" ng-if=" !layout ">
+        <div class="container">
+            <div class="navbar-header">
+				<a href="/"><img class="logo" src="/Content/racetimerlogo1.svg" /></a>
+            </div>
+            <nav class="collapse navbar-collapse spa-navbar-collapse" role="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/addrunner">Add Runners</a>
+                    </li>
+                    <li>
+                        <a href="/positions">Enter Finishing Positions</a>
+                    </li>
+                    <li>
+                        <a href="/runners">Show Runners</a>
+                    </li>
+                    <li>
+						<a href="/results">Show Results</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>@Section['Content']
+</body>
+</html>
