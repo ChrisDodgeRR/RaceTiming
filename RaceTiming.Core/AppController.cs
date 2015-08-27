@@ -111,22 +111,54 @@ namespace RedRat.RaceTiming.Core
             // ToDo: Long term, make this more configurable. At the moment we're only interested
             //       in Runner's World files.
 
-            // ToDo - AD:
-            // 1. Open and read the file.
-            // 2. Create runner objects
-            // 3. Check that they don't already exist in the DB (use firstname, lastname and DoB)
-            // 4. If they don't exist, then add them.
-            var runner = new Runner
-            {
-                FirstName = "Chris", 
-                LastName = "Dodge",
-                Gender = Runner.GenderEnum.Male,
-                DateOfBirth = DateTime.Parse( "25/01/1965" ),
-                Club = "Saffron Striders",
-                Address = "Somewhere",
-            };
+			// ToDo - AD:
+			// 1. Open and read the file.
 
-            db.AddRunner( runner );
+			using( var reader = new StreamReader(File.OpenRead(filename)) ) 
+			{
+
+				// Do process while line is not empty
+				string line;
+				while ((line = reader.ReadLine ()) != null) 
+				{
+
+					// Split line into array of info (\\s* removes space around object)
+					string[] runnerInfo = line.Split(@",".ToCharArray());
+
+					// 2. Create runner objects
+					var runner = new Runner {
+						FirstName = runnerInfo[0], 
+						LastName = runnerInfo[1],
+						//if (runnerInfo[2] = "F") {
+						Gender = Runner.GenderEnum.Male,
+						//} else {
+						//    Gender = Runner.GenderEnum.Female,
+						DateOfBirth = DateTime.Parse (runnerInfo[4]),
+						Club = runnerInfo[5],
+						Address = runnerInfo[8],
+					};
+
+					// 3. Check that they don't already exist in the DB (use firstname, lastname and DoB)
+					// 4. If they don't exist, then add them.
+					db.AddRunner (runner);
+
+
+				}
+			} 
+
+
+
+            //var runner = new Runner
+            //{
+              //  FirstName = "Chris", 
+               // LastName = "Dodge",
+                //Gender = Runner.GenderEnum.Male,
+                //DateOfBirth = DateTime.Parse( "25/01/1965" ),
+                //Club = "Saffron Striders",
+                //Address = "Somewhere",
+            //};
+
+            //db.AddRunner( runner );
         }
 
         /// <summary>
