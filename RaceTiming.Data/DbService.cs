@@ -177,6 +177,21 @@ namespace RedRat.RaceTiming.Data
             }            
         }
 
+		// Tests whether runner already exists in db using name & DoB
+		public Boolean TestDuplicate(Runner runner)
+		{
+			CheckHaveDb ();
+			IList<Runner> runners = GetRunners ();
+			for (int i = 0; i < runners.Count(); i++) {
+				if (runner.FirstName == runners [i].FirstName &&
+				    runner.LastName == runners [i].LastName &&
+				    runner.DateOfBirth == runners [i].DateOfBirth) {
+					return true;
+				}
+			}
+			return false;
+		}
+
         #endregion
     }
 }

@@ -123,16 +123,13 @@ namespace RedRat.RaceTiming.Core
 				{
 
 					// Split line into array of info (\\s* removes space around object)
-					string[] runnerInfo = line.Split(@",".ToCharArray());
+					string[] runnerInfo = line.Split(@"\\s*,\\s*".ToCharArray());
 
 					// 2. Create runner objects
 					var runner = new Runner {
 						FirstName = runnerInfo[0], 
 						LastName = runnerInfo[1],
-						//if (runnerInfo[2] = "F") {
-						Gender = Runner.GenderEnum.Male,
-						//} else {
-						//    Gender = Runner.GenderEnum.Female,
+						Gender = (runnerInfo[2] == "F") ? Runner.GenderEnum.Female : Runner.GenderEnum.Male,
 						DateOfBirth = DateTime.Parse (runnerInfo[4]),
 						Club = runnerInfo[5],
 						Address = runnerInfo[8],
@@ -140,7 +137,12 @@ namespace RedRat.RaceTiming.Core
 
 					// 3. Check that they don't already exist in the DB (use firstname, lastname and DoB)
 					// 4. If they don't exist, then add them.
-					db.AddRunner (runner);
+					if (db.TestDuplicate(runner) == false) {
+						db.AddRunner (runner);
+					}
+
+
+					
 
 
 				}
