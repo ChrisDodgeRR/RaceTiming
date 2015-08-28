@@ -116,36 +116,45 @@ namespace RedRat.RaceTiming.Core
 
 			using( var reader = new StreamReader(File.OpenRead(filename)) ) 
 			{
+				
 
-				// Do process while line is not empty
 				string line;
-				while ((line = reader.ReadLine ()) != null) 
-				{
 
-					// Split line into array of info (\\s* removes space around object)
-					string[] runnerInfo = line.Split(@"\\s*,\\s*".ToCharArray());
+				// Count number of lines - can specify which line throws error
+				int lineCount = 0;
 
-					// 2. Create runner objects
-					var runner = new Runner {
-						FirstName = runnerInfo[0], 
-						LastName = runnerInfo[1],
-						Gender = (runnerInfo[2] == "F") ? Runner.GenderEnum.Female : Runner.GenderEnum.Male,
-						DateOfBirth = DateTime.Parse (runnerInfo[4]),
-						Club = runnerInfo[5],
-						Address = runnerInfo[8],
-					};
+					// Do process while line is not empty
+					while ((line = reader.ReadLine ()) != null) 
+					{
+						lineCount++;
+						
+						// If line throws exception then skip
+						try {
+							
+							// Split line into array of info (\\s* removes space around object)
+							string[] runnerInfo = line.Split(@"\\s*,\\s*".ToCharArray());
 
-					// 3. Check that they don't already exist in the DB (use firstname, lastname and DoB)
-					// 4. If they don't exist, then add them.
-					if (db.TestDuplicate(runner) == false) {
-						db.AddRunner (runner);
+							// 2. Create runner objects
+							var runner = new Runner {
+								FirstName = runnerInfo[0], 
+								LastName = runnerInfo[1],
+								Gender = (runnerInfo[2] == "F") ? Runner.GenderEnum.Female : Runner.GenderEnum.Male,
+								DateOfBirth = DateTime.Parse (runnerInfo[4]),
+								Club = runnerInfo[5],
+								Address = runnerInfo[8],
+							};
+
+							// 3. Check that they don't already exist in the DB (use firstname, lastname and DoB)
+							// 4. If they don't exist, then add them.
+							if (db.TestDuplicate(runner) == false) {
+								db.AddRunner (runner);
+							}
+
+						} catch (Exception) {
+							Console.WriteLine ("Error with line " + lineCount + " in the file.");
+						}
 					}
-
-
 					
-
-
-				}
 			} 
 
 
@@ -170,5 +179,6 @@ namespace RedRat.RaceTiming.Core
         {
             resultQueue.Enqueue( new ResultsQueue.ResultSlot {datetime = clockTime.CurrentTime, female = female} );
         }
+
     }
 }
