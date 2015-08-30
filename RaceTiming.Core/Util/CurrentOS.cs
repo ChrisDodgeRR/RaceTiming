@@ -33,7 +33,7 @@ namespace RedRat.RaceTiming.Core.Util
             {
                 if ((Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor >= 1) || Environment.OSVersion.Version.Major >= 6)
                 {
-                    using (Process p = Process.GetCurrentProcess())
+                    using (var p = Process.GetCurrentProcess())
                     {
                         bool retVal;
                         if (!IsWow64Process(p.Handle, out retVal)) return false;
@@ -123,9 +123,10 @@ namespace RedRat.RaceTiming.Core.Util
         {
             try
             {
-                Process p = new Process();
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.RedirectStandardOutput = true;
+                var p = new Process
+                {
+                    StartInfo = {UseShellExecute = false, RedirectStandardOutput = true}
+                };
                 if (args != null && args != "") p.StartInfo.Arguments = " " + args;
                 p.StartInfo.FileName = name;
                 p.Start();
@@ -133,7 +134,7 @@ namespace RedRat.RaceTiming.Core.Util
                 // reading to the end of its redirected stream.
                 // p.WaitForExit();
                 // Read the output stream first and then wait.
-                string output = p.StandardOutput.ReadToEnd();
+                var output = p.StandardOutput.ReadToEnd();
                 p.WaitForExit();
                 if (output == null) output = "";
                 output = output.Trim();

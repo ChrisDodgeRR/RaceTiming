@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BrightIdeasSoftware;
 using RedRat.RaceTiming.Core;
 using RedRat.RaceTiming.Core.Web;
 using RedRat.RaceTiming.Data.Model;
+using RedRat.RaceTimingWinApp.Options;
 
 namespace RedRat.RaceTimingWinApp
 {
@@ -20,7 +19,6 @@ namespace RedRat.RaceTimingWinApp
         private readonly AppController appController;
         private ClockControlDialog clockControl;
         private readonly ClockLabel clockLabel;
-        private readonly ObjectListView resultListView;
         private bool clockRunning;
 
         public RaceTimingForm()
@@ -40,12 +38,12 @@ namespace RedRat.RaceTimingWinApp
             splitContainer1.Panel1.Controls.Add( clockLabel );
             spaceBarLabel.Visible = false;
 
-            resultListView = new ObjectListView()
+            /*resultListView = new ObjectListView()
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
                 Size = splitContainer1.Panel2.Size, 
             };
-            splitContainer1.Panel2.Controls.Add( resultListView );
+            splitContainer1.Panel2.Controls.Add( resultListView ); */
 
             Application.ThreadException += (o, e) => ShowExceptionMessageBox(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (o, e) => ShowExceptionMessageBox((Exception)e.ExceptionObject);
@@ -112,7 +110,10 @@ namespace RedRat.RaceTimingWinApp
             if (! CheckWhatToDoIfHaveDbOpen() ) return;
 
             // 1. Get race details from user
-            var raceDetailsDialog = new RaceDetailsDialog();
+            var raceDetailsDialog = new RaceDetailsDialog()
+            {
+                Icon = Icon,
+            };
             if ( raceDetailsDialog.ShowDialog() != DialogResult.OK )
             {
                 // OK - user wants to quit
@@ -189,9 +190,17 @@ namespace RedRat.RaceTimingWinApp
             appController.LoadCsvFile( openFileDlg.FileName );
         }
 
+        private void OptionsToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            var optionsDialog = new OptionsDialog( appController.Options )
+            {
+                Icon = Icon,
+            };
+            optionsDialog.ShowDialog();
+        }
+
         private void ExitToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // ToDo: Put up message box to confirm.
             Close();
 			Application.Exit ();
         }

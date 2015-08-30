@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Nancy;
-using RedRat.RaceTiming.Data.Model;
 
 namespace RedRat.RaceTiming.Core.Web
 {
@@ -8,15 +8,20 @@ namespace RedRat.RaceTiming.Core.Web
     {
         public ApiModule( ControllerFactory controllerFactory ) : base("/api")
         {
-            Get["/runners"] = parameters => Response.AsJson(GetRunners());
+            Get["/runners"] = parameters => Response.AsJson( GetRunners( controllerFactory ) );
         }
 
-        protected List<Runner> GetRunners()
+        protected List<object> GetRunners(ControllerFactory controllerFactory)
         {
-            return new List<Runner>
+            var runners = controllerFactory.AppController.GetRunners();
+            return runners.Select( r => new
             {
-                new Runner {FirstName = "Bilbo", LastName = "Baggins"}
-            };
+                r.FirstName,
+                r.LastName,
+                r.DateOfBirth,
+                r.Club,
+                r.Team,
+            } ).Cast<object>().ToList();
         }
     }
 }

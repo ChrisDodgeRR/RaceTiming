@@ -10,7 +10,7 @@ namespace RedRat.RaceTiming.Core.Logging
     public class LogController : TraceListener
     {
         // Note: This probably isn't very efficient as it opens the log file for each log entry.
-        //       It is somewhat safer but could eb improved if performance is an issue.
+        //       It is somewhat safer but could be improved if performance is an issue.
 
         private string logFilename;
         private readonly object writeLock = new object();

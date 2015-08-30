@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using RedRat.RaceTiming.Data.Model;
 using Volante;
@@ -15,6 +16,8 @@ namespace RedRat.RaceTiming.Data
     /// </summary>
     public class DbService : IDisposable
     {
+        public static TraceSwitch dbTraceSwitch = new TraceSwitch("RTDB", "Race Timing DB");
+
         private IDatabase db;
         private string dbFilename;
         private RtDatabaseRoot dbRoot;
@@ -57,7 +60,8 @@ namespace RedRat.RaceTiming.Data
                 db.Commit();
 
                 dbFilename = filename;
-                isDbOpen = true;            
+                isDbOpen = true;
+                Trace.WriteLineIf(dbTraceSwitch.TraceInfo, "DB file opened: " + dbFilename);
             }
         }
 

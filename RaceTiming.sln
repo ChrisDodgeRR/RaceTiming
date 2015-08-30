@@ -7,12 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceTimingWinApp", "RaceTim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceTiming.Core", "RaceTiming.Core\RaceTiming.Core.csproj", "{9F882FB6-0F98-4B6D-BFFD-32AC7C9FE420}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceTimingTests", "RaceTimingTests\RaceTimingTests.csproj", "{08DA202D-46DF-45E4-9E0B-B4690BECD54A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08DA202D-46DF-45E4-9E0B-B4690BECD54A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{08DA202D-46DF-45E4-9E0B-B4690BECD54A}.Debug|x86.Build.0 = Debug|Any CPU
+		{08DA202D-46DF-45E4-9E0B-B4690BECD54A}.Release|x86.ActiveCfg = Release|Any CPU
+		{08DA202D-46DF-45E4-9E0B-B4690BECD54A}.Release|x86.Build.0 = Release|Any CPU
 		{1C3475A7-E6AD-4491-976B-8BB51DA5AE02}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{1C3475A7-E6AD-4491-976B-8BB51DA5AE02}.Debug|x86.Build.0 = Debug|Any CPU
 		{1C3475A7-E6AD-4491-976B-8BB51DA5AE02}.Release|x86.ActiveCfg = Release|Any CPU
