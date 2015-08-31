@@ -53,6 +53,11 @@ namespace RedRat.RaceTiming.Core.Config.Unix
                 {
                     Directory.CreateDirectory( configFolderName );
                 }
+                if ( !File.Exists(configFilePath) )
+                {
+                    var fs = File.Create(configFilePath);
+                    fs.Close();
+                }
                 using ( var writer = new FileStream( configFilePath, FileMode.Truncate ) )  // Set to zero size before writing.
                 {
                     serializer.WriteObject( writer, rootKey );

@@ -109,7 +109,10 @@
     <Compile Include="ClockControlDialog.Designer.cs">
       <DependentUpon>ClockControlDialog.cs</DependentUpon>
     </Compile>
-    <None Include="EmptyTextFile.txt" />
+    <Compile Include="ExtendedListView\ListViewButtonColumn.cs" />
+    <Compile Include="ExtendedListView\ListViewColumn.cs" />
+    <Compile Include="ExtendedListView\ListViewColumnMouseEventArgs.cs" />
+    <Compile Include="ExtendedListView\ListViewExtender.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -135,4 +138,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="ExtendedListView\" />
+  </ItemGroup>
 </Project>
