@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Nancy.Hosting.Self;
-using RedRat.RaceTiming.Core.Config;
-using RedRat.RaceTiming.Core.Util;
 
 namespace RedRat.RaceTiming.Core.Web
 {
@@ -12,16 +10,11 @@ namespace RedRat.RaceTiming.Core.Web
 	public class WebController
 	{
 		protected NancyHost webHost;
-	    protected string serverUrl = "http://localhost:1234/";
+	    protected string serverUrl;
 
-	    public WebController()
+	    public WebController( string serverUrl )
 	    {
-            // ToDo: Make configurable, and work out why "localhost" doesn't work on Mac.
-            //if ( FeatureSet.IsMac() )
-	        if ( CurrentOS.IsMac )
-	        {
-                serverUrl = "http://0.0.0.0:1234/";
-            }
+	        this.serverUrl = serverUrl;
 	    }
 
 		public void Start()

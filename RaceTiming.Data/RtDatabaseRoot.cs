@@ -9,6 +9,6 @@ namespace RedRat.RaceTiming.Data
         public IIndex<string, Race> raceNameIndex;
         public IIndex<string, Runner> runnerFirstNameIndex;
         public IIndex<string, Runner> runnerLastNameIndex;
-        public IIndex<string, Runner> runnerNumberIndex;
+        public IIndex<int, Runner> runnerNumberIndex;
     }
 }

@@ -18,7 +18,7 @@ namespace RedRat.RaceTimingWinApp.ExtendedListView
 
             if ( listView.View != View.Details )
             {
-                throw new ArgumentException( null, "listView" );
+                throw new ArgumentException( "Listview needs to be in 'Details' view.", "listView" );
             }
 
             ListView = listView;

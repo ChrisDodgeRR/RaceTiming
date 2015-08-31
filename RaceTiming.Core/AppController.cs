@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using RedRat.RaceTiming.Core.Config;
@@ -46,6 +46,16 @@ namespace RedRat.RaceTiming.Core
                     OpenRace( lastFile );
                 }
             }
+        }
+
+        public string GetRootUrl()
+        {
+            // ToDo: Make configurable, and work out why "localhost" doesn't work on Mac.
+            if (CurrentOS.IsMac)
+            {
+                return "http://0.0.0.0:1234/";
+            }
+            return "http://localhost:1234/";
         }
 
         public bool IsDbOpen
@@ -130,10 +140,15 @@ namespace RedRat.RaceTiming.Core
         /// <summary>
         /// Loads a CSV file containing race entrant information.
         /// </summary>
-        public void LoadCsvFile(string filename)
+        public dynamic LoadCsvFile(string filename)
         {
             // ToDo: Long term, make this more configurable. At the moment we're only interested
             //       in Runner's World files.
+
+            dynamic result = new ExpandoObject();
+            result.Imported = 0;
+            result.AlreadyExisting = 0;
+            result.Ignored = 0;
 
             using (var reader = new StreamReader(File.OpenRead(filename)))
             {
@@ -166,24 +181,31 @@ namespace RedRat.RaceTiming.Core
                         };
 
                         // Check that they don't already exist in the DB (use firstname, lastname and DoB)
-                        if (db.TestDuplicate(runner) == false)
+                        if (!db.TestDuplicate(runner))
                         {
                             db.AddRunner(runner);
+                            result.Imported++;
+                        }
+                        else
+                        {
+                            result.AlreadyExisting++;
                         }
                     }
                     catch (Exception ex)
                     {
                         Trace.WriteLineIf( traceSwitch.TraceWarning,
                             string.Format( "Error with line {0}: {1}. Line is '{2} ", lineCount, ex.Message, line ) );
+                        result.Ignored++;
                     }
                 }		
-            } 
+            }
+            return result;
         }
 
         /// <summary>
         /// Adds a new race result time.
         /// </summary>
-        public void AddTime(bool female)
+        public void AddResultTime(bool female)
         {
             resultQueue.Enqueue(new ResultsQueue.ResultSlot { datetime = clockTime.CurrentTime, female = female });
         }

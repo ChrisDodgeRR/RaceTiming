@@ -1,19 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RedRat.RaceTiming.Core;
 using RedRat.RaceTiming.Core.Web;
 using RedRat.RaceTiming.Data.Model;
+using RedRat.RaceTimingWinApp.ExtendedListView;
 using RedRat.RaceTimingWinApp.Options;
 
 namespace RedRat.RaceTimingWinApp
 {
-    //
-    // To Do:
-    //  - Add tracing and logging.
-    //
-    //
     public partial class RaceTimingForm : Form
     {
         private readonly AppController appController;
@@ -38,12 +35,9 @@ namespace RedRat.RaceTimingWinApp
             splitContainer1.Panel1.Controls.Add( clockLabel );
             spaceBarLabel.Visible = false;
 
-            /*resultListView = new ObjectListView()
-            {
-                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                Size = splitContainer1.Panel2.Size, 
-            };
-            splitContainer1.Panel2.Controls.Add( resultListView ); */
+            // Setup result list view
+            var listViewExtender = new ListViewExtender( resultListView );
+            resultListView.Items.Add( new ListViewItem( "hjsdgajha" ) );
 
             Application.ThreadException += (o, e) => ShowExceptionMessageBox(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (o, e) => ShowExceptionMessageBox((Exception)e.ExceptionObject);
@@ -53,7 +47,7 @@ namespace RedRat.RaceTimingWinApp
             appController.ClockTime.ClockRunningHandler += ClockTimeOnClockRunningHandler;
             SetTitle();
 
-            var webController = new WebController();
+            var webController = new WebController( appController.GetRootUrl() );
             webController.Start();
 		}
 
@@ -65,8 +59,10 @@ namespace RedRat.RaceTimingWinApp
 
         private void ShowExceptionMessageBox( Exception ex )
         {
-            MessageBox.Show( "Exception from application: " + ex.Message );
-            Console.WriteLine(ex);
+            var msg = "Exception from application: " + ex.Message;
+            MessageBox.Show( msg );
+            Trace.WriteLineIf( AppController.traceSwitch.TraceError, msg );
+            Trace.WriteLineIf( AppController.traceSwitch.TraceError, ex.StackTrace );
         }
 
         /// <summary>
@@ -187,7 +183,13 @@ namespace RedRat.RaceTimingWinApp
                 // OK - user wants to quit
                 return;
             }
-            appController.LoadCsvFile( openFileDlg.FileName );
+            var filename = openFileDlg.FileName;
+            var result = appController.LoadCsvFile( filename );
+
+            var msg = string.Format( "File '{0}' loaded.\n\n\t{1} runners added\n\t{2} already in DB\n\t{3} line(s) ignored", 
+                filename, result.Imported, result.AlreadyExisting, result.Ignored);
+            Trace.WriteLineIf( AppController.traceSwitch.TraceInfo, (string)msg );  // Need to cast with dynamic object
+            MessageBox.Show( msg, "Import Complete", MessageBoxButtons.OK, MessageBoxIcon.Information );
         }
 
         private void OptionsToolStripMenuItemClick(object sender, EventArgs e)
@@ -237,15 +239,14 @@ namespace RedRat.RaceTimingWinApp
 
         #region View Menu
 
+        private void HomePageToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            StartWebBrowserAtPage( appController.GetRootUrl() );
+        }
+
         private void RaceEntrantsToolStripMenuItemClick(object sender, EventArgs e)
         {
-            if (!CheckHaveDb()) return;
-
-            var runners = appController.GetRunners();
-            foreach ( var runner in runners )
-            {
-                Console.WriteLine(runner);
-            }
+            StartWebBrowserAtPage(appController.GetRootUrl() + "runners");
         }
 
         #endregion
@@ -273,6 +274,20 @@ namespace RedRat.RaceTimingWinApp
 
         #endregion
 
+        private void StartWebBrowserAtPage( string url )
+        {
+            try
+            {
+                Process.Start( url );
+            }
+            catch (Exception ex)
+            {
+                var msg = "Unable to start web browser: " + ex.Message;
+                Trace.WriteLineIf(AppController.traceSwitch.TraceInfo, msg);
+                MessageBox.Show(msg, "Error starting web browser", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }            
+        }
+
         private void ClockTimeOnClockRunningHandler(object sender, bool clockRunning)
         {
             this.clockRunning = clockRunning;
@@ -287,7 +302,7 @@ namespace RedRat.RaceTimingWinApp
             {
                 // If the control key is pressed, then a female runner
                 var female = ( ModifierKeys & Keys.Control ) == Keys.Control;
-                appController.AddTime( female );
+                appController.AddResultTime( female );
                 Task.Run( () => clockLabel.Blink( female ) );
             }
             e.Handled = true;
@@ -303,5 +318,6 @@ namespace RedRat.RaceTimingWinApp
                 // ToDo: Warn again if clock is running...
             }
         }
+
     }
 }

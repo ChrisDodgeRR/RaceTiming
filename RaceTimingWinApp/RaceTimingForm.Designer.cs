@@ -36,10 +36,13 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.importRunnerDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.raceDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.homePageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.raceEntrantsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clockControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,11 +50,11 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.spaceBarLabel = new System.Windows.Forms.Label();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.resultListView = new System.Windows.Forms.ListView();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -115,6 +118,18 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(175, 6);
             // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.optionsToolStripMenuItem.Text = "Options";
+            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.OptionsToolStripMenuItemClick);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(175, 6);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
@@ -140,16 +155,24 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.homePageToolStripMenuItem,
             this.raceEntrantsToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
             // 
+            // homePageToolStripMenuItem
+            // 
+            this.homePageToolStripMenuItem.Name = "homePageToolStripMenuItem";
+            this.homePageToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.homePageToolStripMenuItem.Text = "Home Page (browser)";
+            this.homePageToolStripMenuItem.Click += new System.EventHandler(this.HomePageToolStripMenuItemClick);
+            // 
             // raceEntrantsToolStripMenuItem
             // 
             this.raceEntrantsToolStripMenuItem.Name = "raceEntrantsToolStripMenuItem";
-            this.raceEntrantsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.raceEntrantsToolStripMenuItem.Text = "Race Entrants";
+            this.raceEntrantsToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.raceEntrantsToolStripMenuItem.Text = "Race Entrants (browser)";
             this.raceEntrantsToolStripMenuItem.Click += new System.EventHandler(this.RaceEntrantsToolStripMenuItemClick);
             // 
             // timingToolStripMenuItem
@@ -190,6 +213,10 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.spaceBarLabel);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.resultListView);
             this.splitContainer1.Size = new System.Drawing.Size(664, 345);
             this.splitContainer1.SplitterDistance = 473;
             this.splitContainer1.TabIndex = 2;
@@ -207,17 +234,18 @@
             this.spaceBarLabel.Text = "Hit space bar to record times";
             this.spaceBarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // optionsToolStripMenuItem
+            // resultListView
             // 
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.optionsToolStripMenuItem.Text = "Options";
-            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.OptionsToolStripMenuItemClick);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(175, 6);
+            this.resultListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.resultListView.FullRowSelect = true;
+            this.resultListView.Location = new System.Drawing.Point(3, 3);
+            this.resultListView.Name = "resultListView";
+            this.resultListView.Size = new System.Drawing.Size(181, 339);
+            this.resultListView.TabIndex = 0;
+            this.resultListView.UseCompatibleStateImageBehavior = false;
+            this.resultListView.View = System.Windows.Forms.View.Details;
             // 
             // RaceTimingForm
             // 
@@ -230,6 +258,7 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "RaceTimingForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Race Timing";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RaceTimingFormFormClosing);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RaceTimingFormKeyPress);
@@ -237,6 +266,7 @@
             this.menuStrip.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -266,6 +296,8 @@
         private System.Windows.Forms.Label spaceBarLabel;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem homePageToolStripMenuItem;
+        private System.Windows.Forms.ListView resultListView;
     }
 }
 

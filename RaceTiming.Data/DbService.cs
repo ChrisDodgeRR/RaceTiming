@@ -86,6 +86,10 @@ namespace RedRat.RaceTiming.Data
                 {
                     dbRoot.runnerLastNameIndex = db.CreateIndex<string, Runner>( IndexType.NonUnique );
                 }
+                if (dbRoot.runnerNumberIndex == null)
+                {
+                    dbRoot.runnerNumberIndex = db.CreateIndex<int, Runner>(IndexType.NonUnique);
+                }
             }
         }
 
@@ -166,8 +170,10 @@ namespace RedRat.RaceTiming.Data
             CheckHaveDb();
             lock (dbLock)
             {
+                runner.Number = GetNextNumber();
                 dbRoot.runnerFirstNameIndex.Put(runner.FirstName, runner);
                 dbRoot.runnerLastNameIndex.Put(runner.LastName, runner);
+                dbRoot.runnerNumberIndex.Put( runner.Number, runner );
                 db.Commit();
             }
         }
@@ -182,19 +188,27 @@ namespace RedRat.RaceTiming.Data
         }
 
 		// Tests whether runner already exists in db using name & DoB
-		public Boolean TestDuplicate(Runner runner)
+		public bool TestDuplicate(Runner runner)
 		{
 			CheckHaveDb ();
-			IList<Runner> runners = GetRunners ();
-			for (int i = 0; i < runners.Count(); i++) {
-				if (runner.FirstName == runners [i].FirstName &&
-				    runner.LastName == runners [i].LastName &&
+			var runners = GetRunners ();
+			for (var i = 0; i < runners.Count(); i++) {
+				if (runner.FirstName.Equals( runners [i].FirstName, StringComparison.CurrentCultureIgnoreCase ) &&
+				    runner.LastName.Equals( runners [i].LastName, StringComparison.CurrentCultureIgnoreCase ) &&
 				    runner.DateOfBirth == runners [i].DateOfBirth) {
 					return true;
 				}
 			}
 			return false;
 		}
+
+        /// <summary>
+        /// Returns the next bib number.
+        /// </summary>
+        public int GetNextNumber()
+        {
+            return GetRunners().Count + 1;
+        }
 
         #endregion
     }

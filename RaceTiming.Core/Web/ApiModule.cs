@@ -14,8 +14,9 @@ namespace RedRat.RaceTiming.Core.Web
         protected List<object> GetRunners(ControllerFactory controllerFactory)
         {
             var runners = controllerFactory.AppController.GetRunners();
-            return runners.Select( r => new
+            return runners.OrderBy( r => r.Number ).Select( r => new
             {
+                r.Number,
                 r.FirstName,
                 r.LastName,
                 r.DateOfBirth,
