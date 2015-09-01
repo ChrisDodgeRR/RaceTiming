@@ -6,8 +6,6 @@ namespace RedRat.RaceTiming.Data.Model
 {
     public class Runner : Persistent
     {
-        public enum GenderEnum { Male, Female }
-
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public GenderEnum Gender { get; set; }

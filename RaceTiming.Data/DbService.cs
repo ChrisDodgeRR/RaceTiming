@@ -77,7 +77,6 @@ namespace RedRat.RaceTiming.Data
                 {
                     dbRoot.raceNameIndex = db.CreateIndex<string, Race>( IndexType.NonUnique );
                 }
-
                 if ( dbRoot.runnerFirstNameIndex == null )
                 {
                     dbRoot.runnerFirstNameIndex = db.CreateIndex<string, Runner>( IndexType.NonUnique );
@@ -89,6 +88,10 @@ namespace RedRat.RaceTiming.Data
                 if (dbRoot.runnerNumberIndex == null)
                 {
                     dbRoot.runnerNumberIndex = db.CreateIndex<int, Runner>(IndexType.NonUnique);
+                }
+                if ( dbRoot.resultPositionIndex == null )
+                {
+                    dbRoot.resultPositionIndex = db.CreateIndex<int, Result>( IndexType.NonUnique );
                 }
             }
         }
@@ -170,7 +173,6 @@ namespace RedRat.RaceTiming.Data
             CheckHaveDb();
             lock (dbLock)
             {
-                runner.Number = GetNextNumber();
                 dbRoot.runnerFirstNameIndex.Put(runner.FirstName, runner);
                 dbRoot.runnerLastNameIndex.Put(runner.LastName, runner);
                 dbRoot.runnerNumberIndex.Put( runner.Number, runner );
@@ -208,6 +210,44 @@ namespace RedRat.RaceTiming.Data
         public int GetNextNumber()
         {
             return GetRunners().Count + 1;
+        }
+
+        #endregion
+
+        #region Result Methods
+
+        public void AddResult( Result result )
+        {
+            CheckHaveDb();
+            lock (dbLock)
+            {
+                dbRoot.resultPositionIndex.Put(result.Position, result);
+                db.Commit();
+            }
+        }
+
+        public IList<Result> GetResults()
+        {
+            CheckHaveDb();
+            lock (dbLock)
+            {
+                return dbRoot.resultPositionIndex.ToList();
+            }
+        }
+
+        public int GetNextPosition()
+        {
+            return GetResults().Count + 1;
+        }
+
+        public void DeleteResultData()
+        {
+            CheckHaveDb();
+            lock ( dbLock )
+            {
+                dbRoot.resultPositionIndex.Clear();
+                db.Commit();
+            }
         }
 
         #endregion

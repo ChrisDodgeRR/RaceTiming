@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using RedRat.RaceTiming.Data;
+using RedRat.RaceTiming.Data.Model;
 
 namespace RedRat.RaceTiming.Core
 {
@@ -23,13 +25,18 @@ namespace RedRat.RaceTiming.Core
             }
         }
 
+        // Notifies listeners of new results
+        public event EventHandler NewResult;
+
         private readonly AppController appController;
+        private readonly DbService db;
         private bool processTaskRunning = false;
         private Task processTask = null;
 
-        public ResultsQueue( AppController appController )
+        public ResultsQueue(AppController appController, DbService db)
         {
             this.appController = appController;
+            this.db = db;
             appController.ClockTime.ClockRunningHandler += ClockRunningHandler;
         }
 
@@ -57,14 +64,28 @@ namespace RedRat.RaceTiming.Core
             {
                 try
                 {
-
-                    if ( this.Count > 0 )
+                    var update = false;
+                    while ( Count > 0 )
                     {
-                        var res = this.Dequeue();
+                        var res = Dequeue();
+                        db.AddResult( new Result
+                        {
+                            Position = db.GetNextPosition(),
+                            RaceId = appController.CurrentRace.Oid,
+                            Time = res.datetime,
+                            Gender = res.female ? GenderEnum.Female : GenderEnum.Male,
+                        });
                         Trace.WriteLineIf(AppController.traceSwitch.TraceInfo, "Race result: " + res);
+                        update = true;
                     }
+
+                    if (update && NewResult != null)
+                    {
+                        NewResult( this, null );
+                    }
+
                     // Delay so we don't spin in a loop.
-                    Thread.Sleep( 500 );
+                    Thread.Sleep( 250 );
                 }
                 catch ( Exception ex )
                 {

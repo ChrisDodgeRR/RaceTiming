@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RedRat.RaceTiming.Core;
 using RedRat.RaceTiming.Core.Web;
+using RedRat.RaceTiming.Data;
 using RedRat.RaceTiming.Data.Model;
 using RedRat.RaceTimingWinApp.ExtendedListView;
 using RedRat.RaceTimingWinApp.Options;
@@ -35,17 +37,24 @@ namespace RedRat.RaceTimingWinApp
             splitContainer1.Panel1.Controls.Add( clockLabel );
             spaceBarLabel.Visible = false;
 
-            // Setup result list view
-            var listViewExtender = new ListViewExtender( resultListView );
-            resultListView.Items.Add( new ListViewItem( "hjsdgajha" ) );
-
             Application.ThreadException += (o, e) => ShowExceptionMessageBox(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (o, e) => ShowExceptionMessageBox((Exception)e.ExceptionObject);
 
             appController = new ControllerFactory().AppController;
             appController.ClockTime.ClockChangeHandler += clockLabel.ClockChangeEventListener;
             appController.ClockTime.ClockRunningHandler += ClockTimeOnClockRunningHandler;
+            appController.ResultsQueue.NewResult += ResultsQueueOnNewResult;
             SetTitle();
+
+            // Setup result list view
+            var listViewExtender = new ListViewExtender(resultListView);
+            var editGenderColumn = new ListViewButtonColumn(2) { FixedWidth = true };
+            editGenderColumn.Click += ChangeResultGender;
+            listViewExtender.AddColumn(editGenderColumn);
+            var deleteResultColumn = new ListViewButtonColumn(3) { FixedWidth = true };
+            deleteResultColumn.Click += DeleteResult;
+            listViewExtender.AddColumn(deleteResultColumn);
+            ListResults();
 
             var webController = new WebController( appController.GetRootUrl() );
             webController.Start();
@@ -272,6 +281,20 @@ namespace RedRat.RaceTimingWinApp
             }
         }
 
+        /// <summary>
+        /// Resets all race result data.
+        /// </summary>
+        private void ResetRaceToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            var res = MessageBox.Show( "This will delete all result data - do you want to continue?", 
+                "Delete Result Data?", MessageBoxButtons.YesNo, MessageBoxIcon.Question );
+
+            if ( res != DialogResult.Yes ) return;
+
+            appController.DeleteResultData();
+            ListResults();
+        }
+
         #endregion
 
         private void StartWebBrowserAtPage( string url )
@@ -316,8 +339,36 @@ namespace RedRat.RaceTimingWinApp
                 e.Cancel = true;
 
                 // ToDo: Warn again if clock is running...
+                appController.ClockTime.Stop();
             }
         }
 
+        private void ResultsQueueOnNewResult( object sender, EventArgs eventArgs )
+        {
+            Invoke( new Action( ListResults ) );
+        }
+
+        private void ListResults()
+        {
+            resultListView.Items.Clear();
+            var results = appController.GetResults().OrderByDescending( r => r.Position );
+            foreach ( var result in results )
+            {
+                var lvi = resultListView.Items.Add( result.Position.ToString() );
+                lvi.SubItems.Add( result.Time.ToString() );
+                lvi.SubItems.Add( result.Gender == GenderEnum.Male ? "M" : "F" );
+                lvi.SubItems.Add( "X" );
+            }
+        }
+
+        private void ChangeResultGender(object sender, ListViewColumnMouseEventArgs e)
+        {
+            MessageBox.Show(this, @"you clicked " + e.SubItem.Text);
+        }
+
+        private void DeleteResult(object sender, ListViewColumnMouseEventArgs e)
+        {
+            MessageBox.Show(this, @"you clicked " + e.SubItem.Text);
+        }
     }
 }

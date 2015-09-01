@@ -9,6 +9,7 @@ namespace RedRat.RaceTiming.Core.Web
         public ApiModule( ControllerFactory controllerFactory ) : base("/api")
         {
             Get["/runners"] = parameters => Response.AsJson( GetRunners( controllerFactory ) );
+            Get["/results"] = parameters => Response.AsJson(GetResults(controllerFactory));
         }
 
         protected List<object> GetRunners(ControllerFactory controllerFactory)
@@ -24,5 +25,16 @@ namespace RedRat.RaceTiming.Core.Web
                 r.Team,
             } ).Cast<object>().ToList();
         }
+
+        protected List<object> GetResults(ControllerFactory controllerFactory)
+        {
+            var results = controllerFactory.AppController.GetResults();
+            return results.OrderBy(r => r.Position).Select(r => new
+            {
+                r.Position,
+                r.Time,
+            }).Cast<object>().ToList();
+        }
+    
     }
 }

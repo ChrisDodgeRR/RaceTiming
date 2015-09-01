@@ -29,7 +29,7 @@ namespace RedRat.RaceTiming.Core
         public AppController(DbService db)
         {
             this.db = db;
-            resultQueue = new ResultsQueue(this);
+            resultQueue = new ResultsQueue(this, db);
             logController = new LogController();
             options = new Options();
 
@@ -71,6 +71,11 @@ namespace RedRat.RaceTiming.Core
         public Options Options
         {
             get { return options; }
+        }
+
+        public ResultsQueue ResultsQueue
+        {
+            get { return resultQueue; }
         }
 
         public void CreateNewRace(Race race, string dbFilename)
@@ -137,6 +142,11 @@ namespace RedRat.RaceTiming.Core
             return db.GetRunners();
         }
 
+        public IList<Result> GetResults()
+        {
+            return db.GetResults();
+        }
+
         /// <summary>
         /// Loads a CSV file containing race entrant information.
         /// </summary>
@@ -171,13 +181,14 @@ namespace RedRat.RaceTiming.Core
                         {
                             FirstName = runnerInfo[0], 
                             LastName = runnerInfo[1],
-                            Gender = (runnerInfo[2] == "F") ? Runner.GenderEnum.Female : Runner.GenderEnum.Male,
+                            Gender = (runnerInfo[2] == "F") ? GenderEnum.Female : GenderEnum.Male,
                             DateOfBirth = DateParser.ParseRwDate( runnerInfo[4] ),
                             Club = runnerInfo[5],
                             Address = runnerInfo
                                 .Skip(8).Take(6)
                                 .Where( s => !string.IsNullOrEmpty( s ) )
                                 .Aggregate( (current, next) => current + ", " + next ),
+                           Number = db.GetNextNumber(),
                         };
 
                         // Check that they don't already exist in the DB (use firstname, lastname and DoB)
@@ -200,6 +211,14 @@ namespace RedRat.RaceTiming.Core
                 }		
             }
             return result;
+        }
+
+        /// <summary>
+        /// Delete all results, but not runner info.
+        /// </summary>
+        public void DeleteResultData()
+        {
+            db.DeleteResultData();
         }
 
         /// <summary>
