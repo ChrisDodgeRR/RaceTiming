@@ -12,19 +12,20 @@ namespace RedRat.RaceTiming.Core.Web
             Get["/results"] = parameters => Response.AsJson(GetResults(controllerFactory));
         }
 
-        protected List<object> GetRunners(ControllerFactory controllerFactory)
-        {
-            var runners = controllerFactory.AppController.GetRunners();
-            return runners.OrderBy( r => r.Number ).Select( r => new
-            {
-                r.Number,
-                r.FirstName,
-                r.LastName,
-                r.DateOfBirth,
-                r.Club,
-                r.Team,
-            } ).Cast<object>().ToList();
-        }
+		protected object GetRunners(ControllerFactory controllerFactory)
+		{
+			var runners = controllerFactory.AppController.GetRunners();
+			var entrants = runners.OrderBy( r => r.Number ).Select( r => new
+				{
+					r.Number,
+					r.FirstName,
+					r.LastName,
+					r.DateOfBirth,
+					r.Club,
+					r.Team,
+				} ).Cast<object>().ToList();
+			return new {entrants = entrants};
+		}
 
         protected List<object> GetResults(ControllerFactory controllerFactory)
         {
