@@ -350,6 +350,9 @@ namespace RedRat.RaceTimingWinApp
 
         private void ListResults()
         {
+			if (!appController.IsDbOpen) {
+				return;
+			}
             resultListView.Items.Clear();
             var results = appController.GetResults().OrderByDescending( r => r.Position );
             foreach ( var result in results )
