@@ -45,20 +45,6 @@
 		  			$scope.raceResults = response.raceResults;
 		  		});
 		    
-			  $scope.ordered_columns = [];
-			  $scope.all_columns = [{
-			    "title": "Position",
-			    "ref": "position",
-			    "type": "number",
-			  }, {
-			    "title": "Time",
-			    "ref": "time",
-			    "type": "date",
-			  }, {
-			    "title": "Number",
-			    "ref": "number",
-			    "type": "number",
-			  }];
 
 		});
 

@@ -15,7 +15,7 @@
       </tr>
       <tbody>
         <tr ng-repeat="entrant in entrants">
-          <td ng-repeat="c in all_columns">{{ entrant[c.ref] | date: 'dd-MM-yyyy'}}</td>
+          <td ng-repeat="c in all_columns">{{ entrant[c.ref]}}</td>
         </tr>
       </tbody>
   </table>

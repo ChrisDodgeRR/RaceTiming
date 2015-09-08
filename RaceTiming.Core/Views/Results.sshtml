@@ -10,12 +10,19 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th ng-repeat="c in all_columns"> {{c.title}}
-        </th>
+        <th>Position</th>
+        <th>Time</th>
+        <th>Number</th>
       </tr>
       <tbody>
         <tr ng-repeat="raceResult in raceResults">
-          <td ng-repeat="c in all_columns">{{ raceResult[c.ref]}}</td>
+          <td data-title=" 'Position' ">{{ raceResult.position }}</td>
+          <td data-title=" 'Time' ">{{ raceResult.time }}</td>
+          <td data-title=" 'Number' ">
+          {{ raceResult.number}}
+          <input type="number" data-ng-model="number"/>
+          </td>
+
         </tr>
       </tbody>
   </table>
