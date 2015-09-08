@@ -1,6 +1,23 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
+<script src="Content/angular.min.js"></script>
+<script src="Content/app.js"></script> 
 <h2>Race Results</h2>
 
+<div ng-app="raceEntrants" ng-controller="ResultsController as main">
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th ng-repeat="c in all_columns"> {{c.title}}
+        </th>
+      </tr>
+      <tbody>
+        <tr ng-repeat="raceResult in raceResults">
+          <td ng-repeat="c in all_columns">{{ raceResult[c.ref]}}</td>
+        </tr>
+      </tbody>
+  </table>
+</div>
 @EndSection

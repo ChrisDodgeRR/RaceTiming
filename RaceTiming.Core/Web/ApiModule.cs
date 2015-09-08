@@ -27,14 +27,15 @@ namespace RedRat.RaceTiming.Core.Web
 			return new {entrants = entrants};
 		}
 
-        protected List<object> GetResults(ControllerFactory controllerFactory)
+        protected object GetResults(ControllerFactory controllerFactory)
         {
             var results = controllerFactory.AppController.GetResults();
-            return results.OrderBy(r => r.Position).Select(r => new
+			var raceResults = results.OrderBy(r => r.Position).Select(r => new
             {
                 r.Position,
                 r.Time,
             }).Cast<object>().ToList();
+			return new {raceResults = raceResults};
         }
     
     }

@@ -5,7 +5,7 @@
 <script src="Content/app.js"></script> 
 <h2>Current Race Entrants</h2>
 
-<div ng-app="raceEntrants" ng-controller="MainController as main">
+<div ng-app="raceEntrants" ng-controller="EntrantsController as main">
 
   <table class="table table-striped">
     <thead>
@@ -15,7 +15,7 @@
       </tr>
       <tbody>
         <tr ng-repeat="entrant in entrants">
-          <td ng-repeat="c in all_columns">{{ entrant[c.ref] | date: 'dd-MM-yyyy' }}</td>
+          <td ng-repeat="c in all_columns">{{ entrant[c.ref] | date: 'dd-MM-yyyy'}}</td>
         </tr>
       </tbody>
   </table>
