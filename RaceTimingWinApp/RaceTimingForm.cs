@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RedRat.RaceTiming.Core;
 using RedRat.RaceTiming.Core.Web;
-using RedRat.RaceTiming.Data;
 using RedRat.RaceTiming.Data.Model;
 using RedRat.RaceTimingWinApp.ExtendedListView;
 using RedRat.RaceTimingWinApp.Options;
@@ -325,8 +324,8 @@ namespace RedRat.RaceTimingWinApp
             {
                 // If the control key is pressed, then a female runner
                 var female = ( ModifierKeys & Keys.Control ) == Keys.Control;
-                appController.AddResultTime( female );
-                Task.Run( () => clockLabel.Blink( female ) );
+                appController.AddResultTime();
+                Task.Run( () => clockLabel.Blink() );
             }
             e.Handled = true;
         }
@@ -359,7 +358,6 @@ namespace RedRat.RaceTimingWinApp
             {
                 var lvi = resultListView.Items.Add( result.Position.ToString() );
                 lvi.SubItems.Add( result.Time.ToString() );
-                lvi.SubItems.Add( result.Gender == GenderEnum.Male ? "M" : "F" );
                 lvi.SubItems.Add( "X" );
             }
         }

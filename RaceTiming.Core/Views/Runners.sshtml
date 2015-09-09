@@ -1,7 +1,6 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<script src="Content/angular.min.js"></script>
 <script src="Content/app.js"></script> 
 <h2>Current Race Entrants</h2>
 

@@ -10,7 +10,6 @@ namespace RedRat.RaceTiming.Data.Model
         public int RunnerId { get; set; }
         public TimeSpan Time { get; set; }
         public int Position { get; set; }
-        public GenderEnum Gender { get; set; }
         public float WmaScore { get; set; }
     }
 }

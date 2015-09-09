@@ -224,9 +224,9 @@ namespace RedRat.RaceTiming.Core
         /// <summary>
         /// Adds a new race result time.
         /// </summary>
-        public void AddResultTime(bool female)
+        public void AddResultTime()
         {
-            resultQueue.Enqueue(new ResultsQueue.ResultSlot { datetime = clockTime.CurrentTime, female = female });
+            resultQueue.Enqueue(new ResultsQueue.ResultSlot { datetime = clockTime.CurrentTime });
         }
 
     }

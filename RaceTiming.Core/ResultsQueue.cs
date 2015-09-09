@@ -17,11 +17,10 @@ namespace RedRat.RaceTiming.Core
     {
         public struct ResultSlot
         {
-            public bool female;
             public TimeSpan datetime;
             public override string ToString()
             {
-                return string.Format( "{0} - {1}", datetime, female ? "F" : "M" );
+                return string.Format( "{0}", datetime );
             }
         }
 
@@ -73,7 +72,6 @@ namespace RedRat.RaceTiming.Core
                             Position = db.GetNextPosition(),
                             RaceId = appController.CurrentRace.Oid,
                             Time = res.datetime,
-                            Gender = res.female ? GenderEnum.Female : GenderEnum.Male,
                         });
                         Trace.WriteLineIf(AppController.traceSwitch.TraceInfo, "Race result: " + res);
                         update = true;

@@ -46,6 +46,7 @@
             this.raceEntrantsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clockControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetRaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -55,8 +56,6 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.resetRaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -193,9 +192,16 @@
             // clockControlToolStripMenuItem
             // 
             this.clockControlToolStripMenuItem.Name = "clockControlToolStripMenuItem";
-            this.clockControlToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clockControlToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.clockControlToolStripMenuItem.Text = "Clock Control";
             this.clockControlToolStripMenuItem.Click += new System.EventHandler(this.ClockControlToolStripMenuItemClick);
+            // 
+            // resetRaceToolStripMenuItem
+            // 
+            this.resetRaceToolStripMenuItem.Name = "resetRaceToolStripMenuItem";
+            this.resetRaceToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.resetRaceToolStripMenuItem.Text = "Reset Race";
+            this.resetRaceToolStripMenuItem.Click += new System.EventHandler(this.ResetRaceToolStripMenuItemClick);
             // 
             // helpToolStripMenuItem
             // 
@@ -250,8 +256,7 @@
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5});
+            this.columnHeader4});
             this.resultListView.FullRowSelect = true;
             this.resultListView.GridLines = true;
             this.resultListView.Location = new System.Drawing.Point(3, 3);
@@ -277,19 +282,8 @@
             // 
             // columnHeader4
             // 
-            this.columnHeader4.Text = "";
-            this.columnHeader4.Width = 31;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Race Number";
-            // 
-            // resetRaceToolStripMenuItem
-            // 
-            this.resetRaceToolStripMenuItem.Name = "resetRaceToolStripMenuItem";
-            this.resetRaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.resetRaceToolStripMenuItem.Text = "Reset Race";
-            this.resetRaceToolStripMenuItem.Click += new System.EventHandler(this.ResetRaceToolStripMenuItemClick);
+            this.columnHeader4.Text = "Race Number";
+            this.columnHeader4.Width = 88;
             // 
             // RaceTimingForm
             // 
@@ -346,7 +340,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ToolStripMenuItem resetRaceToolStripMenuItem;
     }
 }

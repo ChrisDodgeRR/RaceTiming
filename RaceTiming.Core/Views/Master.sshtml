@@ -1,10 +1,11 @@
-﻿<html>
+﻿<!DOCTYPE html>
 
 <head>
-  <link data-require="bootstrap-css@3.0.2" data-semver="3.0.3" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
-  <script data-require="angular.js@*" data-semver="1.2.5" src="http://code.angularjs.org/1.2.5/angular.js"></script>
-  <script data-require="jquery@*" data-semver="2.0.3" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-  <script data-require="bootstrap@*" data-semver="3.0.2" src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+  <link data-require="bootstrap-css@3.0.2" data-semver="3.0.3" rel="stylesheet" href="Content/bootstrap.min.css" />
+  <script data-require="angular.js@*" data-semver="1.4.4" src="Content/angular.min.js"></script>
+  <script data-require="jquery@*" data-semver="2.1.4" src="Content/jquery-2.0.3.min.js"></script>
+  <script data-require="bootstrap@*" data-semver="3.0.2" src="Content/bootstrap.min.js"></script>
+  <script src="Content/app.js"></script> 
   <link rel="stylesheet" href="style.css" />
 </head> 
 
@@ -31,6 +32,7 @@
                 </ul>
             </nav>
         </div>
-    </header>@Section['Content']
+    </header>
+@Section['Content']
 </body>
 </html>

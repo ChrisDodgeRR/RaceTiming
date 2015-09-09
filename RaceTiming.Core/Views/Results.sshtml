@@ -1,8 +1,6 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<script src="Content/angular.min.js"></script>
-<script src="Content/app.js"></script> 
 <h2>Race Results</h2>
 
 <div ng-app="raceEntrants" ng-controller="ResultsController as main">
