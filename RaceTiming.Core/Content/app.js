@@ -6,47 +6,36 @@
 	     	.success(function(response) {
 	     		$scope.entrants = response.entrants;
 	     	});
-	    
-		  $scope.ordered_columns = [];
-		  $scope.all_columns = [{
-		    "title": "Number",
-		    "ref": "number",
-		    "type": "number",
-		  }, {
-		    "title": "First Name",
-		    "ref": "firstName",
-		    "type": "string",
-		  }, {
-		    "title": "Last Name",
-		    "ref": "lastName",
-		    "type": "string",
-		  }, {
-		    "title": "DoB",
-		    "ref": "dateOfBirth",
-		    "type": "date",
-		  }, {
-		    "title": "Club",
-		    "ref": "club",
-		    "type": "string",
-		  }, {
-		    "title": "Team",
-		    "ref": "team",
-		    "type": "string",
-		  }];
-
 
 	  });
 
 
-	  app.controller('ResultsController', function($scope, $http){
+	app.controller('ResultsController', function($scope, $http, $timeout){
 
-			$http.get("/api/results")
-		  		.success(function(response) {
-		  			$scope.raceResults = response.raceResults;
-		  		});
+	  // Function to get the data
+	  $scope.getData = function(){
+    	$http.get("/api/results")
+		  	.success(function(response) {
+		  		$scope.raceResults = response.raceResults;
+
+				console.log('Fetched data!');
+    		});
+  		};
+
+			
+		// Function to replicate setInterval using $timeout service.
+  		$scope.intervalFunction = function(){
+    		$timeout(function() {
+      			$scope.getData();
+      			$scope.intervalFunction();
+    		}, 1000)
+  		};
+
+  		// Kick off the interval
+  		$scope.intervalFunction();
 		    
 
-		});
+	});
 
   
     

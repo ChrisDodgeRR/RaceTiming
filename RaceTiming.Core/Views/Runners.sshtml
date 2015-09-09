@@ -10,12 +10,21 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th ng-repeat="c in all_columns"> {{c.title}}
-        </th>
+        <th>Number</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>DoB</th>
+        <th>Club</th>
+        <th>Team</th>
       </tr>
       <tbody>
         <tr ng-repeat="entrant in entrants">
-          <td ng-repeat="c in all_columns">{{ entrant[c.ref]}}</td>
+        	<td data-title=" 'Number' ">{{ entrant.number}}</td>
+          	<td data-title=" 'First Name' ">{{ entrant.firstName }}</td>
+          	<td data-title=" 'Last Name' ">{{ entrant.lastName }}</td>
+          	<td data-title=" 'DoB' ">{{ entrant.dateOfBirth | date: 'dd-MM-yyyy' }}</td>
+          	<td data-title=" 'Club' ">{{ entrant.club }}</td>
+          	<td data-title=" 'Team' ">{{ entrant.team }}</td>
         </tr>
       </tbody>
   </table>
