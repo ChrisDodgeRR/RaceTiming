@@ -8,13 +8,15 @@ namespace RedRat.RaceTiming.Core.Web
 		{
 			Get ["/"] = parameters => View ["Index", CreateIndexModel(controllerFactory)];
 
-            Get["/addrunner"] = parameters => View["AddRunner"];
-
-            Get["/positions"] = parameters => View["EditPositions"];
+            Get["/addrunner"] = parameters => View["RaceEntry"];
 
             Get["/runners"] = parameters => View["Runners"];
 
-            Get["/results"] = parameters => View["Results"];
+            Get["/enterpositions"] = parameters => View["EnterPositions"];
+
+            Get["/individualresults"] = parameters => View["IndividualResults"];
+
+            Get["/teamresults"] = parameters => View["TeamResults"];
         }
 
 	    private IndexModel CreateIndexModel( ControllerFactory controllerFactory )

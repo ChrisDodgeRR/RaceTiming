@@ -96,10 +96,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="Views\AddRunner.sshtml">
+    <None Include="Views\TeamResults.sshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Views\EditPositions.sshtml">
+    <None Include="Views\IndividualResults.sshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Views\RaceEntry.sshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Views\Index.sshtml">
@@ -108,7 +111,7 @@
     <None Include="Views\Master.sshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Views\Results.sshtml">
+    <None Include="Views\EnterPositions.sshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Views\Runners.sshtml">

@@ -18,16 +18,19 @@
             <nav class="collapse navbar-collapse spa-navbar-collapse" role="navigation">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="/addrunner">Add Runners</a>
+                        <a href="/addrunner">Race Entry</a>
                     </li>
                     <li>
-                        <a href="/positions">Enter Finishing Positions</a>
+                        <a href="/runners">View Race Entrants</a>
                     </li>
                     <li>
-                        <a href="/runners">Show Runners</a>
+                        <a href="/enterpositions">Finish Position Entry</a>
                     </li>
                     <li>
-						<a href="/results">Show Results</a>
+						<a href="/individualresults">Show Individual Results</a>
+                    </li>
+                    <li>
+						<a href="/teamresults">Show Team Results</a>
                     </li>
                 </ul>
             </nav>

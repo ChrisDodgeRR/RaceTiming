@@ -1,6 +1,6 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<h2>Edit Positions</h2>
+<h2>New Race Entry</h2>
 
 @EndSection
