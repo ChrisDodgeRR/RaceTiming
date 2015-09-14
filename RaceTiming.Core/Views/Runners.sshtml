@@ -2,7 +2,8 @@
 
 @Section['Content']
 <script src="Content/app.js"></script> 
-<h2>Current Race Entrants</h2>
+<h2 class="tab">Current Race Entrants</h2>
+<hr>
 
 <div ng-app="raceEntrants" ng-controller="EntrantsController as main">
 

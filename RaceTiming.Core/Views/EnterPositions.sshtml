@@ -1,9 +1,22 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<h2>Race Results</h2>
+<h2 class="tab">Race Results</h2>
 
 <div ng-app="raceEntrants" ng-controller="ResultsController as main">
+<hr>
+
+<p class="tab">
+	Enter Number: <input type="number" data-ng-model="number"/>
+	<button class="tab">Up</button>
+	<button>Down</button>
+	<button>Submit</button>
+</p>
+<p class="tab">
+	<input class="tab" type="checkbox" ng-model="showHideCheckbox">
+	Hide completed results
+</p>
+
 
   <table class="table table-striped">
     <thead>
@@ -18,7 +31,7 @@
           <td data-title=" 'Time' ">{{ raceResult.time }}</td>
           <td data-title=" 'Number' ">
           {{ raceResult.number}}
-          <input type="number" data-ng-model="number"/>
+          {{ number }}
           </td>
 
         </tr>
