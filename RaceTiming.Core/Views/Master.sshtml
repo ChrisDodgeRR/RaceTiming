@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 
 <head>
+<<<<<<< HEAD
 	<meta http-equiv="Cache-control" content="no-cache">
 	<meta http-equiv="Cache-control" content="no-store">
 	<meta http-equiv="Pragma" content="no-cache">
@@ -11,6 +12,19 @@
 	<script data-require="bootstrap@*" data-semver="3.0.2" src="Content/bootstrap.min.js"></script>
 	<script src="Content/app.js"></script>
 	<link rel="stylesheet" href="style.css" />
+=======
+  <link data-require="bootstrap-css@3.0.2" data-semver="3.0.3" rel="stylesheet" href="Content/bootstrap.min.css" />
+  <script data-require="angular.js@*" data-semver="1.4.4" src="Content/angular.min.js"></script>
+  <script data-require="jquery@*" data-semver="2.1.4" src="Content/jquery-2.0.3.min.js"></script>
+  <script data-require="bootstrap@*" data-semver="3.0.2" src="Content/bootstrap.min.js"></script>
+  <script src="Content/app.js"></script> 
+  <link rel="stylesheet" href="style.css" />
+  <style type="text/css">
+<!--
+.tab { margin-left: 40px; }
+-->
+</style>
+>>>>>>> origin/master
 </head> 
 
 <body>

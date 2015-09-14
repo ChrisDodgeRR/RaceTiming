@@ -1,6 +1,28 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<h2>New Race Entry</h2>
+<h2 class="tab">New Race Entry</h2>
+<hr>
+
+<body>
+
+<p class="tab">First Name: <input  class="tab" type="number" data-ng-model="number"/></p>
+
+<p class="tab">Last Name: <input  class="tab" type="number" data-ng-model="number"/></p>
+
+<p class="tab">Gender: <input  class="tab" type="number" data-ng-model="number"/></p>
+
+<p class="tab">DoB: <input class="tab" type="number" data-ng-model="number"/></p>
+
+<p class="tab">Club: <input class="tab" type="number" data-ng-model="number"/></p>
+
+<p class="tab">Team: <input class="tab" type="number" data-ng-model="number"/></p>
+
+<p class="tab"><button>Submit</button>
+
+
+</body>
+
+
 
 @EndSection
