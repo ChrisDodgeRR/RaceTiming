@@ -56,6 +56,7 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.addFinishPositionsbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -161,7 +162,8 @@
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.homePageToolStripMenuItem,
-            this.raceEntrantsToolStripMenuItem});
+            this.raceEntrantsToolStripMenuItem,
+            this.addFinishPositionsbrowserToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -169,14 +171,14 @@
             // homePageToolStripMenuItem
             // 
             this.homePageToolStripMenuItem.Name = "homePageToolStripMenuItem";
-            this.homePageToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.homePageToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.homePageToolStripMenuItem.Text = "Home Page (browser)";
             this.homePageToolStripMenuItem.Click += new System.EventHandler(this.HomePageToolStripMenuItemClick);
             // 
             // raceEntrantsToolStripMenuItem
             // 
             this.raceEntrantsToolStripMenuItem.Name = "raceEntrantsToolStripMenuItem";
-            this.raceEntrantsToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.raceEntrantsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.raceEntrantsToolStripMenuItem.Text = "Race Entrants (browser)";
             this.raceEntrantsToolStripMenuItem.Click += new System.EventHandler(this.RaceEntrantsToolStripMenuItemClick);
             // 
@@ -285,6 +287,13 @@
             this.columnHeader4.Text = "Race Number";
             this.columnHeader4.Width = 88;
             // 
+            // addFinishPositionsbrowserToolStripMenuItem
+            // 
+            this.addFinishPositionsbrowserToolStripMenuItem.Name = "addFinishPositionsbrowserToolStripMenuItem";
+            this.addFinishPositionsbrowserToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.addFinishPositionsbrowserToolStripMenuItem.Text = "Add Finish Positions (browser)";
+            this.addFinishPositionsbrowserToolStripMenuItem.Click += new System.EventHandler(this.AddFinishPositionsbrowserToolStripMenuItemClick);
+            // 
             // RaceTimingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -341,6 +350,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ToolStripMenuItem resetRaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addFinishPositionsbrowserToolStripMenuItem;
     }
 }
 

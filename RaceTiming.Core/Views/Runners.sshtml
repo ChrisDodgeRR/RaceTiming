@@ -1,10 +1,9 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<script src="Content/app.js"></script> 
 <h2>Current Race Entrants</h2>
 
-<div ng-app="raceEntrants" ng-controller="EntrantsController as main">
+<div ng-app="RaceTiming" ng-controller="EntrantsController">
 
   <table class="table table-striped">
     <thead>

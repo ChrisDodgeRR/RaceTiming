@@ -67,7 +67,7 @@ namespace RedRat.RaceTiming.Core
                     while ( Count > 0 )
                     {
                         var res = Dequeue();
-                        db.AddResult( new Result
+                        db.AddResultTime( new Result
                         {
                             Position = db.GetNextPosition(),
                             RaceId = appController.CurrentRace.Oid,

@@ -216,12 +216,31 @@ namespace RedRat.RaceTiming.Data
 
         #region Result Methods
 
-        public void AddResult( Result result )
+        public void AddResultTime( Result result )
         {
             CheckHaveDb();
             lock (dbLock)
             {
                 dbRoot.resultPositionIndex.Put(result.Position, result);
+                db.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Adds a result number to the first result without a number.
+        /// </summary>
+        public void AddResultNumber( int number )
+        {
+            CheckHaveDb();
+            lock ( dbLock )
+            {
+                var nextResult = dbRoot.resultPositionIndex.OrderBy( r => r.Time ).FirstOrDefault( r => r.RaceNumber == 0 );
+                if ( nextResult == null )
+                {
+                    throw new Exception("No more results to add numbers to.");
+                }
+                nextResult.RaceNumber = number;
+                nextResult.Modify();
                 db.Commit();
             }
         }

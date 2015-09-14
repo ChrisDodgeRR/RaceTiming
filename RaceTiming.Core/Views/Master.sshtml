@@ -1,12 +1,16 @@
 ﻿<!DOCTYPE html>
 
 <head>
-  <link data-require="bootstrap-css@3.0.2" data-semver="3.0.3" rel="stylesheet" href="Content/bootstrap.min.css" />
-  <script data-require="angular.js@*" data-semver="1.4.4" src="Content/angular.min.js"></script>
-  <script data-require="jquery@*" data-semver="2.1.4" src="Content/jquery-2.0.3.min.js"></script>
-  <script data-require="bootstrap@*" data-semver="3.0.2" src="Content/bootstrap.min.js"></script>
-  <script src="Content/app.js"></script> 
-  <link rel="stylesheet" href="style.css" />
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-store">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="-1">
+	<link data-require="bootstrap-css@3.0.2" data-semver="3.0.3" rel="stylesheet" href="Content/bootstrap.min.css" />
+	<script data-require="angular.js@*" data-semver="1.4.4" src="Content/angular.min.js"></script>
+	<script data-require="jquery@*" data-semver="2.1.4" src="Content/jquery-2.0.3.min.js"></script>
+	<script data-require="bootstrap@*" data-semver="3.0.2" src="Content/bootstrap.min.js"></script>
+	<script src="Content/app.js"></script>
+	<link rel="stylesheet" href="style.css" />
 </head> 
 
 <body>
@@ -21,16 +25,16 @@
                         <a href="/addrunner">Race Entry</a>
                     </li>
                     <li>
-                        <a href="/runners">View Race Entrants</a>
+                        <a href="/runners">Race Entrants</a>
                     </li>
                     <li>
                         <a href="/enterpositions">Finish Position Entry</a>
                     </li>
+					<li>
+						<a href="/allresults">All Finishers</a>
+					</li>
                     <li>
-						<a href="/individualresults">Show Individual Results</a>
-                    </li>
-                    <li>
-						<a href="/teamresults">Show Team Results</a>
+						<a href="/winners">Prize Winners</a>
                     </li>
                 </ul>
             </nav>

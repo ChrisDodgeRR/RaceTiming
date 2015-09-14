@@ -42,15 +42,12 @@ namespace RedRat.RaceTimingWinApp
             appController = new ControllerFactory().AppController;
             appController.ClockTime.ClockChangeHandler += clockLabel.ClockChangeEventListener;
             appController.ClockTime.ClockRunningHandler += ClockTimeOnClockRunningHandler;
-            appController.ResultsQueue.NewResult += ResultsQueueOnNewResult;
+            appController.ResultDataChange += ResultsQueueOnNewResult;
             SetTitle();
 
             // Setup result list view
             var listViewExtender = new ListViewExtender(resultListView);
-            var editGenderColumn = new ListViewButtonColumn(2) { FixedWidth = true };
-            editGenderColumn.Click += ChangeResultGender;
-            listViewExtender.AddColumn(editGenderColumn);
-            var deleteResultColumn = new ListViewButtonColumn(3) { FixedWidth = true };
+            var deleteResultColumn = new ListViewButtonColumn(2) { FixedWidth = true };
             deleteResultColumn.Click += DeleteResult;
             listViewExtender.AddColumn(deleteResultColumn);
             ListResults();
@@ -257,6 +254,11 @@ namespace RedRat.RaceTimingWinApp
             StartWebBrowserAtPage(appController.GetRootUrl() + "runners");
         }
 
+        private void AddFinishPositionsbrowserToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            StartWebBrowserAtPage(appController.GetRootUrl() + "enterpositions");
+        }
+
         #endregion
 
         #region Timing Menu
@@ -359,6 +361,7 @@ namespace RedRat.RaceTimingWinApp
                 var lvi = resultListView.Items.Add( result.Position.ToString() );
                 lvi.SubItems.Add( result.Time.ToString() );
                 lvi.SubItems.Add( "X" );
+                lvi.SubItems.Add( result.RaceNumber.ToString() );
             }
         }
 

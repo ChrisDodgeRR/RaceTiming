@@ -1,0 +1,8 @@
+﻿@Master['Master.sshtml']
+
+@Section['Content']
+<h2>Results</h2>
+
+<p>This will list all finishing results.</p>
+
+@EndSection

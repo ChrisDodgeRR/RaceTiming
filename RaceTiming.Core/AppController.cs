@@ -20,6 +20,9 @@ namespace RedRat.RaceTiming.Core
     {
         public static TraceSwitch traceSwitch = new TraceSwitch("RT", "Race Timing");
 
+        // Notifies listeners of new results or race numbers
+        public event EventHandler ResultDataChange;
+
         private readonly DbService db;
         private readonly ClockTime clockTime = new ClockTime();
         private readonly ResultsQueue resultQueue;
@@ -30,6 +33,8 @@ namespace RedRat.RaceTiming.Core
         {
             this.db = db;
             resultQueue = new ResultsQueue(this, db);
+            resultQueue.NewResult += ResultsQueueOnNewResult;
+
             logController = new LogController();
             options = new Options();
 
@@ -71,11 +76,6 @@ namespace RedRat.RaceTiming.Core
         public Options Options
         {
             get { return options; }
-        }
-
-        public ResultsQueue ResultsQueue
-        {
-            get { return resultQueue; }
         }
 
         public void CreateNewRace(Race race, string dbFilename)
@@ -135,6 +135,19 @@ namespace RedRat.RaceTiming.Core
         public void UpdateCurrentRace(Race newRaceDetails)
         {
             db.UpdateRace(CurrentRace.Oid, newRaceDetails);
+        }
+
+        private void ResultsQueueOnNewResult(object sender, EventArgs eventArgs)
+        {
+            OnResultDataChange();
+        }
+
+        private void OnResultDataChange()
+        {
+            if ( ResultDataChange != null )
+            {
+                ResultDataChange( this, new EventArgs() );
+            }
         }
 
         public IList<Runner> GetRunners()
@@ -229,5 +242,13 @@ namespace RedRat.RaceTiming.Core
             resultQueue.Enqueue(new ResultsQueue.ResultSlot { datetime = clockTime.CurrentTime });
         }
 
+        /// <summary>
+        /// When runners arrive, add this runner number.
+        /// </summary>
+        public void AddResultRunnerNumber(int number)
+        {
+            db.AddResultNumber( number );
+            OnResultDataChange();
+        }
     }
 }

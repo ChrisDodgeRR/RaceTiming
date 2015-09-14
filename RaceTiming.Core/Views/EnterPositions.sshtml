@@ -3,7 +3,12 @@
 @Section['Content']
 <h2>Race Results</h2>
 
-<div ng-app="raceEntrants" ng-controller="ResultsController as main">
+<div ng-app="RaceTiming" ng-controller="ResultsController">
+
+	<p>Result position: <input type="number" ng-model="position.value">
+	<button ng-click="position.save()">Save</button></p>
+	<p>{{position.log}}</p>
+	<hr />
 
   <table class="table table-striped">
     <thead>
@@ -15,12 +20,8 @@
       <tbody>
         <tr ng-repeat="raceResult in raceResults">
           <td data-title=" 'Position' ">{{ raceResult.position }}</td>
-          <td data-title=" 'Time' ">{{ raceResult.time }}</td>
-          <td data-title=" 'Number' ">
-          {{ raceResult.number}}
-          <input type="number" data-ng-model="number"/>
-          </td>
-
+          <td data-title=" 'Time' ">{{ raceResult.time | date: 'HH:mm:ss' }}</td>
+          <td data-title=" 'Number' ">{{ raceResult.raceNumber }}</td>
         </tr>
       </tbody>
   </table>
