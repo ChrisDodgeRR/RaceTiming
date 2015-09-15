@@ -249,6 +249,11 @@ namespace RedRat.RaceTimingWinApp
             StartWebBrowserAtPage( appController.GetRootUrl() );
         }
 
+        private void RaceEntrybrowserToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            StartWebBrowserAtPage(appController.GetRootUrl() + "addrunner");
+        }
+
         private void RaceEntrantsToolStripMenuItemClick(object sender, EventArgs e)
         {
             StartWebBrowserAtPage(appController.GetRootUrl() + "runners");
@@ -257,6 +262,16 @@ namespace RedRat.RaceTimingWinApp
         private void AddFinishPositionsbrowserToolStripMenuItemClick(object sender, EventArgs e)
         {
             StartWebBrowserAtPage(appController.GetRootUrl() + "enterpositions");
+        }
+
+        private void ListAllFinishersbrowserToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            StartWebBrowserAtPage(appController.GetRootUrl() + "allresults");
+        }
+
+        private void PrizeWinnersbrowserToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            StartWebBrowserAtPage(appController.GetRootUrl() + "winners");
         }
 
         #endregion
@@ -324,8 +339,6 @@ namespace RedRat.RaceTimingWinApp
 
             if ( e.KeyChar == ' ' )
             {
-                // If the control key is pressed, then a female runner
-                var female = ( ModifierKeys & Keys.Control ) == Keys.Control;
                 appController.AddResultTime();
                 Task.Run( () => clockLabel.Blink() );
             }
@@ -363,11 +376,6 @@ namespace RedRat.RaceTimingWinApp
                 lvi.SubItems.Add( "X" );
                 lvi.SubItems.Add( result.RaceNumber.ToString() );
             }
-        }
-
-        private void ChangeResultGender(object sender, ListViewColumnMouseEventArgs e)
-        {
-            MessageBox.Show(this, @"you clicked " + e.SubItem.Text);
         }
 
         private void DeleteResult(object sender, ListViewColumnMouseEventArgs e)

@@ -43,7 +43,12 @@
             this.raceDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.homePageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.raceEntrybrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.raceEntrantsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addFinishPositionsbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listAllFinishersbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.prizeWinnersbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clockControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetRaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +61,6 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.addFinishPositionsbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -162,8 +166,12 @@
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.homePageToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.raceEntrybrowserToolStripMenuItem,
             this.raceEntrantsToolStripMenuItem,
-            this.addFinishPositionsbrowserToolStripMenuItem});
+            this.addFinishPositionsbrowserToolStripMenuItem,
+            this.listAllFinishersbrowserToolStripMenuItem,
+            this.prizeWinnersbrowserToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -171,16 +179,49 @@
             // homePageToolStripMenuItem
             // 
             this.homePageToolStripMenuItem.Name = "homePageToolStripMenuItem";
-            this.homePageToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.homePageToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
             this.homePageToolStripMenuItem.Text = "Home Page (browser)";
             this.homePageToolStripMenuItem.Click += new System.EventHandler(this.HomePageToolStripMenuItemClick);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(236, 6);
+            // 
+            // raceEntrybrowserToolStripMenuItem
+            // 
+            this.raceEntrybrowserToolStripMenuItem.Name = "raceEntrybrowserToolStripMenuItem";
+            this.raceEntrybrowserToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.raceEntrybrowserToolStripMenuItem.Text = "Race Entry (browser)";
+            this.raceEntrybrowserToolStripMenuItem.Click += new System.EventHandler(this.RaceEntrybrowserToolStripMenuItemClick);
             // 
             // raceEntrantsToolStripMenuItem
             // 
             this.raceEntrantsToolStripMenuItem.Name = "raceEntrantsToolStripMenuItem";
-            this.raceEntrantsToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.raceEntrantsToolStripMenuItem.Text = "Race Entrants (browser)";
+            this.raceEntrantsToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.raceEntrantsToolStripMenuItem.Text = "List Race Entrants (browser)";
             this.raceEntrantsToolStripMenuItem.Click += new System.EventHandler(this.RaceEntrantsToolStripMenuItemClick);
+            // 
+            // addFinishPositionsbrowserToolStripMenuItem
+            // 
+            this.addFinishPositionsbrowserToolStripMenuItem.Name = "addFinishPositionsbrowserToolStripMenuItem";
+            this.addFinishPositionsbrowserToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.addFinishPositionsbrowserToolStripMenuItem.Text = "Finish Positions Entry (browser)";
+            this.addFinishPositionsbrowserToolStripMenuItem.Click += new System.EventHandler(this.AddFinishPositionsbrowserToolStripMenuItemClick);
+            // 
+            // listAllFinishersbrowserToolStripMenuItem
+            // 
+            this.listAllFinishersbrowserToolStripMenuItem.Name = "listAllFinishersbrowserToolStripMenuItem";
+            this.listAllFinishersbrowserToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.listAllFinishersbrowserToolStripMenuItem.Text = "List All Finishers (browser)";
+            this.listAllFinishersbrowserToolStripMenuItem.Click += new System.EventHandler(this.ListAllFinishersbrowserToolStripMenuItemClick);
+            // 
+            // prizeWinnersbrowserToolStripMenuItem
+            // 
+            this.prizeWinnersbrowserToolStripMenuItem.Name = "prizeWinnersbrowserToolStripMenuItem";
+            this.prizeWinnersbrowserToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.prizeWinnersbrowserToolStripMenuItem.Text = "Prize Winners (browser)";
+            this.prizeWinnersbrowserToolStripMenuItem.Click += new System.EventHandler(this.PrizeWinnersbrowserToolStripMenuItemClick);
             // 
             // timingToolStripMenuItem
             // 
@@ -287,13 +328,6 @@
             this.columnHeader4.Text = "Race Number";
             this.columnHeader4.Width = 88;
             // 
-            // addFinishPositionsbrowserToolStripMenuItem
-            // 
-            this.addFinishPositionsbrowserToolStripMenuItem.Name = "addFinishPositionsbrowserToolStripMenuItem";
-            this.addFinishPositionsbrowserToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.addFinishPositionsbrowserToolStripMenuItem.Text = "Add Finish Positions (browser)";
-            this.addFinishPositionsbrowserToolStripMenuItem.Click += new System.EventHandler(this.AddFinishPositionsbrowserToolStripMenuItemClick);
-            // 
             // RaceTimingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -351,6 +385,10 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ToolStripMenuItem resetRaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addFinishPositionsbrowserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem raceEntrybrowserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem listAllFinishersbrowserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem prizeWinnersbrowserToolStripMenuItem;
     }
 }
 
