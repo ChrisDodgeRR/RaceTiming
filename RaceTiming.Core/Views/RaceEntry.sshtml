@@ -4,14 +4,14 @@
 <h2 class="tab">New Race Entry</h2>
 <hr>
 
-<body ng-app="RaceTiming">
+<body ng-app="RaceTiming" ng-controller="EntryFormController">
 
 
 <table class="tab">
 <tbody>
 	<tr>
 		<td>First Name:</td>
-		<td><input  class="tab" type="text" data-ng-model="fName"/></td>
+		<td><input  class="tab" type="text" ng-model="fName"/></td>
 	</tr>
 	<tr>
 		<td>Last Name:</td>
@@ -19,19 +19,19 @@
 	</tr>
 	<tr>
 	<td>Gender:</td>
-		<td><input  class="tab" type="text" data-ng-model="fName"/></td>
+		<td><input  class="tab" type="text" data-ng-model="gender"/></td>
 	</tr>
 	<tr>
 		<td>DoB:</td>
-		<td><input  class="tab" type="text" data-ng-model="fName"/></td>
+		<td><input  class="tab" type="text" data-ng-model="dob"/></td>
 	</tr>
 	<tr>
 		<td>Club:</td>
-		<td><input  class="tab" type="text" data-ng-model="fName"/></td>
+		<td><input  class="tab" type="text" data-ng-model="club"/></td>
 	</tr>
 	<tr>
 		<td>Team:</td>
-		<td><input  class="tab" type="text" data-ng-model="fName"/></td>
+		<td><input  class="tab" type="text" data-ng-model="team"/></td>
 	</tr>
 </tbody>
 </table>

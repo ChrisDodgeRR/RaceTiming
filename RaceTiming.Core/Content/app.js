@@ -56,4 +56,9 @@
     });
 
 
+    // ENTRY FORM PAGE *****************************************************
+    app.controller('EntryFormController', ['$scope', '$log', function($scope, $log) {
+    	$scope.$log = $log;
+  	}]);
+
 })();
