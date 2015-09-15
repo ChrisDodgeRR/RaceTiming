@@ -4,21 +4,43 @@
 <h2 class="tab">New Race Entry</h2>
 <hr>
 
-<body>
+<body ng-app="RaceTiming">
 
-<p class="tab">First Name: <input  class="tab" type="number" data-ng-model="number"/></p>
 
-<p class="tab">Last Name: <input  class="tab" type="number" data-ng-model="number"/></p>
+<table class="tab">
+<tbody>
+	<tr>
+		<td>First Name:</td>
+		<td><input  class="tab" type="text" data-ng-model="fName"/></td>
+	</tr>
+	<tr>
+		<td>Last Name:</td>
+		<td><input  class="tab" type="text" data-ng-model="lName"/></td>
+	</tr>
+	<tr>
+	<td>Gender:</td>
+		<td><input  class="tab" type="text" data-ng-model="fName"/></td>
+	</tr>
+	<tr>
+		<td>DoB:</td>
+		<td><input  class="tab" type="text" data-ng-model="fName"/></td>
+	</tr>
+	<tr>
+		<td>Club:</td>
+		<td><input  class="tab" type="text" data-ng-model="fName"/></td>
+	</tr>
+	<tr>
+		<td>Team:</td>
+		<td><input  class="tab" type="text" data-ng-model="fName"/></td>
+	</tr>
+</tbody>
+</table>
 
-<p class="tab">Gender: <input  class="tab" type="number" data-ng-model="number"/></p>
+<br>
 
-<p class="tab">DoB: <input class="tab" type="number" data-ng-model="number"/></p>
+<p class="tab"><button ng-click="$log.log(fName)">Submit</button>
 
-<p class="tab">Club: <input class="tab" type="number" data-ng-model="number"/></p>
-
-<p class="tab">Team: <input class="tab" type="number" data-ng-model="number"/></p>
-
-<p class="tab"><button>Submit</button>
+{{fName}}
 
 
 </body>

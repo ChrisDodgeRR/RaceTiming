@@ -1,6 +1,8 @@
 (function() {
     var app = angular.module('RaceTiming', []);
 
+
+	// RACE ENTRANTS PAGE ********************************************************
     app.controller('EntrantsController', function($scope, $http) {
         $http.get("/api/runners")
             .success(function(response) {
@@ -9,6 +11,7 @@
 
     });
 
+    // FINISH POSITION ENTRY PAGE ********************************************************
     app.controller('ResultsController', function($scope, $http, $timeout) {
 
         $scope.position = {
@@ -45,7 +48,7 @@
             $timeout(function() {
                 $scope.getData();
                 $scope.intervalFunction();
-            }, 2000);
+            }, 5000);
         };
 
         // Kick off the interval

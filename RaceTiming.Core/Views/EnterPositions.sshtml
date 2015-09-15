@@ -1,11 +1,11 @@
 @Master['Master.sshtml']
 
 @Section['Content']
-<h2>Race Results</h2>
+<h2 class="tab">Race Results</h2>
 
 <div ng-app="RaceTiming" ng-controller="ResultsController">
 
-	<p>Result position: <input type="number" ng-model="position.value">
+	<p class="tab">Result position: <input type="number" ng-model="position.value">
 	<button ng-click="position.save()">Save</button></p>
 	<p>{{position.log}}</p>
 	<hr />
