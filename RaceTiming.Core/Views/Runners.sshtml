@@ -1,13 +1,9 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<<<<<<< HEAD
-<h2>Current Race Entrants</h2>
-=======
 <script src="Content/app.js"></script> 
 <h2 class="tab">Current Race Entrants</h2>
 <hr>
->>>>>>> origin/master
 
 <div ng-app="RaceTiming" ng-controller="EntrantsController">
 
