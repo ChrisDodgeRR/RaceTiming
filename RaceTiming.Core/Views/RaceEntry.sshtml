@@ -11,11 +11,15 @@
 <tbody>
 	<tr>
 		<td>First Name:</td>
-		<td><input  class="tab" type="text" ng-model="fName"/></td>
+		<td><input class="tab" type="text" ng-model="fName"/></td>
 	</tr>
 	<tr>
 		<td>Last Name:</td>
 		<td><input  class="tab" type="text" data-ng-model="lName"/></td>
+	</tr>
+	<tr>
+		<td>Number:</td>
+		<td><input class="tab" type="text" ng-model="number"/></td>
 	</tr>
 	<tr>
 	<td>Gender:</td>
@@ -38,10 +42,8 @@
 
 <br>
 
-<p class="tab"><button ng-click="$log.log(fName)">Submit</button>
-
-{{fName}}
-
+<p class="tab"><button ng-click="$log.log(fName + ', ' + lName + ', ' + number + ', ' 
+		+ gender  + ', ' + dob + ', ' + club + ', ' + team)">Submit</button>
 
 </body>
 
