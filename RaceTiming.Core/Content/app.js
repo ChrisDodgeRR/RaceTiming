@@ -17,6 +17,7 @@
         $scope.position = {
             value: 0,
             log: "",
+            colour: 'black',
 
             save: function() {
                 $http.post('/api/addfinishposition', { 'position': $scope.position.value })
@@ -24,10 +25,12 @@
                         $scope.position.log = "Saved result: " + $scope.position.value;
                         console.log($scope.position.log);
                         $scope.position.value = 0;
+                        $scope.position.colour = 'black';
                     })
                     .error(function(data) {
                         $scope.position.log = "Error saving result: " + data;
                         console.log($scope.position.log);
+                        $scope.position.colour = 'red';
                     });
             }
         }
@@ -48,7 +51,7 @@
             $timeout(function() {
                 $scope.getData();
                 $scope.intervalFunction();
-            }, 5000);
+            }, 500);
         };
 
         // Kick off the interval

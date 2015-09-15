@@ -7,8 +7,8 @@
 
 	<p class="tab">Result position: <input type="number" ng-model="position.value">
 	<button ng-click="position.save()">Save</button></p>
-	<p>{{position.log}}</p>
-	<hr />
+	<p class="tab" ng-class="{red: position.colour == 'red', black: position.colour == 'black'}">{{position.log}}</p>
+	<hr/>
 
   <table class="table table-striped">
     <thead>
