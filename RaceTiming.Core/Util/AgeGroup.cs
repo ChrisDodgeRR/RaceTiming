@@ -21,7 +21,7 @@ namespace RedRat.RaceTiming.Core.Util
             FV70,
         }
 
-        public IDictionary<AgeGroupEnum, int> ageGroupLookup = new Dictionary<AgeGroupEnum, int>()
+        public static IDictionary<AgeGroupEnum, int> ageGroupLookup = new Dictionary<AgeGroupEnum, int>()
         {
             {AgeGroupEnum.M, 16},
             {AgeGroupEnum.MV40, 40},
@@ -37,7 +37,39 @@ namespace RedRat.RaceTiming.Core.Util
 
         public static AgeGroupEnum GetAgeGroup( DateTime raceDate, DateTime dob, GenderEnum gender )
         {
-            return AgeGroupEnum.M;
+            // Get age on race day
+            var ageAtRace = GetAgeOnDate( raceDate, dob );
+
+            if ( gender == GenderEnum.Male )
+            {
+                if (ageAtRace >= ageGroupLookup[AgeGroupEnum.MV70]) return AgeGroupEnum.MV70;
+                if (ageAtRace >= ageGroupLookup[AgeGroupEnum.MV60]) return AgeGroupEnum.MV60;
+                if (ageAtRace >= ageGroupLookup[AgeGroupEnum.MV50]) return AgeGroupEnum.MV50;
+                if (ageAtRace >= ageGroupLookup[AgeGroupEnum.MV40]) return AgeGroupEnum.MV40;
+                return AgeGroupEnum.M;
+            }
+            else
+            {
+                if (ageAtRace >= ageGroupLookup[AgeGroupEnum.FV70]) return AgeGroupEnum.FV70;
+                if (ageAtRace >= ageGroupLookup[AgeGroupEnum.FV60]) return AgeGroupEnum.FV60;
+                if (ageAtRace >= ageGroupLookup[AgeGroupEnum.FV50]) return AgeGroupEnum.FV50;
+                if (ageAtRace >= ageGroupLookup[AgeGroupEnum.FV40]) return AgeGroupEnum.FV40;
+                return AgeGroupEnum.F;
+            }
+        }
+
+        public static int GetAgeOnDate( DateTime date, DateTime dob )
+        {
+            var years = date.Year - dob.Year;
+            if ( dob.Month == date.Month && date.Day < dob.Day )
+            {
+                years--;
+            }
+            else if ( date.Month < dob.Month )
+            {
+                years--;
+            }
+            return years;
         }
     }
 }

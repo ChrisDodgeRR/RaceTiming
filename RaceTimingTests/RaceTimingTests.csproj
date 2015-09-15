@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props" Condition="Exists('..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Util\AgeGroupTest.cs" />
     <Compile Include="Core\Util\DateParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -59,6 +60,10 @@
     <ProjectReference Include="..\RaceTiming.Core\RaceTiming.Core.csproj">
       <Project>{9F882FB6-0F98-4B6D-BFFD-32AC7C9FE420}</Project>
       <Name>RaceTiming.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RaceTiming.Data\RaceTiming.Data.csproj">
+      <Project>{1c3475a7-e6ad-4491-976b-8bb51da5ae02}</Project>
+      <Name>RaceTiming.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -71,6 +71,8 @@
     <Compile Include="Util\AgeGroup.cs" />
     <Compile Include="Util\CurrentOS.cs" />
     <Compile Include="Util\DateParser.cs" />
+    <Compile Include="ViewModels\NewRunner.cs" />
+    <Compile Include="ViewModels\PositionResult.cs" />
     <Compile Include="Web\ApiModule.cs" />
     <Compile Include="Web\WebController.cs" />
     <Compile Include="Web\ViewsModule.cs" />
