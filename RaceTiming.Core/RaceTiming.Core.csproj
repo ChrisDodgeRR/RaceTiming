@@ -71,6 +71,7 @@
     <Compile Include="Util\AgeGroup.cs" />
     <Compile Include="Util\CurrentOS.cs" />
     <Compile Include="Util\DateParser.cs" />
+    <Compile Include="ViewModels\ResultsModel.cs" />
     <Compile Include="ViewModels\NewRunner.cs" />
     <Compile Include="ViewModels\PositionResult.cs" />
     <Compile Include="Web\ApiModule.cs" />
@@ -132,6 +133,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\bootstrap.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Edit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\favicon.ico">

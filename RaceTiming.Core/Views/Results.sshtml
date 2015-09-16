@@ -1,8 +1,37 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<h2>Results</h2>
+<h3 class="tab">@!Model.RaceName - @!Model.RaceDate - Full Results</h3>
 
-<p>This will list all finishing results.</p>
+<div ng-app="RaceTiming" ng-controller="FinishersController">
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+		<th>Position</th>
+        <th>Name</th>
+        <th>Time</th>
+        <th>Number</th>
+		<th>Category</th>
+		<th>Category Position</th>
+		<th>WMA Score</th>
+        <th>Club</th>
+        <th>Team</th>
+      </tr>
+      <tbody>
+        <tr ng-repeat="finisher in finishers">
+        	<td data-title=" 'Position' ">{{ finisher.position }}</td>
+        	<td data-title=" 'Name' ">{{ finisher.name }}</td>
+        	<td data-title=" 'Time' ">{{ finisher.time | date: 'HH:mm:ss' }}</td>
+        	<td data-title=" 'Number' ">{{ finisher.number }}</td>
+        	<td data-title=" 'Category' ">{{ finisher.category }}</td>
+        	<td data-title=" 'Category Position' ">{{ finisher.categoryPosition }}</td>
+        	<td data-title=" 'WMA Score' ">{{ finisher.wma }}</td>
+        	<td data-title=" 'Club' ">{{ finisher.club }}</td>
+        	<td data-title=" 'Team' ">{{ finisher.team }}</td>
+        </tr>
+      </tbody>
+  </table>
+</div>
 
 @EndSection

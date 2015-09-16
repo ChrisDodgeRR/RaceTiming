@@ -1,4 +1,5 @@
 ﻿using Nancy;
+using RedRat.RaceTiming.Core.ViewModels;
 
 namespace RedRat.RaceTiming.Core.Web
 {
@@ -14,7 +15,7 @@ namespace RedRat.RaceTiming.Core.Web
 
             Get["/enterpositions"] = parameters => View["EnterPositions"];
 
-            Get["/allresults"] = parameters => View["Results"];
+            Get["/allresults"] = parameters => View["Results", CreateResultsModel(controllerFactory)];
 
             Get["/winners"] = parameters => View["Winners"];
         }
@@ -31,7 +32,24 @@ namespace RedRat.RaceTiming.Core.Web
 	            model.RaceName = controllerFactory.AppController.CurrentRace.Name;
 	        }
 	        return model;
-	    }
+        }
+
+        private ResultsModel CreateResultsModel(ControllerFactory controllerFactory)
+        {
+            var model = new ResultsModel();
+            var race = controllerFactory.AppController.CurrentRace;
+            if ( race == null)
+            {
+                model.RaceName = "No race loaded";
+            }
+            else
+            {
+                model.RaceName = race.Name;
+                model.RaceDate = race.Date.ToLongDateString();
+            }
+            return model;
+        }
+
 	}
 }
 

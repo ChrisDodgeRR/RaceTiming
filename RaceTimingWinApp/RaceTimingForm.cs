@@ -47,7 +47,7 @@ namespace RedRat.RaceTimingWinApp
 
             // Setup result list view
             var listViewExtender = new ListViewExtender(resultListView);
-            var deleteResultColumn = new ListViewButtonColumn(2) { FixedWidth = true };
+            var deleteResultColumn = new ListViewButtonColumn(3) { FixedWidth = true, DrawIfEmpty = false };
             deleteResultColumn.Click += DeleteResult;
             listViewExtender.AddColumn(deleteResultColumn);
             ListResults();
@@ -308,7 +308,6 @@ namespace RedRat.RaceTimingWinApp
             if ( res != DialogResult.Yes ) return;
 
             appController.DeleteResultData();
-            ListResults();
         }
 
         #endregion
@@ -373,14 +372,40 @@ namespace RedRat.RaceTimingWinApp
             {
                 var lvi = resultListView.Items.Add( result.Position.ToString() );
                 lvi.SubItems.Add( result.Time.ToString() );
-                lvi.SubItems.Add( "X" );
                 lvi.SubItems.Add( result.RaceNumber.ToString() );
+                if ( result.RaceNumber == 0 )
+                {
+                    // Only allow deletion if no race number associated with result.
+                    lvi.SubItems.Add("X");
+                }
             }
         }
 
+        /// <summary>
+        /// This allows the person capturing times to delete them, e.g. in case the space bar has been accidently pressed.
+        /// </summary>
         private void DeleteResult(object sender, ListViewColumnMouseEventArgs e)
         {
-            MessageBox.Show(this, @"you clicked " + e.SubItem.Text);
+            var lvi = e.Item;
+            var msg = string.Format( "Do you want to delete result at position {0} with finishing time '{1}'?",
+                lvi.Text, lvi.SubItems[1].Text );
+            var res = MessageBox.Show( msg, "Delete Time?", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question );
+            if ( res != DialogResult.Yes ) return;
+
+            int pos;
+            if ( int.TryParse( lvi.Text, out pos ) && pos != 0 )
+            {
+                try
+                {
+                    appController.DeleteResultTimeAtPosition(pos);
+                }
+                catch ( Exception ex )
+                {
+                    MessageBox.Show( "Unable to delete result: " + ex.Message, "Error from application", MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation );
+                }
+            }
         }
     }
 }

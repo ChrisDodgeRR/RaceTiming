@@ -320,13 +320,13 @@
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "";
-            this.columnHeader3.Width = 32;
+            this.columnHeader3.Text = "Race Number";
+            this.columnHeader3.Width = 97;
             // 
             // columnHeader4
             // 
-            this.columnHeader4.Text = "Race Number";
-            this.columnHeader4.Width = 88;
+            this.columnHeader4.Text = "";
+            this.columnHeader4.Width = 24;
             // 
             // RaceTimingForm
             // 

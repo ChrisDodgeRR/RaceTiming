@@ -1,7 +1,6 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<script src="Content/app.js"></script> 
 <h2 class="tab">Current Race Entrants</h2>
 <hr>
 
@@ -14,17 +13,25 @@
         <th>First Name</th>
         <th>Last Name</th>
         <th>DoB</th>
+		<th>Category</th>
         <th>Club</th>
         <th>Team</th>
+		<th>Edit</th>
       </tr>
       <tbody>
         <tr ng-repeat="entrant in entrants">
-        	<td data-title=" 'Number' ">{{ entrant.number}}</td>
+        	<td data-title=" 'Number' ">{{ entrant.number }}</td>
           	<td data-title=" 'First Name' ">{{ entrant.firstName }}</td>
           	<td data-title=" 'Last Name' ">{{ entrant.lastName }}</td>
           	<td data-title=" 'DoB' ">{{ entrant.dateOfBirth | date: 'dd-MM-yyyy' }}</td>
+			<td data-title=" 'Category' ">{{entrant.agegroup}}</td>
           	<td data-title=" 'Club' ">{{ entrant.club }}</td>
           	<td data-title=" 'Team' ">{{ entrant.team }}</td>
+			<td>
+				<button style="display:inline-block" onclick="alert('Edit runner')">
+					<img src="/Content/Edit.png" title="Edit Runner" alt="edit runner">
+				</button>
+			</td>
         </tr>
       </tbody>
   </table>

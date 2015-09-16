@@ -6,6 +6,8 @@ using Nancy;
 using Nancy.ModelBinding;
 using RedRat.RaceTiming.Core.Util;
 using RedRat.RaceTiming.Core.ViewModels;
+using RedRat.RaceTiming.Data;
+using RedRat.RaceTiming.Data.Model;
 
 namespace RedRat.RaceTiming.Core.Web
 {
@@ -21,13 +23,59 @@ namespace RedRat.RaceTiming.Core.Web
 
             Post["/addrunner"] = ( x ) =>
             {
-                var message = "New entrant added.";
+                var appController = controllerFactory.AppController;
+                var message = "";
                 var statusCode = HttpStatusCode.OK;
                 var newRunner = this.Bind<NewRunner>();
 
-                // ToDo: Add runner...
-                Console.WriteLine("Have runner...");
+                try
+                {
+                    // Check fields
+                    CheckField( newRunner.FirstName, "First Name" );
+                    CheckField( newRunner.LastName, "Last Name" );
+                    CheckField( newRunner.Gender, "Gender" );
+                    CheckField( newRunner.DoB, "DoB" );
 
+                    int number;
+                    if ( !int.TryParse( newRunner.Number, out number ) )
+                    {
+                        throw new Exception( "Race number format is incorrect." );
+                    }
+
+                    var runners = appController.GetRunners();
+                    if ( runners.Any( r => r.Number == number ) )
+                    {
+                        throw new Exception("A runner with this number already exists.");
+                    }
+
+                    var runner = new Runner
+                    {
+                        FirstName = newRunner.FirstName,
+                        LastName = newRunner.LastName,
+                        Gender = ( newRunner.Gender == "F" ) ? GenderEnum.Female : GenderEnum.Male,
+                        DateOfBirth = DateTime.Parse( newRunner.DoB ),
+                        Number = number,
+                        Club = newRunner.Club,
+                        Team = newRunner.Team,
+                    };
+
+                    var db = appController.DbService;
+                    if ( !db.TestDuplicate( runner ) )
+                    {
+                        db.AddRunner( runner );
+                        message = string.Format( "'{0}' added to database OK.", runner.ToString() );
+                    }
+                    else
+                    {
+                        throw new Exception(string.Format("'{0}' with this DoB already exists in database.", runner.ToString()));
+                    }
+                }
+                catch ( Exception ex )
+                {
+                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
+                    message = ex.Message;
+                    Trace.WriteLineIf( AppController.traceSwitch.TraceError, "Error adding entry: " + ex.Message );
+                }
                 return SetDefaultHeaders( Response.AsJson( message, statusCode ) );
             };
 
@@ -52,7 +100,7 @@ namespace RedRat.RaceTiming.Core.Web
                 catch ( Exception ex )
                 {
                     message = ex.Message;
-                    statusCode = HttpStatusCode.InternalServerError;
+                    statusCode = HttpStatusCode.InternalServerError;    // Is this correct???
                     Trace.WriteLineIf( AppController.traceSwitch.TraceError, "Error adding runner number: " + ex.Message );
                 }
                 return SetDefaultHeaders( Response.AsJson( message, statusCode ) );
@@ -102,13 +150,41 @@ namespace RedRat.RaceTiming.Core.Web
 
         protected object GetFinishers( ControllerFactory controllerFactory )
         {
-            var r = new[]
+            var controller = controllerFactory.AppController;
+
+            var finishers = controller
+                .GetResults()
+                .OrderBy( r => r.Position )
+                .Select( r => new
+                {
+                    Position = r.Position,
+                    Name = "",
+                    Number = r.RaceNumber,
+                    Time = r.Time.TotalMilliseconds,
+                    Category = "",
+                    CategoryPosition = "",
+                    Club = "",
+                    Team = "",
+                    wma = "",
+                }).Cast<object>().ToList();
+
+            var runners = controller.GetRunners();
+
+            foreach ( var finisher in finishers )
+            {
+                // ToDo - get the runner information...
+                //var runner = runners.FirstOrDefault( r => r.Number == finisher.Number );
+            }
+
+            return new { finishers = finishers };
+
+            /*var r = new[]
             {
                 new
                 {
                     Position = 1,
-                    FirstName = "Bilbo",
-                    LastName = "Baggins",
+                    Name = "Bilbo Baggins",
+                    Number = "123",
                     Time = "00:38:23",
                     Category = "MV40",
                     CategoryPosition = "1",
@@ -119,8 +195,8 @@ namespace RedRat.RaceTiming.Core.Web
                 new
                 {
                     Position = 2,
-                    FirstName = "Gandalf",
-                    LastName = "The Grey",
+                    Name = "Gandalf The Grey",
+                    Number = "123",
                     Time = "00:45:67",
                     Category = "MV60",
                     CategoryPosition = "1",
@@ -130,7 +206,16 @@ namespace RedRat.RaceTiming.Core.Web
 
                 }
             };
-            return new {finishers = r};
+            return new {finishers = r}; */
+        }
+
+        private void CheckField( string field, string fieldname )
+        {
+            if ( string.IsNullOrEmpty( field ) )
+            {
+                throw new Exception( string.Format( "Field '{0}' cannot be empty.", fieldname ) );
+            }
+            
         }
     }
 }

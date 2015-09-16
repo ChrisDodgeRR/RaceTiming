@@ -269,6 +269,45 @@ namespace RedRat.RaceTiming.Data
             }
         }
 
+        /// <summary>
+        /// Deletes the result at the given position.
+        /// </summary>
+        /// <param name="pos">Finishing position of result to delete</param>
+        /// <param name="deleteNumber">Should the finishing race be deleted as well? If not, then the race numbers are shuffled up.</param>
+        public void DeleteResultAtPosition( int pos, bool deleteNumber )
+        {
+            CheckHaveDb();
+            lock ( dbLock )
+            {
+                var result = dbRoot.resultPositionIndex.FirstOrDefault( r => r.Position == pos );
+                if ( result == null )
+                {
+                    var msg = string.Format( "No result found for position {0}", pos );
+                    Trace.WriteLineIf( dbTraceSwitch.TraceWarning, msg );
+                    throw new Exception( msg );
+                }
+                if ( result.RaceNumber == 0 )
+                {
+                    // No associated result race number, so just delete the time.
+                    DeleteResultTimeAtPosition(dbRoot.resultPositionIndex, pos);
+                    db.Commit();
+                }
+            }
+        }
+
+        public static void DeleteResultTimeAtPosition( IIndex<int, Result> resultIndex, int position )
+        {
+            var orderedResults = resultIndex.ToList().OrderBy( r => r.Position ).Where( r => r.Position >= position ).ToList();
+            for ( var i = 0; i < orderedResults.Count - 1; i++ )
+            {
+                // ToDo: Also copy race number???
+                orderedResults[i].Time = orderedResults[i + 1].Time;
+                orderedResults[i].Modify();
+            }
+            // Remove last result
+            var lastResult = resultIndex[resultIndex.Max( r => r.Position )];
+            resultIndex.Remove( lastResult.Position, lastResult );
+        }
         #endregion
     }
 }

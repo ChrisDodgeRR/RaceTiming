@@ -6,47 +6,50 @@
 
 <body ng-app="RaceTiming" ng-controller="EntryFormController">
 
-
+<form ng-submit="runner.submit()">
 <table class="tab">
 <tbody>
 	<tr>
 		<td>First Name:</td>
-		<td><input class="tab" type="text" ng-model="fName"/></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.firstname" /></td>
 	</tr>
 	<tr>
 		<td>Last Name:</td>
-		<td><input  class="tab" type="text" data-ng-model="lName"/></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.lastname"/></td>
 	</tr>
 	<tr>
 		<td>Number:</td>
-		<td><input class="tab" type="text" ng-model="number"/></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.number"/></td>
 	</tr>
 	<tr>
 	<td>Gender:</td>
-		<td><input  class="tab" type="text" data-ng-model="gender"/></td>
+		<td>
+			<select style="width:200px" class="tab" type="text" ng-model="runner.gender"/>
+				<option value="M">M</option>
+				<option value="F">F</option>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td>DoB:</td>
-		<td><input  class="tab" type="text" data-ng-model="dob"/></td>
+		<td><input style="width:200px" type="date" class="tab" type="text" ng-model="runner.dob" placeholder="dd/MM/yyyy"/></td>
 	</tr>
 	<tr>
 		<td>Club:</td>
-		<td><input  class="tab" type="text" data-ng-model="club"/></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.club"/></td>
 	</tr>
 	<tr>
 		<td>Team:</td>
-		<td><input  class="tab" type="text" data-ng-model="team"/></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.team"/></td>
 	</tr>
 </tbody>
 </table>
 
 <br>
 
-<p class="tab"><button ng-click="$log.log(fName + ', ' + lName + ', ' + number + ', ' 
-		+ gender  + ', ' + dob + ', ' + club + ', ' + team)">Submit</button>
-
+<p class="tab"><input type="submit" id="submit" value="Submit" /></p>
+<p class="tab" ng-class="{red: runner.colour == 'red', black: runner.colour == 'black'}">{{runner.msg}}</p>
+</form>
 </body>
-
-
 
 @EndSection

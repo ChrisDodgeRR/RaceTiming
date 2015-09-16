@@ -1,7 +1,6 @@
-﻿using RedRat.RaceTiming.Data.Model;
-using System;
+﻿
 
-namespace RedRat.RaceTiming.Core
+namespace RedRat.RaceTiming.Core.ViewModels
 {
 	public class IndexModel
 	{

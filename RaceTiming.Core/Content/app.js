@@ -1,21 +1,60 @@
 (function() {
     var app = angular.module('RaceTiming', []);
 
+    // ENTRY FORM PAGE *****************************************************
+    app.controller('EntryFormController', function($scope, $http) {
+        $scope.runner = {
+
+            firstname: "",
+            lastname: "",
+            gender: "",
+            dob: "",
+            club: "",
+            team: "",
+            number: "",
+            msg: "",
+            colour: 'black',
+
+            submit: function() {
+                $http.post('/api/addrunner', {
+                        'firstname': $scope.runner.firstname,
+                        'lastname': $scope.runner.lastname,
+                        'gender': $scope.runner.gender,
+                        'dob': $scope.runner.dob,
+                        'club': $scope.runner.club,
+                        'team': $scope.runner.team,
+                        'number': $scope.runner.number,
+                    })
+                    .success(function(data) {
+                        $scope.runner.msg = data;
+                        console.log($scope.runner.msg);
+                        $scope.runner.colour = 'black';
+                    })
+                    .error(function (data) {
+                        $scope.runner.msg = "Error adding runner: " + data;
+                        console.log($scope.runner.log);
+                        $scope.runner.colour = 'red';
+                    });
+            }
+        }
+    });
+
 
 	// RACE ENTRANTS PAGE ********************************************************
-    app.controller('EntrantsController', function($scope, $http) {
+    app.controller('EntrantsController', function ($scope, $http) {
+
         $http.get("/api/runners")
             .success(function(response) {
                 $scope.entrants = response.entrants;
             });
-
     });
+
 
     // FINISH POSITION ENTRY PAGE ********************************************************
     app.controller('ResultsController', function($scope, $http, $timeout) {
 
         $scope.position = {
-            value: 0,
+            value: "",
             log: "",
             colour: 'black',
 
@@ -24,7 +63,7 @@
                     .success(function(data) {
                         $scope.position.log = "Saved result: " + $scope.position.value;
                         console.log($scope.position.log);
-                        $scope.position.value = 0;
+                        $scope.position.value = "";
                         $scope.position.colour = 'black';
                     })
                     .error(function(data) {
@@ -58,10 +97,13 @@
         $scope.intervalFunction();
     });
 
+    // FINISHER RESULTS PAGE ********************************************************
+    app.controller('FinishersController', function ($scope, $http) {
 
-    // ENTRY FORM PAGE *****************************************************
-    app.controller('EntryFormController', ['$scope', '$log', function($scope, $log) {
-    	$scope.$log = $log;
-  	}]);
+        $http.get("/api/finishers")
+            .success(function (response) {
+                $scope.finishers = response.finishers;
+            });
+    });
 
 })();

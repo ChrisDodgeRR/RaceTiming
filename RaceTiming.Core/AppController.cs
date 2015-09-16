@@ -68,6 +68,11 @@ namespace RedRat.RaceTiming.Core
             get { return db.IsDbOpen; }
         }
 
+        public DbService DbService
+        {
+            get { return db; }
+        }
+
         public ClockTime ClockTime
         {
             get { return clockTime; }
@@ -197,12 +202,15 @@ namespace RedRat.RaceTiming.Core
                             Gender = (runnerInfo[2] == "F") ? GenderEnum.Female : GenderEnum.Male,
                             DateOfBirth = DateParser.ParseRwDate( runnerInfo[4] ),
                             Club = runnerInfo[5],
+                            Team = runnerInfo[6],
                             Address = runnerInfo
                                 .Skip(8).Take(6)
                                 .Where( s => !string.IsNullOrEmpty( s ) )
                                 .Aggregate( (current, next) => current + ", " + next ),
                            Number = db.GetNextNumber(),
                         };
+
+                        // ToDo: Check for invalid team names - 'NONE' or 'N/A'.
 
                         // Check that they don't already exist in the DB (use firstname, lastname and DoB)
                         if (!db.TestDuplicate(runner))
@@ -227,11 +235,22 @@ namespace RedRat.RaceTiming.Core
         }
 
         /// <summary>
+        /// Deletes the result time at the given position. If it contains a finishing number
+        /// then they are shuffled down.
+        /// </summary>
+        public void DeleteResultTimeAtPosition( int pos )
+        {
+            db.DeleteResultAtPosition( pos, false );
+            OnResultDataChange();
+        }
+
+        /// <summary>
         /// Delete all results, but not runner info.
         /// </summary>
         public void DeleteResultData()
         {
             db.DeleteResultData();
+            OnResultDataChange();
         }
 
         /// <summary>
