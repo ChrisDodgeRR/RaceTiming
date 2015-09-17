@@ -1,0 +1,37 @@
+Race Timing Software - ToDo
+===========================
+
+General
+-------
+- Export data in CSV/Excel format (C)
+
+Race Entry
+----------
+- Add "affiliated" check box and if affiliated, ensure that a valid club is given.
+- Can we use ngAutocomplete for Club and Team fields?
+- Can we add client side validation?
+
+Race Entrants
+-------------
+- Add page for editing a runner (click on pencil).
+- Need to be able to sort alphabetically by last name (for picking up numbers before start).
+- Do we want to be able to delete runners?
+
+Finish Position Entry
+---------------------
+- Position entry work with "enter" as well as submit.
+- Add flag so that questionable results are highlighted in red, and reason. E.g.
+	- Duplicate number
+	- Number entered without a result time, so time is estimated.
+*** Have added the "dubiousResult" property. Need to get it to highlight row in red ***
+    
+- Editing result:
+	- Need to be able to edit (and then save) the time and number.
+	- Should we be able to delete a time, and so shuffle the times?
+	- Should we be able to delete a number and so suffles the numbers down?
+
+Prize Winners
+-------------
+- Do the server side calculations (C)
+- Create the web page (A)
+
