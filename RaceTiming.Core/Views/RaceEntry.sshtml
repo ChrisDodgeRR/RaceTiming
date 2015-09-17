@@ -18,6 +18,10 @@
 		<td><input style="width:200px" class="tab" type="text" ng-model="runner.lastname"/></td>
 	</tr>
 	<tr>
+		<td>Email:</td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.email" placeholder="runner@example.co.uk"/><td>
+	</tr>
+	<tr>
 		<td>Number:</td>
 		<td><input style="width:200px" class="tab" type="text" ng-model="runner.number"/></td>
 	</tr>
