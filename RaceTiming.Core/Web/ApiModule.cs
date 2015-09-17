@@ -154,8 +154,9 @@ namespace RedRat.RaceTiming.Core.Web
 
             var finishers = controller
                 .GetResults()
+                .Where( r => r.RaceNumber != 0 )
                 .OrderBy( r => r.Position )
-                .Select( r => new
+                .Select( r => new Finisher
                 {
                     Position = r.Position,
                     Name = "",
@@ -165,48 +166,25 @@ namespace RedRat.RaceTiming.Core.Web
                     CategoryPosition = "",
                     Club = "",
                     Team = "",
-                    wma = "",
-                }).Cast<object>().ToList();
+                    Wma = "",
+                }).ToList();
 
             var runners = controller.GetRunners();
 
             foreach ( var finisher in finishers )
             {
                 // ToDo - get the runner information...
-                //var runner = runners.FirstOrDefault( r => r.Number == finisher.Number );
+                var runner = runners.FirstOrDefault( r => r.Number == finisher.Number );
+                if ( runner != null )
+                {
+                    finisher.Name = string.Format( "{0} {1}", runner.FirstName, runner.LastName );
+                    finisher.Club = runner.Club;
+                    finisher.Team = runner.Team;
+                    finisher.Category = AgeGroup.GetAgeGroup( controller.CurrentRace.Date, runner.DateOfBirth, runner.Gender ).ToString();
+                }
             }
 
             return new { finishers = finishers };
-
-            /*var r = new[]
-            {
-                new
-                {
-                    Position = 1,
-                    Name = "Bilbo Baggins",
-                    Number = "123",
-                    Time = "00:38:23",
-                    Category = "MV40",
-                    CategoryPosition = "1",
-                    Club = "Shire Strollers",
-                    Team = "Ring Fellowship",
-                    wma = "76.37",
-                },
-                new
-                {
-                    Position = 2,
-                    Name = "Gandalf The Grey",
-                    Number = "123",
-                    Time = "00:45:67",
-                    Category = "MV60",
-                    CategoryPosition = "1",
-                    Club = "Shire Strollers",
-                    Team = "Ring Fellowship",
-                    wma = "84.22",
-
-                }
-            };
-            return new {finishers = r}; */
         }
 
         private void CheckField( string field, string fieldname )

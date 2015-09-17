@@ -10,7 +10,9 @@ namespace RedRat.RaceTiming.Data.Model
         public string LastName { get; set; }
         public GenderEnum Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public bool Affiliated { get; set; }
         public string Club { get; set; }
+        public string Urn { get; set; }
         public string Team { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }

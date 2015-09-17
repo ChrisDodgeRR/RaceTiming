@@ -197,18 +197,22 @@ namespace RedRat.RaceTiming.Core
 
                         var runner = new Runner
                         {
-                            FirstName = runnerInfo[0], 
+                            FirstName = runnerInfo[0],
                             LastName = runnerInfo[1],
-                            Gender = (runnerInfo[2] == "F") ? GenderEnum.Female : GenderEnum.Male,
+                            Gender = ( runnerInfo[2] == "F" ) ? GenderEnum.Female : GenderEnum.Male,
                             DateOfBirth = DateParser.ParseRwDate( runnerInfo[4] ),
-                            Club = runnerInfo[5],
-                            Team = runnerInfo[6],
+                            Club = RemoveUnwantedAttributes( runnerInfo[5] ),
+                            Team = RemoveUnwantedAttributes( runnerInfo[6] ),
                             Address = runnerInfo
-                                .Skip(8).Take(6)
+                                .Skip( 8 ).Take( 6 )
                                 .Where( s => !string.IsNullOrEmpty( s ) )
-                                .Aggregate( (current, next) => current + ", " + next ),
-                           Number = db.GetNextNumber(),
+                                .Aggregate( ( current, next ) => current + ", " + next ),
+                            Urn = ( runnerInfo.Count() >= 33 ) ? RemoveUnwantedAttributes( runnerInfo[33] ) : null,
+                            Number = db.GetNextNumber(),
                         };
+
+                        // If a club is given, then assume the runner is affiliated
+                        runner.Affiliated = !string.IsNullOrEmpty( runner.Club );
 
                         // ToDo: Check for invalid team names - 'NONE' or 'N/A'.
 
@@ -232,6 +236,12 @@ namespace RedRat.RaceTiming.Core
                 }		
             }
             return result;
+        }
+
+        private string RemoveUnwantedAttributes(string field)
+        {
+            var attrs = new[] {"none", "n/a"};
+            return attrs.Any( attr => field.Equals( attr, StringComparison.InvariantCultureIgnoreCase ) ) ? null : field;
         }
 
         /// <summary>
