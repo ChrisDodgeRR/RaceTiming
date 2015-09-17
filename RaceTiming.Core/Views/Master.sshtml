@@ -11,20 +11,13 @@
 	<script data-require="bootstrap@*" data-semver="3.0.2" src="Content/bootstrap.min.js"></script>
 	<script src="Content/app.js"></script>
 	<link rel="stylesheet" href="Content/style.css" />
-
-	<style type="text/css">
-	<!--
-	.tab { margin-left: 40px; }
-	-->
-	</style>
-
-</head> 
+</head>
 
 <body>
     <header class="navbar navbar-inverse" role="banner" ng-if=" !layout ">
         <div class="container">
             <div class="navbar-header">
-				<a href="/"><img class="logo" src="/Content/racetimerlogo1.svg" /></a>
+				<a href="/"><img class="logo" src="/Content/racetimerlogo.svg" /></a>
             </div>
             <nav class="collapse navbar-collapse spa-navbar-collapse" role="navigation">
                 <ul class="nav navbar-nav navbar-right">

@@ -10,7 +10,9 @@ namespace RedRat.RaceTiming.Core.ViewModels
         public string LastName { get; set; }
         public string Gender { get; set; }
         public string DoB { get; set; }
+        public string Email { get; set; }
         public string Club { get; set; }
+        public string Urn { get; set; }
         public string Team { get; set; }
         public string Number { get; set; }
     }

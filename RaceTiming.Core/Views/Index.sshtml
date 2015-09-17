@@ -1,9 +1,16 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<h2 class="tab">Race Timing System</h2>
+<h2 class="tab">@!Model.RaceName - @!Model.RaceDate</h2>
 <hr>
 
-<p>The current race is: @!Model.RaceName</p>
-
+<div class="tab">
+	<ul>
+		<li><a href="/addrunner">Race Entry</a> - Register new runners with the system.</li>
+		<li><a href="/runners">List Race Entrants</a> - Show all runners registered for the race.</li>
+		<li><a href="/enterpositions">Finish Position Entry</a> - Capture the race finisher bib numbers.</li>
+		<li><a href="/allresults">List All Finishing Results</a> - List teh results of all race finishers.</li>
+		<li><a href="/winners">List Winners</a> - Show the winners of different price categories.</li>
+	</il>
+</div>
 @EndSection

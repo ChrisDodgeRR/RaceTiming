@@ -162,6 +162,13 @@ namespace RedRat.RaceTiming.Core
 
         public IList<Result> GetResults()
         {
+            // TEMP
+            var res = db.GetResults();
+            foreach ( var result in res )
+            {
+                result.DubiousResult = true;
+                result.Reason = "Because";
+            }
             return db.GetResults();
         }
 

@@ -23,14 +23,16 @@ namespace RedRat.RaceTiming.Core.Web
 	    private IndexModel CreateIndexModel( ControllerFactory controllerFactory )
 	    {
 	        var model = new IndexModel();
-	        if ( controllerFactory.AppController.CurrentRace == null )
+            var race = controllerFactory.AppController.CurrentRace;
+            if (race == null)
 	        {
 	            model.RaceName = "No race loaded";
 	        }
 	        else
 	        {
-	            model.RaceName = controllerFactory.AppController.CurrentRace.Name;
-	        }
+	            model.RaceName = race.Name;
+                model.RaceDate = race.Date.ToLongDateString();
+            }
 	        return model;
         }
 

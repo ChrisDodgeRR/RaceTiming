@@ -16,6 +16,7 @@
 		<th>Category</th>
         <th>Club</th>
         <th>Team</th>
+		<th>URN</th>
 		<th>Edit</th>
       </tr>
       <tbody>
@@ -27,6 +28,7 @@
 			<td data-title=" 'Category' ">{{entrant.agegroup}}</td>
           	<td data-title=" 'Club' ">{{ entrant.club }}</td>
           	<td data-title=" 'Team' ">{{ entrant.team }}</td>
+          	<td data-title=" 'URN' ">{{ entrant.urn }}</td>
 			<td>
 				<button style="display:inline-block" onclick="alert('Edit runner')">
 					<img src="/Content/Edit.png" title="Edit Runner" alt="edit runner">

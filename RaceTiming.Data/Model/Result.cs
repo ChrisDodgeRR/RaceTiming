@@ -15,5 +15,7 @@ namespace RedRat.RaceTiming.Data.Model
         public TimeSpan Time { get; set; }
         public int Position { get; set; }
         public float WmaScore { get; set; }
+        public bool DubiousResult { get; set; }
+        public string Reason { get; set; }
     }
 }

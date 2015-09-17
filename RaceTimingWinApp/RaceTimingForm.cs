@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RedRat.RaceTiming.Core;
@@ -209,7 +210,7 @@ namespace RedRat.RaceTimingWinApp
         private void ExitToolStripMenuItemClick(object sender, EventArgs e)
         {
             Close();
-			Application.Exit ();
+			Application.Exit();
         }
 
         #endregion
@@ -312,6 +313,15 @@ namespace RedRat.RaceTimingWinApp
 
         #endregion
 
+        #region Help Menu
+
+        private void AboutToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            new AboutBox(Assembly.GetExecutingAssembly()).ShowDialog();
+        }
+
+        #endregion
+
         private void StartWebBrowserAtPage( string url )
         {
             try
@@ -346,14 +356,26 @@ namespace RedRat.RaceTimingWinApp
 
         private void RaceTimingFormFormClosing(object sender, FormClosingEventArgs e)
         {
-            if ( MessageBox.Show( "Are you sure you want to exit?", "Close the Application?", MessageBoxButtons.YesNo, MessageBoxIcon.Question )
-                != DialogResult.Yes )
+            if ( MessageBox.Show( "Are you sure you want to exit?", "Close the Application?", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question ) == DialogResult.No )
             {
                 e.Cancel = true;
-
-                // ToDo: Warn again if clock is running...
-                appController.ClockTime.Stop();
+                return;
             }
+
+            // If the clock is running, then check again.
+            if ( clockRunning )
+            {
+                if ( MessageBox.Show( "The clock is running, so are you REALLY sure?", "Close the Application?", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question ) == DialogResult.No )
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            // OK - quit
+            appController.ClockTime.Stop();
         }
 
         private void ResultsQueueOnNewResult( object sender, EventArgs eventArgs )

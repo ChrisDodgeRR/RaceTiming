@@ -54,9 +54,11 @@ namespace RedRat.RaceTiming.Core.Web
                         LastName = newRunner.LastName,
                         Gender = ( newRunner.Gender == "F" ) ? GenderEnum.Female : GenderEnum.Male,
                         DateOfBirth = DateTime.Parse( newRunner.DoB ),
+                        Email = newRunner.Email,
                         Number = number,
                         Club = newRunner.Club,
                         Team = newRunner.Team,
+                        Urn = newRunner.Urn,
                     };
 
                     var db = appController.DbService;
@@ -129,6 +131,7 @@ namespace RedRat.RaceTiming.Core.Web
                     agegroup = AgeGroup.GetAgeGroup( controller.CurrentRace.Date, r.DateOfBirth, r.Gender ).ToString(),
 					r.Club,
 					r.Team,
+                    r.Urn,
 				} ).Cast<object>().ToList();
 			return new {entrants = entrants};
 		}
@@ -144,6 +147,8 @@ namespace RedRat.RaceTiming.Core.Web
                 r.Position,
                 Time = r.Time.TotalMilliseconds,
                 r.RaceNumber,
+                r.DubiousResult,
+                r.Reason,
             }).Cast<object>().ToList();
 			return new {raceResults = raceResults};
         }
@@ -152,6 +157,8 @@ namespace RedRat.RaceTiming.Core.Web
         {
             var controller = controllerFactory.AppController;
 
+            var catPostions = new Dictionary<AgeGroup.AgeGroupEnum, int>();
+
             var finishers = controller
                 .GetResults()
                 .Where( r => r.RaceNumber != 0 )
@@ -159,28 +166,36 @@ namespace RedRat.RaceTiming.Core.Web
                 .Select( r => new Finisher
                 {
                     Position = r.Position,
-                    Name = "",
                     Number = r.RaceNumber,
                     Time = r.Time.TotalMilliseconds,
-                    Category = "",
-                    CategoryPosition = "",
-                    Club = "",
-                    Team = "",
-                    Wma = "",
                 }).ToList();
 
             var runners = controller.GetRunners();
 
             foreach ( var finisher in finishers )
             {
-                // ToDo - get the runner information...
                 var runner = runners.FirstOrDefault( r => r.Number == finisher.Number );
                 if ( runner != null )
                 {
                     finisher.Name = string.Format( "{0} {1}", runner.FirstName, runner.LastName );
                     finisher.Club = runner.Club;
                     finisher.Team = runner.Team;
-                    finisher.Category = AgeGroup.GetAgeGroup( controller.CurrentRace.Date, runner.DateOfBirth, runner.Gender ).ToString();
+
+                    // Age group and category position
+                    var cat = AgeGroup.GetAgeGroup( controller.CurrentRace.Date, runner.DateOfBirth, runner.Gender );
+                    finisher.Category = cat.ToString();
+                    if ( !catPostions.ContainsKey( cat ) )
+                    {
+                        catPostions.Add( cat, 1 );
+                    }
+                    finisher.CategoryPosition = catPostions[cat].ToString();
+                    catPostions[cat] = ++catPostions[cat];
+
+                    // WMA score
+                    var time = TimeSpan.FromMilliseconds(finisher.Time);
+                    finisher.Wma = string.Format("{0:F2}%",
+                        ( WmaCalculator.CalcWma( AgeGroup.GetAgeOnDate( controller.CurrentRace.Date, runner.DateOfBirth ),
+                            runner.Gender, controller.CurrentRace.Distance, time.Hours, time.Minutes, time.Seconds )*100 ) );
                 }
             }
 

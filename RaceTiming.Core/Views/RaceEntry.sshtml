@@ -46,6 +46,10 @@
 		<td>Team:</td>
 		<td><input style="width:200px" class="tab" type="text" ng-model="runner.team"/></td>
 	</tr>
+	<tr>
+		<td>URN:</td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.urn"/></td>
+	</tr>
 </tbody>
 </table>
 

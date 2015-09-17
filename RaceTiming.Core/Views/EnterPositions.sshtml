@@ -17,12 +17,20 @@
         <th>Position</th>
         <th>Time</th>
         <th>Number</th>
+		<th>Comment</th>
+		<th>Edit</th>
       </tr>
       <tbody>
-        <tr ng-repeat="raceResult in raceResults">
+        <tr ng-repeat="raceResult in raceResults" >
           <td data-title=" 'Position' ">{{ raceResult.position }}</td>
           <td data-title=" 'Time' ">{{ raceResult.time | date: 'HH:mm:ss' }}</td>
           <td data-title=" 'Number' ">{{ raceResult.raceNumber }}</td>
+		  <td ng-class="{red: raceResult.dubiousResult == 'true', black: raceResult.dubiousResult == 'false'}" data-title=" 'Comment' ">{{ raceResult.reason }}</td>
+			<td>
+				<button style="display:inline-block" onclick="alert('Edit result')">
+					<img src="/Content/Edit.png" title="Edit Result" alt="edit result">
+				</button>
+			</td>
         </tr>
       </tbody>
   </table>

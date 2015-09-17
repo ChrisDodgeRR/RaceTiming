@@ -71,6 +71,7 @@
     <Compile Include="Util\AgeGroup.cs" />
     <Compile Include="Util\CurrentOS.cs" />
     <Compile Include="Util\DateParser.cs" />
+    <Compile Include="Util\WmaCalculator.cs" />
     <Compile Include="ViewModels\Finisher.cs" />
     <Compile Include="ViewModels\ResultsModel.cs" />
     <Compile Include="ViewModels\NewRunner.cs" />
@@ -145,7 +146,7 @@
     <Content Include="Content\jquery-2.1.4.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\racetimerlogo1.svg">
+    <Content Include="Content\racetimerlogo.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\style.css">

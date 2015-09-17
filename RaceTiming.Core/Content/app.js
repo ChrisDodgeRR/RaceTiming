@@ -12,6 +12,9 @@
             club: "",
             team: "",
             number: "",
+            email: "",
+            urn: "",
+            affiliated: "",
             msg: "",
             colour: 'black',
 
@@ -24,6 +27,9 @@
                         'club': $scope.runner.club,
                         'team': $scope.runner.team,
                         'number': $scope.runner.number,
+                        'email': $scope.runner.email,
+                        'urn': $scope.runner.urn,
+                        'affiliated': $scope.runner.affiliated,
                     })
                     .success(function(data) {
                         $scope.runner.msg = data;
@@ -79,8 +85,6 @@
             $http.get("/api/results")
                 .success(function(response) {
                     $scope.raceResults = response.raceResults;
-
-                    console.log('Fetched data!');
                 });
         };
 

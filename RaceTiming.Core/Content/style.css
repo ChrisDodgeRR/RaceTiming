@@ -1,8 +1,15 @@
-﻿
+﻿.logo {
+    padding: 10px;
+}
 .red {
     color: red;
 }
 .black {
     color: black;
+}
+.tab { margin-left: 40px; }
+
+li{
+  margin: 10px 0;
 }
 
