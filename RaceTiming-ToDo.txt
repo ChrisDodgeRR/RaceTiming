@@ -14,7 +14,6 @@ Race Entry
 Race Entrants
 -------------
 - Add page for editing a runner (click on pencil).
-- Need to be able to sort alphabetically by last name (for picking up numbers before start).
 - Do we want to be able to delete runners?
 
 Finish Position Entry

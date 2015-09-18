@@ -49,6 +49,8 @@
 	// RACE ENTRANTS PAGE ********************************************************
     app.controller('EntrantsController', function ($scope, $http) {
 
+        $scope.order = "number"; // Default
+
         $http.get("/api/runners")
             .success(function(response) {
                 $scope.entrants = response.entrants;

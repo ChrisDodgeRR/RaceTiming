@@ -9,18 +9,18 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Number</th>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <th><a href="" ng-click="order='number'">Number</a></th>
+        <th><a href="" ng-click="order='firstName'">First Name</a></th>
+        <th><a href="" ng-click="order='lastName'">Last Name</a></th>
         <th>DoB</th>
-		<th>Category</th>
-        <th>Club</th>
-        <th>Team</th>
+		<th><a href="" ng-click="order='agegroup'">Category</a></th>
+        <th><a href="" ng-click="order='club'">Club</a></th>
+        <th><a href="" ng-click="order='team'">Team</a></th>
 		<th>URN</th>
 		<th>Edit</th>
       </tr>
       <tbody>
-        <tr ng-repeat="entrant in entrants">
+        <tr ng-repeat="entrant in entrants | orderBy:order">
         	<td data-title=" 'Number' ">{{ entrant.number }}</td>
           	<td data-title=" 'First Name' ">{{ entrant.firstName }}</td>
           	<td data-title=" 'Last Name' ">{{ entrant.lastName }}</td>
