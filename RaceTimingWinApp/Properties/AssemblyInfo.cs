@@ -23,5 +23,5 @@ using System.Runtime.InteropServices;
 
 // V1.00 - Initial version
 //       - Sept 2015.
-[assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyFileVersion("1.0.*")]
+[assembly: AssemblyVersion("1.00.*")]
+//[assembly: AssemblyFileVersion("1.0.*")]

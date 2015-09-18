@@ -15,11 +15,15 @@ namespace RedRat.RaceTiming.Core.Web
     {
         public ApiModule( ControllerFactory controllerFactory ) : base("/api")
         {
+            Get["/raceinfo"] = parameters => SetDefaultHeaders( Response.AsJson( GetRaceInfo( controllerFactory ) ) );
+
             Get["/runners"] = parameters => SetDefaultHeaders( Response.AsJson( GetRunners( controllerFactory ) ) );
 
             Get["/results"] = parameters => SetDefaultHeaders( Response.AsJson( GetResults( controllerFactory ) ) );
 
             Get["/finishers"] = parameters => SetDefaultHeaders( Response.AsJson( GetFinishers( controllerFactory ) ) );
+
+            Get["/winners"] = parameters => SetDefaultHeaders( Response.AsJson( GetWinners( controllerFactory ) ) );
 
             Post["/addrunner"] = ( x ) =>
             {
@@ -118,6 +122,18 @@ namespace RedRat.RaceTiming.Core.Web
             return response;           
         }
 
+        protected object GetRaceInfo( ControllerFactory controllerFactory )
+        {
+            var race = controllerFactory.AppController.CurrentRace;
+            return new
+            {
+                name = race.Name,
+                description = race.Description,
+                date = race.Date,
+                distance = race.Distance,
+            };
+        }
+
 		protected object GetRunners(ControllerFactory controllerFactory)
 		{
 		    var controller = controllerFactory.AppController;
@@ -150,56 +166,19 @@ namespace RedRat.RaceTiming.Core.Web
                 r.DubiousResult,
                 r.Reason,
             }).Cast<object>().ToList();
-			return new {raceResults = raceResults};
+			return new { raceResults = raceResults };
         }
 
         protected object GetFinishers( ControllerFactory controllerFactory )
         {
-            var controller = controllerFactory.AppController;
-
-            var catPostions = new Dictionary<AgeGroup.AgeGroupEnum, int>();
-
-            var finishers = controller
-                .GetResults()
-                .Where( r => r.RaceNumber != 0 )
-                .OrderBy( r => r.Position )
-                .Select( r => new Finisher
-                {
-                    Position = r.Position,
-                    Number = r.RaceNumber,
-                    Time = r.Time.TotalMilliseconds,
-                }).ToList();
-
-            var runners = controller.GetRunners();
-
-            foreach ( var finisher in finishers )
-            {
-                var runner = runners.FirstOrDefault( r => r.Number == finisher.Number );
-                if ( runner != null )
-                {
-                    finisher.Name = string.Format( "{0} {1}", runner.FirstName, runner.LastName );
-                    finisher.Club = runner.Club;
-                    finisher.Team = runner.Team;
-
-                    // Age group and category position
-                    var cat = AgeGroup.GetAgeGroup( controller.CurrentRace.Date, runner.DateOfBirth, runner.Gender );
-                    finisher.Category = cat.ToString();
-                    if ( !catPostions.ContainsKey( cat ) )
-                    {
-                        catPostions.Add( cat, 1 );
-                    }
-                    finisher.CategoryPosition = catPostions[cat].ToString();
-                    catPostions[cat] = ++catPostions[cat];
-
-                    // WMA score
-                    var time = TimeSpan.FromMilliseconds(finisher.Time);
-                    finisher.Wma = string.Format("{0:F2}%",
-                        ( WmaCalculator.CalcWma( AgeGroup.GetAgeOnDate( controller.CurrentRace.Date, runner.DateOfBirth ),
-                            runner.Gender, controller.CurrentRace.Distance, time.Hours, time.Minutes, time.Seconds )*100 ) );
-                }
-            }
-
+            var finishers = controllerFactory.AppController.GetFinishers();
             return new { finishers = finishers };
+        }
+
+        private object GetWinners( ControllerFactory controllerFactory )
+        {
+            var winners = controllerFactory.AppController.GetWinners();
+            return new { winners = winners };
         }
 
         private void CheckField( string field, string fieldname )
@@ -207,8 +186,7 @@ namespace RedRat.RaceTiming.Core.Web
             if ( string.IsNullOrEmpty( field ) )
             {
                 throw new Exception( string.Format( "Field '{0}' cannot be empty.", fieldname ) );
-            }
-            
+            }            
         }
     }
 }

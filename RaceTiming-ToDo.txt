@@ -28,9 +28,10 @@ Finish Position Entry
 	- Need to be able to edit (and then save) the time and number.
 	- Should we be able to delete a time, and so shuffle the times?
 	- Should we be able to delete a number and so suffles the numbers down?
+    - Should we be able to delete a whole result line?
 
 Prize Winners
 -------------
-- Do the server side calculations (C)
-- Create the web page (A)
+- Do the server side calculations  for team results(C)
+- Test the prize calculations.
 

@@ -1,5 +1,4 @@
-﻿using System;
-using RedRat.RaceTiming.Data;
+﻿using RedRat.RaceTiming.Data;
 
 namespace RedRat.RaceTiming.Core
 {

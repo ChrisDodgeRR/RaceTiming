@@ -1,7 +1,8 @@
 @Master['Master.sshtml']
 
 @Section['Content']
-<h2 class="tab">Race Results</h2>
+<h2 class="tab">Race Position Entry</h2>
+<hr/>
 
 <div ng-app="RaceTiming" ng-controller="ResultsController">
 
@@ -20,7 +21,8 @@
 		<th>Comment</th>
 		<th>Edit</th>
       </tr>
-      <tbody>
+	</thead>
+    <tbody>
         <tr ng-repeat="raceResult in raceResults" >
           <td data-title=" 'Position' ">{{ raceResult.position }}</td>
           <td data-title=" 'Time' ">{{ raceResult.time | date: 'HH:mm:ss' }}</td>
@@ -31,7 +33,7 @@
 					<img src="/Content/Edit.png" title="Edit Result" alt="edit result">
 				</button>
 			</td>
-        </tr>
+         </tr>
       </tbody>
   </table>
 </div>

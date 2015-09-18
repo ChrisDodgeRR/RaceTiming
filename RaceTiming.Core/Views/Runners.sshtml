@@ -19,7 +19,8 @@
 		<th>URN</th>
 		<th>Edit</th>
       </tr>
-      <tbody>
+	</thead>
+    <tbody>
         <tr ng-repeat="entrant in entrants | orderBy:order">
         	<td data-title=" 'Number' ">{{ entrant.number }}</td>
           	<td data-title=" 'First Name' ">{{ entrant.firstName }}</td>
@@ -35,7 +36,7 @@
 				</button>
 			</td>
         </tr>
-      </tbody>
+     </tbody>
   </table>
 </div>
 

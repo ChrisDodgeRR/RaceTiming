@@ -1,10 +1,17 @@
 (function() {
     var app = angular.module('RaceTiming', []);
 
+    // INDEX PAGE ************************************************************
+    app.controller('IndexController', function ($scope, $http) {
+        $http.get("/api/raceinfo")
+            .success(function (response) {
+                $scope.raceinfo = response;
+            });
+    });
+
     // ENTRY FORM PAGE *****************************************************
     app.controller('EntryFormController', function($scope, $http) {
         $scope.runner = {
-
             firstname: "",
             lastname: "",
             gender: "",
@@ -36,7 +43,7 @@
                         console.log($scope.runner.msg);
                         $scope.runner.colour = 'black';
                     })
-                    .error(function (data) {
+                    .error(function(data) {
                         $scope.runner.msg = "Error adding runner: " + data;
                         console.log($scope.runner.log);
                         $scope.runner.colour = 'red';
@@ -46,8 +53,8 @@
     });
 
 
-	// RACE ENTRANTS PAGE ********************************************************
-    app.controller('EntrantsController', function ($scope, $http) {
+    // RACE ENTRANTS PAGE ********************************************************
+    app.controller('EntrantsController', function($scope, $http) {
 
         $scope.order = "number"; // Default
 
@@ -58,7 +65,7 @@
     });
 
 
-    // FINISH POSITION ENTRY PAGE ********************************************************
+    // FINISH POSITION ENTRY PAGE ***************************************************
     app.controller('ResultsController', function($scope, $http, $timeout) {
 
         $scope.position = {
@@ -104,12 +111,41 @@
     });
 
     // FINISHER RESULTS PAGE ********************************************************
-    app.controller('FinishersController', function ($scope, $http) {
+    app.controller('FinishersController', function($scope, $http) {
+
+        $http.get("/api/raceinfo")
+            .success(function (response) {
+                $scope.raceinfo = response;
+            });
 
         $http.get("/api/finishers")
-            .success(function (response) {
+            .success(function(response) {
                 $scope.finishers = response.finishers;
             });
     });
 
+    // PRIZE WINNERS PAGE ********************************************************
+    app.controller('PrizeWinnersController', function ($scope, $http) {
+
+        $http.get("/api/raceinfo").
+            success(function(response) {
+                $scope.raceinfo = response;
+        });
+
+        $http.get("/api/winners")
+            .success(function (response) {
+                $scope.winners = response.winners;
+
+                $scope.categorywinners = [
+                    { name: 'Male Open', list: $scope.winners.m },
+                    { name: 'Female Open', list: $scope.winners.f },
+                    { name: 'Male V40', list: $scope.winners.mV40 },
+                    { name: 'Female V40', list: $scope.winners.fV40 },
+                    { name: 'Male V50', list: $scope.winners.mV50 },
+                    { name: 'Female V50', list: $scope.winners.fV50 },
+                    { name: 'Male V60', list: $scope.winners.mV60 },
+                    { name: 'Female V60', list: $scope.winners.fV60 }
+            ];
+            });
+    });
 })();

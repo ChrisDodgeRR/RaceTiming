@@ -73,13 +73,11 @@
     <Compile Include="Util\DateParser.cs" />
     <Compile Include="Util\WmaCalculator.cs" />
     <Compile Include="ViewModels\Finisher.cs" />
-    <Compile Include="ViewModels\ResultsModel.cs" />
     <Compile Include="ViewModels\NewRunner.cs" />
     <Compile Include="ViewModels\PositionResult.cs" />
     <Compile Include="Web\ApiModule.cs" />
     <Compile Include="Web\WebController.cs" />
     <Compile Include="Web\ViewsModule.cs" />
-    <Compile Include="ViewModels\IndexModel.cs" />
     <Compile Include="Web\RtWebBootStrapper.cs" />
     <Compile Include="ControllerFactory.cs" />
   </ItemGroup>

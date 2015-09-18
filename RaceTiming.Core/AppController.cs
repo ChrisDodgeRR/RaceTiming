@@ -8,6 +8,7 @@ using System.Linq;
 using RedRat.RaceTiming.Core.Config;
 using RedRat.RaceTiming.Core.Logging;
 using RedRat.RaceTiming.Core.Util;
+using RedRat.RaceTiming.Core.ViewModels;
 using RedRat.RaceTiming.Data;
 using RedRat.RaceTiming.Data.Model;
 
@@ -285,6 +286,131 @@ namespace RedRat.RaceTiming.Core
         {
             db.AddResultNumber( number );
             OnResultDataChange();
+        }
+
+        /// <summary>
+        /// Gats all finishers and associated data
+        /// </summary>
+        public IList<Finisher> GetFinishers()
+        {
+            var catPostions = new Dictionary<AgeGroup.AgeGroupEnum, int>();
+
+            var finishers = GetResults()
+                .Where(r => r.RaceNumber != 0)
+                .OrderBy(r => r.Position)
+                .Select(r => new Finisher
+                {
+                    Position = r.Position,
+                    Number = r.RaceNumber,
+                    Time = r.Time.TotalMilliseconds,
+                }).ToList();
+
+            var runners = GetRunners();
+
+            foreach (var finisher in finishers)
+            {
+                var runner = runners.FirstOrDefault(r => r.Number == finisher.Number);
+                if (runner != null)
+                {
+                    finisher.Name = string.Format("{0} {1}", runner.FirstName, runner.LastName);
+                    finisher.Club = runner.Club;
+                    finisher.Team = runner.Team;
+                    finisher.Gender = runner.Gender;
+
+                    // Age group and category position
+                    var cat = AgeGroup.GetAgeGroup(CurrentRace.Date, runner.DateOfBirth, runner.Gender);
+                    finisher.Category = cat.ToString();
+                    finisher.CategoryEnum = cat;
+                    if (!catPostions.ContainsKey(cat))
+                    {
+                        catPostions.Add(cat, 1);
+                    }
+                    finisher.CategoryPosition = catPostions[cat].ToString();
+                    catPostions[cat] = ++catPostions[cat];
+
+                    // WMA score
+                    var time = TimeSpan.FromMilliseconds(finisher.Time);
+                    finisher.Wma = string.Format("{0:F2}%",
+                        (WmaCalculator.CalcWma(AgeGroup.GetAgeOnDate(CurrentRace.Date, runner.DateOfBirth),
+                            runner.Gender, CurrentRace.Distance, time.Hours, time.Minutes, time.Seconds) * 100));
+                }
+            }
+            return finishers;
+        }
+
+        public Dictionary<string, IList<Finisher>> GetWinners()
+        {
+            var winners = new Dictionary<string, IList<Finisher>>();
+            var alreadyGotAPrize = new List<Finisher>();
+            var finishers = GetFinishers();
+            var invalidCats = new List<AgeGroup.AgeGroupEnum>();
+
+            // Top males
+            var catWinners = GetCategoryWinners( GenderEnum.Male, finishers, invalidCats, alreadyGotAPrize );
+            winners.Add( AgeGroup.AgeGroupEnum.M.ToString(), catWinners );
+            invalidCats.Add( AgeGroup.AgeGroupEnum.M );
+
+            // Top females
+            catWinners = GetCategoryWinners(GenderEnum.Female, finishers, invalidCats, alreadyGotAPrize);
+            winners.Add( AgeGroup.AgeGroupEnum.F.ToString(), catWinners );
+            invalidCats.Add( AgeGroup.AgeGroupEnum.F );
+
+            // Male V40
+            catWinners = GetCategoryWinners( GenderEnum.Male, finishers, invalidCats, alreadyGotAPrize );
+            winners.Add( AgeGroup.AgeGroupEnum.MV40.ToString(), catWinners );
+            invalidCats.Add( AgeGroup.AgeGroupEnum.MV40 );
+
+            // Female V40
+            catWinners = GetCategoryWinners( GenderEnum.Female, finishers, invalidCats, alreadyGotAPrize );
+            winners.Add( AgeGroup.AgeGroupEnum.FV40.ToString(), catWinners );
+            invalidCats.Add( AgeGroup.AgeGroupEnum.FV40 );
+
+            // Male V50
+            catWinners = GetCategoryWinners(GenderEnum.Male, finishers, invalidCats, alreadyGotAPrize);
+            winners.Add(AgeGroup.AgeGroupEnum.MV50.ToString(), catWinners);
+            invalidCats.Add(AgeGroup.AgeGroupEnum.MV50);
+
+            // Female V50
+            catWinners = GetCategoryWinners(GenderEnum.Female, finishers, invalidCats, alreadyGotAPrize);
+            winners.Add(AgeGroup.AgeGroupEnum.FV50.ToString(), catWinners);
+            invalidCats.Add(AgeGroup.AgeGroupEnum.FV50);
+
+            // Male V60
+            catWinners = GetCategoryWinners(GenderEnum.Male, finishers, invalidCats, alreadyGotAPrize);
+            winners.Add(AgeGroup.AgeGroupEnum.MV60.ToString(), catWinners);
+            invalidCats.Add(AgeGroup.AgeGroupEnum.MV60);
+
+            // Female V60
+            catWinners = GetCategoryWinners(GenderEnum.Female, finishers, invalidCats, alreadyGotAPrize);
+            winners.Add(AgeGroup.AgeGroupEnum.FV60.ToString(), catWinners);
+            invalidCats.Add(AgeGroup.AgeGroupEnum.FV60);
+
+            // ToDo: Add team result.
+
+            return winners;
+        }
+
+        /// <summary>
+        /// Gets the winners for a given category.
+        /// </summary>
+        /// <param name="gender">Gender of this category.</param>
+        /// <param name="finishers">The full list of race finishers</param>
+        /// <param name="invalidCats">The age categories which are excluded, e.g. an open runner can't win a Vet category.</param>
+        /// <param name="alreadyGotAPrize">If a runner has won a prize in another category, don't give them one in this.</param>
+        private List<Finisher> GetCategoryWinners(
+            GenderEnum gender,
+            IEnumerable<Finisher> finishers,
+            IList<AgeGroup.AgeGroupEnum> invalidCats,
+            List<Finisher> alreadyGotAPrize )
+        {
+            var catWinners = finishers
+                .Where( f => f.Gender == gender )
+                .Where( f => !invalidCats.Contains( f.CategoryEnum ) )
+                .Where( f => !alreadyGotAPrize.Contains( f ) ) // Has this person already got a prize?
+                .OrderBy( f => f.Position ).Take( 3 ).ToList();
+
+            alreadyGotAPrize.AddRange( catWinners );
+            return catWinners;
         }
     }
 }

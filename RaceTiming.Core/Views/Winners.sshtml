@@ -1,12 +1,41 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<h2>Prize Winners</h2>
+<div ng-app="RaceTiming" ng-controller="PrizeWinnersController">
 
-<p>The list of individual winners...</p>
+	<h2 class="tab">Prize Winners - {{ raceinfo.name }} - {{ raceinfo.date | date:'longDate' }}</h2>
+	<hr />
 
-<hr />
-
-<p>The winning team...</p>
-
+	  <div ng-repeat="categories in categorywinners">
+	  <h3 style="text-decoration: underline" class="tab">{{ categories.name }}</h3>
+		  <table class="table table-striped">
+			<thead>
+			  <tr>
+				<th width="5%">Position</th>
+				<th width="20%">Name</th>
+				<th width="7%">Time</th>
+				<th width="5%">Number</th>
+				<th width="10%">Race Position</th>
+				<th width="8%">Age Group</th>
+				<th width="8%">WMA</th>
+				<th width="23%">Club</th>
+				<th width="14%">Team</th>
+			  </tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="runner in categories.list">
+        			<td data-title=" 'Position' ">{{ $index + 1 }}</td>
+        			<td data-title=" 'Name' ">{{ runner.name }}</td>
+        			<td data-title=" 'Time' ">{{ runner.time | date: 'HH:mm:ss' }}</td>
+        			<td data-title=" 'Number' ">{{ runner.number }}</td>
+        			<td data-title=" 'Race Position' ">{{ runner.position }}</td>
+        			<td data-title=" 'Age Group' ">{{ runner.category }}</td>
+        			<td data-title=" 'WMA' ">{{ runner.wma }}</td>
+        			<td data-title=" 'Club' ">{{ runner.club }}</td>
+        			<td data-title=" 'Team' ">{{ runner.team }}</td>
+				</tr>
+			  </tbody>
+		  </table>
+	  </div>
+</div>
 @EndSection

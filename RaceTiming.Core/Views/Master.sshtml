@@ -1,23 +1,23 @@
 ﻿<!DOCTYPE html>
 
 <head>
-	<meta http-equiv="Cache-control" content="no-cache">
-	<meta http-equiv="Cache-control" content="no-store">
-	<meta http-equiv="Pragma" content="no-cache">
-	<meta http-equiv="Expires" content="-1">
-	<link data-require="bootstrap-css@3.0.2" data-semver="3.0.3" rel="stylesheet" href="Content/bootstrap.min.css" />
-	<script data-require="angular.js@*" data-semver="1.4.4" src="Content/angular.min.js"></script>
-	<script data-require="jquery@*" data-semver="2.1.4" src="Content/jquery-2.1.4.js"></script>
-	<script data-require="bootstrap@*" data-semver="3.0.2" src="Content/bootstrap.min.js"></script>
-	<script src="Content/app.js"></script>
-	<link rel="stylesheet" href="Content/style.css" />
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-store">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <link data-require="bootstrap-css@3.0.2" data-semver="3.0.3" rel="stylesheet" href="Content/bootstrap.min.css" />
+    <script data-require="angular.js@*" data-semver="1.4.4" src="Content/angular.min.js"></script>
+    <script data-require="jquery@*" data-semver="2.1.4" src="Content/jquery-2.1.4.js"></script>
+    <script data-require="bootstrap@*" data-semver="3.0.2" src="Content/bootstrap.min.js"></script>
+    <script src="Content/app.js"></script>
+    <link rel="stylesheet" href="Content/style.css" />
 </head>
 
 <body>
     <header class="navbar navbar-inverse" role="banner" ng-if=" !layout ">
         <div class="container">
             <div class="navbar-header">
-				<a href="/"><img class="logo" src="/Content/racetimerlogo.svg" /></a>
+                <a href="/"><img class="logo" src="/Content/racetimerlogo.svg" /></a>
             </div>
             <nav class="collapse navbar-collapse spa-navbar-collapse" role="navigation">
                 <ul class="nav navbar-nav navbar-right">
@@ -30,11 +30,11 @@
                     <li>
                         <a href="/enterpositions">Finish Position Entry</a>
                     </li>
-					<li>
-						<a href="/allresults">All Finishers</a>
-					</li>
                     <li>
-						<a href="/winners">Prize Winners</a>
+                        <a href="/allresults">All Finishers</a>
+                    </li>
+                    <li>
+                        <a href="/winners">Prize Winners</a>
                     </li>
                 </ul>
             </nav>

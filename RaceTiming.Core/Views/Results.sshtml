@@ -1,9 +1,9 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<h3 class="tab">@!Model.RaceName - @!Model.RaceDate - Full Results</h3>
-
 <div ng-app="RaceTiming" ng-controller="FinishersController">
+  <h2 class="tab">Full Results - {{ raceinfo.name }} - {{ raceinfo.date | date:'longDate' }}</h2>
+  <hr />
 
   <table class="table table-striped">
     <thead>
@@ -18,7 +18,8 @@
         <th>Club</th>
         <th>Team</th>
       </tr>
-      <tbody>
+	</thead>
+    <tbody>
         <tr ng-repeat="finisher in finishers">
         	<td data-title=" 'Position' ">{{ finisher.position }}</td>
         	<td data-title=" 'Name' ">{{ finisher.name }}</td>
@@ -30,7 +31,7 @@
         	<td data-title=" 'Club' ">{{ finisher.club }}</td>
         	<td data-title=" 'Team' ">{{ finisher.team }}</td>
         </tr>
-      </tbody>
+    </tbody>
   </table>
 </div>
 
