@@ -17,5 +17,17 @@ namespace RedRat.RaceTiming.Data.Model
         public float WmaScore { get; set; }
         public bool DubiousResult { get; set; }
         public string Reason { get; set; }
+
+        public void AppendReason( string reason )
+        {
+            if ( Reason == null )
+            {
+                Reason = reason;
+            }
+            else
+            {
+                Reason = Reason + "; " + reason;
+            }
+        }
     }
 }

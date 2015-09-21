@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using RedRat.RaceTiming.Core.Config;
 using RedRat.RaceTiming.Core.Logging;
 using RedRat.RaceTiming.Core.Util;
@@ -163,13 +164,6 @@ namespace RedRat.RaceTiming.Core
 
         public IList<Result> GetResults()
         {
-            // TEMP
-            var res = db.GetResults();
-            foreach ( var result in res )
-            {
-                result.DubiousResult = true;
-                result.Reason = "Because";
-            }
             return db.GetResults();
         }
 
@@ -201,23 +195,28 @@ namespace RedRat.RaceTiming.Core
                     try
                     {
                         // Split line into array of info (\\s* removes space around object)
-                        var runnerInfo = line.Split(@"\\s*,\\s*".ToCharArray()).Select( s => s.Replace( "\"", "" ).Trim() ).ToArray();
+                        var runnerInfo = line.Split(@",".ToCharArray()).Select( s => s.Replace( "\"", "" ).Trim() ).ToArray();
 
                         var runner = new Runner
                         {
-                            FirstName = runnerInfo[0],
-                            LastName = runnerInfo[1],
+                            FirstName = runnerInfo[0].ToUpper(),
+                            LastName = runnerInfo[1].ToUpper(),
                             Gender = ( runnerInfo[2] == "F" ) ? GenderEnum.Female : GenderEnum.Male,
                             DateOfBirth = DateParser.ParseRwDate( runnerInfo[4] ),
                             Club = RemoveUnwantedAttributes( runnerInfo[5] ),
                             Team = RemoveUnwantedAttributes( runnerInfo[6] ),
-                            Address = runnerInfo
-                                .Skip( 8 ).Take( 6 )
-                                .Where( s => !string.IsNullOrEmpty( s ) )
-                                .Aggregate( ( current, next ) => current + ", " + next ),
-                            Urn = ( runnerInfo.Count() >= 33 ) ? RemoveUnwantedAttributes( runnerInfo[33] ) : null,
+                            Urn = ( runnerInfo.Count() > 33 ) ? RemoveUnwantedAttributes( runnerInfo[33] ) : null,
                             Number = db.GetNextNumber(),
                         };
+
+                        var addressFields = runnerInfo
+                                .Skip( 8 ).Take( 6 )
+                                .Where( s => !string.IsNullOrEmpty( s ) ).ToList();
+
+                        if ( addressFields.Any() )
+                        {
+                            runner.Address = addressFields.Aggregate( ( current, next ) => current + ", " + next );
+                        }
 
                         // If a club is given, then assume the runner is affiliated
                         runner.Affiliated = !string.IsNullOrEmpty( runner.Club );
@@ -343,49 +342,54 @@ namespace RedRat.RaceTiming.Core
             var winners = new Dictionary<string, IList<Finisher>>();
             var alreadyGotAPrize = new List<Finisher>();
             var finishers = GetFinishers();
-            var invalidCats = new List<AgeGroup.AgeGroupEnum>();
 
-            // Top males
-            var catWinners = GetCategoryWinners( GenderEnum.Male, finishers, invalidCats, alreadyGotAPrize );
+            // Top males - from all categories
+            var allMales = new[]
+            {
+                AgeGroup.AgeGroupEnum.M, AgeGroup.AgeGroupEnum.MV40, AgeGroup.AgeGroupEnum.MV50,
+                AgeGroup.AgeGroupEnum.MV60, AgeGroup.AgeGroupEnum.MV70
+            };
+            var catWinners = GetCategoryWinners( GenderEnum.Male, finishers, allMales, alreadyGotAPrize, 3 );
             winners.Add( AgeGroup.AgeGroupEnum.M.ToString(), catWinners );
-            invalidCats.Add( AgeGroup.AgeGroupEnum.M );
 
-            // Top females
-            catWinners = GetCategoryWinners(GenderEnum.Female, finishers, invalidCats, alreadyGotAPrize);
+            // Top females - from all categories
+            var allFemales = new[]
+            {
+                AgeGroup.AgeGroupEnum.F, AgeGroup.AgeGroupEnum.FV40, AgeGroup.AgeGroupEnum.FV50,
+                AgeGroup.AgeGroupEnum.FV60, AgeGroup.AgeGroupEnum.FV70
+            };
+            catWinners = GetCategoryWinners( GenderEnum.Female, finishers, allFemales, alreadyGotAPrize, 3 );
             winners.Add( AgeGroup.AgeGroupEnum.F.ToString(), catWinners );
-            invalidCats.Add( AgeGroup.AgeGroupEnum.F );
 
             // Male V40
-            catWinners = GetCategoryWinners( GenderEnum.Male, finishers, invalidCats, alreadyGotAPrize );
+            catWinners = GetCategoryWinners( GenderEnum.Male, finishers, new[] {AgeGroup.AgeGroupEnum.MV40}, alreadyGotAPrize, 1 );
             winners.Add( AgeGroup.AgeGroupEnum.MV40.ToString(), catWinners );
-            invalidCats.Add( AgeGroup.AgeGroupEnum.MV40 );
 
             // Female V40
-            catWinners = GetCategoryWinners( GenderEnum.Female, finishers, invalidCats, alreadyGotAPrize );
+            catWinners = GetCategoryWinners( GenderEnum.Female, finishers, new[] {AgeGroup.AgeGroupEnum.FV40}, alreadyGotAPrize, 1 );
             winners.Add( AgeGroup.AgeGroupEnum.FV40.ToString(), catWinners );
-            invalidCats.Add( AgeGroup.AgeGroupEnum.FV40 );
 
             // Male V50
-            catWinners = GetCategoryWinners(GenderEnum.Male, finishers, invalidCats, alreadyGotAPrize);
-            winners.Add(AgeGroup.AgeGroupEnum.MV50.ToString(), catWinners);
-            invalidCats.Add(AgeGroup.AgeGroupEnum.MV50);
+            catWinners = GetCategoryWinners( GenderEnum.Male, finishers, new[] {AgeGroup.AgeGroupEnum.MV50}, alreadyGotAPrize, 1 );
+            winners.Add( AgeGroup.AgeGroupEnum.MV50.ToString(), catWinners );
 
             // Female V50
-            catWinners = GetCategoryWinners(GenderEnum.Female, finishers, invalidCats, alreadyGotAPrize);
-            winners.Add(AgeGroup.AgeGroupEnum.FV50.ToString(), catWinners);
-            invalidCats.Add(AgeGroup.AgeGroupEnum.FV50);
+            catWinners = GetCategoryWinners( GenderEnum.Female, finishers, new[] {AgeGroup.AgeGroupEnum.FV50}, alreadyGotAPrize, 1 );
+            winners.Add( AgeGroup.AgeGroupEnum.FV50.ToString(), catWinners );
 
             // Male V60
-            catWinners = GetCategoryWinners(GenderEnum.Male, finishers, invalidCats, alreadyGotAPrize);
-            winners.Add(AgeGroup.AgeGroupEnum.MV60.ToString(), catWinners);
-            invalidCats.Add(AgeGroup.AgeGroupEnum.MV60);
+            catWinners = GetCategoryWinners( GenderEnum.Male, finishers, 
+                new[] {AgeGroup.AgeGroupEnum.MV60, AgeGroup.AgeGroupEnum.MV70}, alreadyGotAPrize, 1 );
+            winners.Add( AgeGroup.AgeGroupEnum.MV60.ToString(), catWinners );
 
             // Female V60
-            catWinners = GetCategoryWinners(GenderEnum.Female, finishers, invalidCats, alreadyGotAPrize);
-            winners.Add(AgeGroup.AgeGroupEnum.FV60.ToString(), catWinners);
-            invalidCats.Add(AgeGroup.AgeGroupEnum.FV60);
+            catWinners = GetCategoryWinners( GenderEnum.Female, finishers, 
+                new[] {AgeGroup.AgeGroupEnum.FV60, AgeGroup.AgeGroupEnum.FV70}, alreadyGotAPrize, 1 );
+            winners.Add( AgeGroup.AgeGroupEnum.FV60.ToString(), catWinners );
 
             // ToDo: Add team result.
+
+            var teams = GetTeams();
 
             return winners;
         }
@@ -395,22 +399,36 @@ namespace RedRat.RaceTiming.Core
         /// </summary>
         /// <param name="gender">Gender of this category.</param>
         /// <param name="finishers">The full list of race finishers</param>
-        /// <param name="invalidCats">The age categories which are excluded, e.g. an open runner can't win a Vet category.</param>
+        /// <param name="categories">The age categories to be included.</param>
         /// <param name="alreadyGotAPrize">If a runner has won a prize in another category, don't give them one in this.</param>
+        /// <param name="numberPrizesInCategory">How many prizes in this category</param>
         private List<Finisher> GetCategoryWinners(
             GenderEnum gender,
             IEnumerable<Finisher> finishers,
-            IList<AgeGroup.AgeGroupEnum> invalidCats,
-            List<Finisher> alreadyGotAPrize )
+            IList<AgeGroup.AgeGroupEnum> categories,
+            List<Finisher> alreadyGotAPrize, int numberPrizesInCategory )
         {
             var catWinners = finishers
                 .Where( f => f.Gender == gender )
-                .Where( f => !invalidCats.Contains( f.CategoryEnum ) )
+                .Where( f => categories.Contains( f.CategoryEnum ) )
                 .Where( f => !alreadyGotAPrize.Contains( f ) ) // Has this person already got a prize?
-                .OrderBy( f => f.Position ).Take( 3 ).ToList();
+                .OrderBy( f => f.Position ).Take( numberPrizesInCategory ).ToList();
 
             alreadyGotAPrize.AddRange( catWinners );
             return catWinners;
+        }
+
+        /// <summary>
+        /// Extracts teams from the entry list.
+        /// </summary>
+        private List<string> GetTeams()
+        {
+            // 1. Find teams - needs 4 or more results
+            var teamList = db.GetRunners().Select( r => r.Team ).Distinct();
+
+            // 2. For runners not already in valid teams, find clubs with 4 or more runners
+
+            return teamList.ToList();
         }
     }
 }

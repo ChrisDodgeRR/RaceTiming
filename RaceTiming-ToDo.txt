@@ -19,10 +19,6 @@ Race Entrants
 Finish Position Entry
 ---------------------
 - Position entry work with "enter" as well as submit.
-- Add flag so that questionable results are highlighted in red, and reason. E.g.
-	- Duplicate number
-	- Number entered without a result time, so time is estimated.
-*** Have added the "dubiousResult" property. Need to get it to highlight row in red ***
     
 - Editing result:
 	- Need to be able to edit (and then save) the time and number.

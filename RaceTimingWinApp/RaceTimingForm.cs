@@ -400,6 +400,11 @@ namespace RedRat.RaceTimingWinApp
                     // Only allow deletion if no race number associated with result.
                     lvi.SubItems.Add("X");
                 }
+                // ToDo: Improve. Only sets first LVI subitem to this colour, and it disappears on mouse over.
+                if ( result.DubiousResult )
+                {
+                    lvi.BackColor = Color.Salmon;
+                }
             }
         }
 

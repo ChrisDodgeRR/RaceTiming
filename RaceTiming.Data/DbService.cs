@@ -231,16 +231,35 @@ namespace RedRat.RaceTiming.Data
         /// </summary>
         public void AddResultNumber( int number )
         {
+            const string dupResultMsg = "Duplicate runner number";
+
             CheckHaveDb();
             lock ( dbLock )
             {
+                // First check to see if this number is a duplicate
+                var resultsWithNumber = dbRoot.resultPositionIndex.Where( r => r.RaceNumber == number ).ToList();
+                var haveDuplicate = false;
+                foreach (var result in resultsWithNumber)
+                {
+                    haveDuplicate = true;
+                    result.DubiousResult = true;
+                    result.AppendReason(dupResultMsg);
+                    result.Modify();
+                }
+
                 var nextResult = dbRoot.resultPositionIndex.OrderBy( r => r.Time ).FirstOrDefault( r => r.RaceNumber == 0 );
                 if ( nextResult == null )
                 {
                     throw new Exception("No more results to add numbers to.");
                 }
                 nextResult.RaceNumber = number;
+                if ( haveDuplicate )
+                {
+                    nextResult.DubiousResult = true;
+                    nextResult.AppendReason( dupResultMsg );
+                }
                 nextResult.Modify();
+
                 db.Commit();
             }
         }
