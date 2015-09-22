@@ -41,6 +41,24 @@
         };
     });
 
+    app.directive('ngConfirmClick', [
+      function () {
+          return {
+              priority: -1,
+              restrict: 'A',
+              link: function (scope, element, attrs) {
+                  element.bind('click', function (e) {
+                      var message = attrs.ngConfirmClick;
+                      if (message && !confirm(message)) {
+                          e.stopImmediatePropagation();
+                          e.preventDefault();
+                      }
+                  });
+              }
+          }
+      }
+    ]);
+
     // INDEX PAGE ************************************************************
     app.controller('IndexController', function ($scope, $http) {
         $http.get("/api/raceinfo")
@@ -127,7 +145,6 @@
         }
 
         $scope.updateRunner = function () {
-            console.log($scope.dob);
             $http.post('/api/updaterunner', {
                     'number': $scope.runner.number,
                     'firstname': $scope.runner.firstName,
@@ -147,6 +164,21 @@
                 })
                 .error(function(data) {
                     $scope.errormsg = "Error updating runner: " + data;
+                    console.log($scope.errormsg);
+                });
+        }
+
+        $scope.deleteRunner = function(number) {
+            console.log('Delete runner: ' + number);
+            $http.post('/api/deleterunner', {
+                    'number': number,
+                }).success(function(data) {
+                    console.log("Runner deleted.");
+                    // Reload runner data
+                    $scope.loadRunners();
+                })
+                .error(function(data) {
+                    $scope.errormsg = "Error deleting runner: " + data;
                     console.log($scope.errormsg);
                 });
         }

@@ -143,6 +143,28 @@ namespace RedRat.RaceTiming.Core.Web
                 return SetDefaultHeaders( Response.AsJson( message, statusCode ) );
             };
 
+            Post["/deleterunner"] = ( x ) =>
+            {
+                var appController = controllerFactory.AppController;
+                var message = "";
+                var statusCode = HttpStatusCode.OK;
+                var number = this.Bind<RunnerNumber>();
+
+                try
+                {
+                    appController.DbService.DeleteRunner(number.Number);
+                    Trace.WriteLineIf( AppController.traceSwitch.TraceInfo,
+                        string.Format( "Runner with number {0} deleted.", number.Number ) );
+                }
+                catch ( Exception ex )
+                {
+                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
+                    message = ex.Message;
+                    Trace.WriteLineIf( AppController.traceSwitch.TraceError, "Error deleting runner: " + ex.Message );
+                }
+                return SetDefaultHeaders( Response.AsJson( message, statusCode ) );
+            };
+
             Post["/addfinishposition"] = (x) =>
             {
                 var message = "";

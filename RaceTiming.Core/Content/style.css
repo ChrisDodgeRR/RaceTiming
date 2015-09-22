@@ -9,7 +9,14 @@
 }
 .tab { margin-left: 40px; }
 
-li{
+li {
   margin: 10px 0;
+}
+
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    padding: 2px;
+    vertical-align: middle;
 }
 

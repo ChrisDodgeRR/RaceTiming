@@ -205,6 +205,23 @@ namespace RedRat.RaceTiming.Data
             }
         }
 
+        public void DeleteRunner( int number )
+        {
+            CheckHaveDb();
+            lock ( dbLock )
+            {
+                var runnerToDelete = dbRoot.runnerNumberIndex.FirstOrDefault( r => r.Number == number );
+                if ( runnerToDelete == null )
+                {
+                    throw new Exception( "Unable to find a runner with this number." );
+                }
+                dbRoot.runnerNumberIndex.Remove( runnerToDelete.Number, runnerToDelete );
+                dbRoot.runnerFirstNameIndex.Remove( runnerToDelete.FirstName, runnerToDelete );
+                dbRoot.runnerLastNameIndex.Remove( runnerToDelete.LastName, runnerToDelete );
+                db.Commit();
+            }
+        }
+
         public IList<Runner> GetRunners()
         {
             CheckHaveDb();

@@ -75,6 +75,7 @@
     <Compile Include="ViewModels\Finisher.cs" />
     <Compile Include="ViewModels\NewRunner.cs" />
     <Compile Include="ViewModels\PositionResult.cs" />
+    <Compile Include="ViewModels\RunnerNumber.cs" />
     <Compile Include="Web\ApiModule.cs" />
     <Compile Include="Web\WebController.cs" />
     <Compile Include="Web\ViewsModule.cs" />
@@ -133,6 +134,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\bootstrap.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Delete.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Edit.png">

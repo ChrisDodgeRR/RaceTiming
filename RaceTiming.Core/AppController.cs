@@ -205,6 +205,7 @@ namespace RedRat.RaceTiming.Core
                             DateOfBirth = DateParser.ParseRwDate( runnerInfo[4] ),
                             Club = RemoveUnwantedAttributes( runnerInfo[5] ),
                             Team = RemoveUnwantedAttributes( runnerInfo[6] ),
+                            Email = ( runnerInfo.Count() > 15 ) ? RemoveUnwantedAttributes( runnerInfo[15] ) : null,
                             Urn = ( runnerInfo.Count() > 33 ) ? RemoveUnwantedAttributes( runnerInfo[33] ) : null,
                             Number = db.GetNextNumber(),
                         };
