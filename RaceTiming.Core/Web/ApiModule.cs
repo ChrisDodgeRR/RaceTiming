@@ -167,11 +167,17 @@ namespace RedRat.RaceTiming.Core.Web
 
             Post["/addfinishposition"] = (x) =>
             {
+                var appController = controllerFactory.AppController;
                 var message = "";
                 var statusCode = HttpStatusCode.OK;
                 var posResult = this.Bind<PositionResult>();
                 try
                 {
+                    if ( !appController.IsClockRunning )
+                    {
+                        throw new Exception("Race clock is not yet running.");
+                    }
+
                     if ( posResult.Position <= 0 )
                     {
                         message = "Race number must be > 0";
@@ -179,7 +185,7 @@ namespace RedRat.RaceTiming.Core.Web
                     }
                     else
                     {
-                        controllerFactory.AppController.AddResultRunnerNumber( posResult.Position );
+                        appController.AddResultRunnerNumber( posResult.Position );
                         Trace.WriteLineIf( AppController.traceSwitch.TraceInfo, "Runner number added: " + posResult.Position );
                     }
                 }

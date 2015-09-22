@@ -30,6 +30,7 @@ namespace RedRat.RaceTiming.Core
         private readonly ResultsQueue resultQueue;
         private readonly LogController logController;
         private readonly Options options;
+        private bool clockRunning;
 
         public AppController(DbService db)
         {
@@ -53,6 +54,8 @@ namespace RedRat.RaceTiming.Core
                     OpenRace( lastFile );
                 }
             }
+
+            clockTime.ClockRunningHandler += (s, b) => clockRunning = b;
         }
 
         public string GetRootUrl()
@@ -78,6 +81,11 @@ namespace RedRat.RaceTiming.Core
         public ClockTime ClockTime
         {
             get { return clockTime; }
+        }
+
+        public bool IsClockRunning
+        {
+            get { return clockRunning; }
         }
 
         public Options Options

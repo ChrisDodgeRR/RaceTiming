@@ -54,6 +54,7 @@
     <Compile Include="ClockLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ExtendedListView\ResultListViewItem.cs" />
     <Compile Include="Options\OptionsDialog.cs">
       <SubType>Form</SubType>
     </Compile>

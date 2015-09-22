@@ -392,19 +392,7 @@ namespace RedRat.RaceTimingWinApp
             var results = appController.GetResults().OrderByDescending( r => r.Position );
             foreach ( var result in results )
             {
-                var lvi = resultListView.Items.Add( result.Position.ToString() );
-                lvi.SubItems.Add( result.Time.ToString() );
-                lvi.SubItems.Add( result.RaceNumber.ToString() );
-                if ( result.RaceNumber == 0 )
-                {
-                    // Only allow deletion if no race number associated with result.
-                    lvi.SubItems.Add("X");
-                }
-                // ToDo: Improve. Only sets first LVI subitem to this colour, and it disappears on mouse over.
-                if ( result.DubiousResult )
-                {
-                    lvi.BackColor = Color.Salmon;
-                }
+                resultListView.Items.Add( new ResultListViewItem( result ) );
             }
         }
 
