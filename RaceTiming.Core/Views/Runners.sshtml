@@ -7,7 +7,58 @@
 <div ng-app="RaceTiming" ng-controller="EntrantsController">
 
  <modal visible="showEditDialog">
-    <div>{{runnerNumber}}</div>
+    <table class="tab">
+    <tbody>
+    <tr>
+    	<td>Runner Number:</td>
+    	<td><input style="width:200px" class="tab" type="text" ng-model="runner.number" placeholder={{runnerNumber}}></td>
+    </tr>
+	<tr>
+		<td>First Name:</td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.firstname" placeholder={{runnerFirstName}}></td>
+	</tr>
+	<tr>
+		<td>Last Name:</td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.lastname"/></td>
+	</tr>
+	<tr>
+		<td>DoB:</td>
+		<td><input style="width:200px" type="date" class="tab" type="text" ng-model="runner.dob" placeholder="dd/MM/yyyy"/></td>
+	</tr>
+	<tr>
+	<td>Category:</td>
+		<td>
+			<select style="width:200px" class="tab" type="text" ng-model="runner.gender"/>
+				<option value="M">M</option>
+				<option value="MV40">MV40</option>
+				<option value="MV60">MV50</option>
+				<option value="MV60">MV60</option>
+				<option value="F">F</option>
+				<option value="FV40">FV40</option>
+				<option value="FV50">FV50</option>
+				<option value="FV60">FV60</option>
+			</select>
+		</td>
+	</tr>
+
+	<tr>
+		<td>Club:</td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.club"/></td>
+	</tr>
+	<tr>
+		<td>Team:</td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.team"/></td>
+	</tr>
+	<tr>
+		<td>URN:</td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.urn"/></td>
+	</tr>
+</tbody>
+</table>
+<br>
+<p class="tab"><input type="submit" id="submit" value="Submit" /></p>
+</form>
+
  </modal>
  <table class="table table-striped">
     <thead>
