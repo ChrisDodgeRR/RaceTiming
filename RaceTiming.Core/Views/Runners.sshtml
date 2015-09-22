@@ -6,7 +6,10 @@
 
 <div ng-app="RaceTiming" ng-controller="EntrantsController">
 
-  <table class="table table-striped">
+ <modal visible="showEditDialog">
+    <div>{{runnerNumber}}</div>
+ </modal>
+ <table class="table table-striped">
     <thead>
       <tr>
         <th><a href="" ng-click="order='number'">Number</a></th>
@@ -31,7 +34,7 @@
           	<td data-title=" 'Team' ">{{ entrant.team }}</td>
           	<td data-title=" 'URN' ">{{ entrant.urn }}</td>
 			<td>
-				<button style="display:inline-block" onclick="alert('Edit runner')">
+				<button style="display:inline-block" ng-click="toggleDialog(entrant.number)">
 					<img src="/Content/Edit.png" title="Edit Runner" alt="edit runner">
 				</button>
 			</td>

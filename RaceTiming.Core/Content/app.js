@@ -1,6 +1,46 @@
 (function() {
     var app = angular.module('RaceTiming', []);
 
+    app.directive('modal', function() {
+        return {
+            template: '<div class="modal fade">' +
+                '<div class="modal-dialog">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                '<h4 class="modal-title">{{title}}</h4>' +
+                '</div>' +
+                '<div class="modal-body" ng-transclude></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>',
+            restrict: 'E',
+            transclude: true,
+            replace: true,
+            scope: true,
+            link: function postLink(scope, element, attrs) {
+                scope.$watch(attrs.visible, function(value) {
+                    if (value == true)
+                        $(element).modal('show');
+                    else
+                        $(element).modal('hide');
+                });
+
+                $(element).on('shown.bs.modal', function() {
+                    scope.$apply(function() {
+                        scope.$parent[attrs.visible] = true;
+                    });
+                });
+
+                $(element).on('hidden.bs.modal', function() {
+                    scope.$apply(function() {
+                        scope.$parent[attrs.visible] = false;
+                    });
+                });
+            }
+        };
+    });
+
     // INDEX PAGE ************************************************************
     app.controller('IndexController', function ($scope, $http) {
         $http.get("/api/raceinfo")
@@ -55,6 +95,15 @@
 
     // RACE ENTRANTS PAGE ********************************************************
     app.controller('EntrantsController', function($scope, $http) {
+
+        $scope.showEditDialog = false;
+        $scope.title = "";
+        $scope.runnerNumber = "";
+        $scope.toggleDialog = function (number) {
+            $scope.runnerNumber = number;
+            $scope.title = "Edit Runner Information - Number " + $scope.runnerNumber;
+            $scope.showEditDialog = !$scope.showEditDialog;
+        };
 
         $scope.order = "number"; // Default
 
