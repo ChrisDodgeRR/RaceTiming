@@ -8,7 +8,7 @@
 
 <form ng-submit="runner.submit()">
 <table class="tab">
-<tbody>
+<tbody ng-init="affiliated=false">
 	<tr>
 		<td>First Name:</td>
 		<td><input style="width:200px" class="tab" type="text" ng-model="runner.firstname" /></td>
@@ -38,7 +38,10 @@
 		<td>DoB:</td>
 		<td><input style="width:200px" type="date" class="tab" type="text" ng-model="runner.dob" placeholder="dd/MM/yyyy"/></td>
 	</tr>
-	<tr>
+	<tr> 
+		<td>Club affiliated</td>
+		<td><input type="checkbox" ng-model="affiliated"/></td>
+	<tr ng-show="affiliated">
 		<td>Club:</td>
 		<td><input style="width:200px" class="tab" type="text" ng-model="runner.club"/></td>
 	</tr>
