@@ -36,7 +36,7 @@
 	</tr>
 	<tr>
 		<td>DoB:</td>
-		<td><input style="width:200px" type="date" class="tab" type="text" ng-model="runner.dob" placeholder="dd/MM/yyyy"/></td>
+		<td><input style="width:200px" type="date" class="tab" ng-model="runner.dob" placeholder="dd/MM/yyyy"/></td>
 	</tr>
 	<tr> 
 		<td>Club affiliated: &nbsp;<input type="checkbox" ng-model="clubAffiliated"/></td>

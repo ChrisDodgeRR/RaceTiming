@@ -17,7 +17,19 @@ namespace RedRat.RaceTiming.Core.Web
         {
             Get["/raceinfo"] = parameters => SetDefaultHeaders( Response.AsJson( GetRaceInfo( controllerFactory ) ) );
 
-            Get["/runners"] = parameters => SetDefaultHeaders( Response.AsJson( GetRunners( controllerFactory ) ) );
+            Get["/runner"] = parameters =>
+            {
+                var number = Request.Query["number"];
+                var runner = GetRunner( controllerFactory, number );
+                var statusCode = HttpStatusCode.OK;
+                if ( runner == null )
+                {
+                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???                    
+                }
+                return SetDefaultHeaders(Response.AsJson( new {runner = runner}, statusCode));
+            };
+
+            Get["/runners"] = parameters => SetDefaultHeaders(Response.AsJson(GetRunners(controllerFactory)));
 
             Get["/results"] = parameters => SetDefaultHeaders( Response.AsJson( GetResults( controllerFactory ) ) );
 
@@ -75,6 +87,52 @@ namespace RedRat.RaceTiming.Core.Web
                     {
                         throw new Exception(string.Format("'{0}' with this DoB already exists in database.", runner.ToString()));
                     }
+                }
+                catch ( Exception ex )
+                {
+                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
+                    message = ex.Message;
+                    Trace.WriteLineIf( AppController.traceSwitch.TraceError, "Error adding entry: " + ex.Message );
+                }
+                return SetDefaultHeaders( Response.AsJson( message, statusCode ) );
+            };
+
+            Post["/updaterunner"] = ( x ) =>
+            {
+                var appController = controllerFactory.AppController;
+                var message = "";
+                var statusCode = HttpStatusCode.OK;
+                var newRunner = this.Bind<NewRunner>();
+
+                try
+                {
+                    // Check fields
+                    CheckField(newRunner.FirstName, "First Name");
+                    CheckField(newRunner.LastName, "Last Name");
+                    CheckField(newRunner.Gender, "Gender");
+                    CheckField(newRunner.DoB, "DoB");
+
+                    int number;
+                    if (!int.TryParse(newRunner.Number, out number))
+                    {
+                        throw new Exception("Race number format is incorrect.");
+                    }
+                    
+                    // Update
+                    var runner = new Runner
+                    {
+                        Number = number,
+                        FirstName = newRunner.FirstName,
+                        LastName = newRunner.LastName,
+                        Gender = (newRunner.Gender == "Female") ? GenderEnum.Female : GenderEnum.Male,
+                        DateOfBirth = DateTime.Parse(newRunner.DoB),
+                        Email = newRunner.Email,
+                        Club = newRunner.Club,
+                        Team = newRunner.Team,
+                        Urn = newRunner.Urn,
+                    };
+
+                    appController.DbService.UpdateRunner( runner );
                 }
                 catch ( Exception ex )
                 {
@@ -151,6 +209,25 @@ namespace RedRat.RaceTiming.Core.Web
 				} ).Cast<object>().ToList();
 			return new {entrants = entrants};
 		}
+
+        protected object GetRunner(ControllerFactory controllerFactory, int runnerNumber)
+        {
+            var controller = controllerFactory.AppController;
+            var runner = controller.GetRunners().FirstOrDefault( r => r.Number == runnerNumber );
+            if ( runner == null ) return null;
+            return new
+            {
+                runner.Number,
+                runner.FirstName,
+                runner.LastName,
+                runner.Email,
+                gender = runner.Gender.ToString(),
+                dob = runner.DateOfBirth.ToString("yyyy/MM/dd"),
+				runner.Club,
+				runner.Team,
+                runner.Urn,
+            };
+        }
 
         /// <summary>
         /// Returns the list of finishing times and positions

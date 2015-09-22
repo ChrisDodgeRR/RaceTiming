@@ -180,6 +180,31 @@ namespace RedRat.RaceTiming.Data
             }
         }
 
+        public void UpdateRunner( Runner updatedRunner )
+        {
+            CheckHaveDb();
+            lock ( dbLock )
+            {
+                var runner = dbRoot.runnerNumberIndex.FirstOrDefault( r => r.Number == updatedRunner.Number );
+                if ( runner == null )
+                {
+                    throw new Exception( "Unable to find runner with number: " + updatedRunner.Number );
+                }
+                runner.FirstName = updatedRunner.FirstName;
+                runner.LastName = updatedRunner.LastName;
+                runner.Gender = updatedRunner.Gender;
+                runner.DateOfBirth = updatedRunner.DateOfBirth;
+                runner.Email = updatedRunner.Email;
+                runner.Club = updatedRunner.Club;
+                runner.Team = updatedRunner.Team;
+                runner.Urn = updatedRunner.Urn;
+                // ToDo: Affiliated flag
+
+                runner.Modify();
+                db.Commit();
+            }
+        }
+
         public IList<Runner> GetRunners()
         {
             CheckHaveDb();
