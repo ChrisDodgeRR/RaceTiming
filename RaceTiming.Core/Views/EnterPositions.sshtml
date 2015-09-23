@@ -6,7 +6,7 @@
 
 <div ng-app="RaceTiming" ng-controller="ResultsController">
 
-	<p class="tab">Result position: <input type="number" ng-model="position.value" />
+	<p class="tab">Result position: <input type="number" ng-model="position.value" ng-enter="position.save()" />
 		<button ng-click="position.save()">Save</button>
 	</p>
 	<p class="tab" ng-class="{red: position.colour == 'red', black: position.colour == 'black'}">{{position.log}}</p>

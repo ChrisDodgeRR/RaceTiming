@@ -175,7 +175,7 @@ namespace RedRat.RaceTiming.Core.Web
                 {
                     if ( !appController.IsClockRunning )
                     {
-                        throw new Exception("Race clock is not yet running.");
+                        throw new Exception( "Race is not in progress (clock not running)." );
                     }
 
                     if ( posResult.Position <= 0 )
