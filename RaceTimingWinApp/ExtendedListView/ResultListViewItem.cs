@@ -18,7 +18,7 @@ namespace RedRat.RaceTimingWinApp.ExtendedListView
                 // Only allow deletion if no race number associated with result.
                 SubItems.Add("X");
             }
-            // ToDo: Improve. Only sets first LVI subitem to this colour, and it disappears on mouse over.
+            // ToDo: Improve. The colour disappears on mouse over.
             if (result.DubiousResult)
             {
                 BackColor = Color.Salmon;

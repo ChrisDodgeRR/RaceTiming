@@ -100,6 +100,15 @@
                         $scope.runner.msg = data;
                         console.log($scope.runner.msg);
                         $scope.runner.colour = 'black';
+                        // Clear form
+                        $scope.runner.firstname = "";
+                        $scope.runner.lastname = "";
+                        $scope.runner.email = "";
+                        $scope.runner.number = "";
+                        $scope.runner.dob = "";
+                        $scope.runner.club = "";
+                        $scope.runner.team = "";
+                        $scope.runner.urn = "";
                     })
                     .error(function(data) {
                         $scope.runner.msg = "Error adding runner: " + data;

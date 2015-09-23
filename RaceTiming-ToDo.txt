@@ -4,17 +4,13 @@ Race Timing Software - ToDo
 General
 -------
 - Export data in CSV/Excel format (C)
+- Backup DB??
 
 Race Entry
 ----------
-- Add "affiliated" check box and if affiliated, ensure that a valid club is given.
 - Can we use ngAutocomplete for Club and Team fields?
 - Can we add client side validation?
 
-Race Entrants
--------------
-- Add page for editing a runner (click on pencil).
-- Do we want to be able to delete runners?
 
 Finish Position Entry
 ---------------------
