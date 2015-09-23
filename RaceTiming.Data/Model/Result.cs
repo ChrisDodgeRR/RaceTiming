@@ -20,7 +20,7 @@ namespace RedRat.RaceTiming.Data.Model
 
         public void AppendReason( string reason )
         {
-            if ( Reason == null )
+            if ( string.IsNullOrWhiteSpace( Reason ) )
             {
                 Reason = reason;
             }
@@ -28,6 +28,12 @@ namespace RedRat.RaceTiming.Data.Model
             {
                 Reason = Reason + "; " + reason;
             }
+        }
+
+        public void ClearDubiousFlag()
+        {
+            DubiousResult = false;
+            Reason = "";
         }
     }
 }

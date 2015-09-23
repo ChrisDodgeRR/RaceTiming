@@ -13,9 +13,7 @@ Race Entry
 
 
 Finish Position Entry
----------------------
-- Position entry work with "enter" as well as submit.
-    
+---------------------  
 - Editing result:
 	- Need to be able to edit (and then save) the time and number.
 	- Should we be able to delete a time, and so shuffle the times?
@@ -24,6 +22,6 @@ Finish Position Entry
 
 Prize Winners
 -------------
-- Do the server side calculations  for team results(C)
+- Do the server side calculations for team results(C)
 - Test the prize calculations.
 

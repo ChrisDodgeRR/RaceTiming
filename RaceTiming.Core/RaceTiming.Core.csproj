@@ -73,9 +73,11 @@
     <Compile Include="Util\DateParser.cs" />
     <Compile Include="Util\WmaCalculator.cs" />
     <Compile Include="ViewModels\Finisher.cs" />
+    <Compile Include="ViewModels\NewResult.cs" />
     <Compile Include="ViewModels\NewRunner.cs" />
     <Compile Include="ViewModels\PositionResult.cs" />
     <Compile Include="ViewModels\RunnerNumber.cs" />
+    <Compile Include="ViewModels\TeamResult.cs" />
     <Compile Include="Web\ApiModule.cs" />
     <Compile Include="Web\WebController.cs" />
     <Compile Include="Web\ViewsModule.cs" />
@@ -101,6 +103,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="Views\Teams.sshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Views\Winners.sshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

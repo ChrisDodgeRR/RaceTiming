@@ -1,0 +1,14 @@
+﻿@Master['Master.sshtml']
+
+@Section['Content']
+<div ng-app="RaceTiming" ng-controller="TeamsController">
+	<h2 class="tab">Team Results - {{ raceinfo.name }} - {{ raceinfo.date | date:'longDate' }}</h2>
+	<hr />
+
+	<div ng-repeat="team in teams">
+		<h3 style="text-decoration: underline" class="tab">{{ team.name }}</h3>
+		</h3>
+	</div>
+
+</div>
+@EndSection

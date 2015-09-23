@@ -5,9 +5,9 @@
 <hr>
 
 <div ng-app="RaceTiming" ng-controller="EntrantsController">
-<form ng-submit="updateRunner()">
 
- <modal visible="showEditDialog">
+<form ng-submit="updateRunner()">
+<modal visible="showEditDialog">
     <table class="tab">
     <tbody>
 	<tr>
@@ -52,9 +52,9 @@
 <br />
 <p style="margin-left: 350px"><input type="submit" id="submit" value="Save" /></p>
 <p class="tab red">{{errormsg}}</p>
+</modal>
 </form>
 
-</modal>
  <table class="table table-striped">
     <thead>
       <tr>

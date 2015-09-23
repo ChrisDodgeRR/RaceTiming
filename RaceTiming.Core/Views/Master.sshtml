@@ -36,6 +36,9 @@
                     <li>
                         <a href="/winners">Prize Winners</a>
                     </li>
+                    <li>
+                        <a href="/teams">Team Results</a>
+                    </li>
                 </ul>
             </nav>
         </div>

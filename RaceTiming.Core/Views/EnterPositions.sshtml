@@ -5,6 +5,29 @@
 <hr/>
 
 <div ng-app="RaceTiming" ng-controller="ResultsController">
+	<form ng-submit="updateResult()">
+	<modal visible="showEditDialog">
+	    <table style="margin-left:120px">
+		<tbody>
+			<tr>
+				<td>Time:</td>
+				<td>
+					<input style="width:35px" class="tab" type="number" ng-model="raceResult.time.hours"> <b>H</b>
+					<input style="width:40px; margin-left: 10px" class="tab" type="number" ng-model="raceResult.time.minutes"> <b>M</b>
+					<input style="width:40px; margin-left: 10px" class="tab" type="number" ng-model="raceResult.time.seconds"> <b>S</b>
+				</td>
+			</tr>
+			<tr>
+				<td>Number:</td>
+				<td><input style="width:174px" class="tab" type="number" ng-model="raceResult.raceNumber"/></td>
+			</tr>
+		</tbody>
+		</table>
+		<br />
+		<p style="margin-left: 344px"><input type="submit" id="submit" value="Save" /></p>
+		<p class="tab red">{{errormsg}}</p>
+	</modal>
+	</form>
 
 	<p class="tab">Result position: <input type="number" ng-model="position.value" ng-enter="position.save()" />
 		<button ng-click="position.save()">Save</button>
@@ -29,7 +52,7 @@
           <td data-title=" 'Number' ">{{ raceResult.raceNumber }}</td>
           <td data-title=" 'Comment' ">{{ raceResult.reason }}</td>
             <td>
-                <button style="display:inline-block" onclick="alert('Edit result')">
+                <button style="display:inline-block" ng-click="toggleDialog(raceResult.position)">
                     <img src="/Content/Edit.png" title="Edit Result" alt="edit result">
                 </button>
             </td>

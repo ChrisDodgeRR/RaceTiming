@@ -273,37 +273,65 @@ namespace RedRat.RaceTiming.Data
         /// </summary>
         public void AddResultNumber( int number )
         {
-            const string dupResultMsg = "Duplicate runner number";
-
             CheckHaveDb();
             lock ( dbLock )
             {
-                // First check to see if this number is a duplicate
-                var resultsWithNumber = dbRoot.resultPositionIndex.Where( r => r.RaceNumber == number ).ToList();
-                var haveDuplicate = false;
-                foreach (var result in resultsWithNumber)
-                {
-                    haveDuplicate = true;
-                    result.DubiousResult = true;
-                    result.AppendReason(dupResultMsg);
-                    result.Modify();
-                }
-
                 var nextResult = dbRoot.resultPositionIndex.OrderBy( r => r.Time ).FirstOrDefault( r => r.RaceNumber == 0 );
                 if ( nextResult == null )
                 {
+                    // ToDo: Need to create a result and guess the time
                     throw new Exception("No more results to add numbers to.");
                 }
                 nextResult.RaceNumber = number;
-                if ( haveDuplicate )
-                {
-                    nextResult.DubiousResult = true;
-                    nextResult.AppendReason( dupResultMsg );
-                }
                 nextResult.Modify();
-
+                CheckResult( nextResult );
                 db.Commit();
             }
+        }
+
+        private void CheckAllResults()
+        {
+            CheckHaveDb();
+            lock ( dbLock )
+            {
+                var dubiousResults = dbRoot.resultPositionIndex.Where( r => r.DubiousResult );
+                foreach ( var dubiousResult in dubiousResults )
+                {
+                    CheckResult( dubiousResult );
+                }
+                db.Commit();
+            }
+        }
+
+        private void CheckResult( Result result )
+        {
+            // Note: Has to be called within a TX lock.
+            const string dupResultMsg = "Duplicate runner number";
+
+            // Check to see if this number is a duplicate
+            var resultsWithNumber = dbRoot.resultPositionIndex
+                .Where( r => r.RaceNumber == result.RaceNumber )
+                .Where( r => r.Oid != result.Oid )      // Don't want to check ourselves
+                .ToList();
+            var haveDuplicate = false;
+            foreach ( var dupRes in resultsWithNumber )
+            {
+                haveDuplicate = true;
+                dupRes.DubiousResult = true;
+                dupRes.AppendReason(dupResultMsg);
+                dupRes.Modify();
+            }
+
+            if ( haveDuplicate )
+            {
+                result.DubiousResult = true;
+                result.AppendReason(dupResultMsg);
+            }
+            else
+            {
+                result.ClearDubiousFlag();
+            }
+            result.Modify();
         }
 
         public IList<Result> GetResults()
@@ -328,6 +356,26 @@ namespace RedRat.RaceTiming.Data
                 dbRoot.resultPositionIndex.Clear();
                 db.Commit();
             }
+        }
+
+        public void UpdateResult( Result result )
+        {
+            CheckHaveDb();
+            lock ( dbLock )
+            {
+                var dbResult = dbRoot.resultPositionIndex.FirstOrDefault( r => r.Position == result.Position );
+                if ( dbResult == null )
+                {
+                    throw new Exception("Unable to find a result for position " + result.Position );
+                }
+                dbResult.RaceNumber = result.RaceNumber;
+                dbResult.Time = result.Time;
+                dbResult.Modify();
+                CheckResult( dbResult );
+                db.Commit();
+            }
+
+            CheckAllResults();
         }
 
         /// <summary>

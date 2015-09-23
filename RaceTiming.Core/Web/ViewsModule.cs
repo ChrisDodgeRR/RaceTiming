@@ -1,5 +1,4 @@
 ﻿using Nancy;
-using RedRat.RaceTiming.Core.ViewModels;
 
 namespace RedRat.RaceTiming.Core.Web
 {
@@ -18,6 +17,8 @@ namespace RedRat.RaceTiming.Core.Web
             Get["/allresults"] = parameters => View["Results"];
 
             Get["/winners"] = parameters => View["Winners"];
+
+            Get["/teams"] = parameters => View["Teams"];
         }
 	}
 }

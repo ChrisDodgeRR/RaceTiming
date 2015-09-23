@@ -33,9 +33,50 @@ namespace RedRat.RaceTiming.Core.Web
 
             Get["/results"] = parameters => SetDefaultHeaders( Response.AsJson( GetResults( controllerFactory ) ) );
 
-            Get["/finishers"] = parameters => SetDefaultHeaders( Response.AsJson( GetFinishers( controllerFactory ) ) );
+            Get["/result"] = parameters =>
+            {
+                var position = Request.Query["position"];
+                var raceResult = GetResult(controllerFactory, position);
+                var statusCode = HttpStatusCode.OK;
+                if (raceResult == null)
+                {
+                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???                    
+                }
+                return SetDefaultHeaders(Response.AsJson(new { raceResult = raceResult }, statusCode));
+            };
+
+            Post["/updateresult"] = ( x ) =>
+            {
+                var appController = controllerFactory.AppController;
+                var message = "";
+                var statusCode = HttpStatusCode.OK;
+                var newResult = this.Bind<NewResult>();
+
+                try
+                {
+                    var result = new Result()
+                    {
+                        Position = newResult.Position,
+                        RaceNumber = newResult.RaceNumber,
+                        Time = new TimeSpan( newResult.Hours, newResult.Minutes, newResult.Seconds ),
+                    };
+                    appController.DbService.UpdateResult( result );
+                }
+                catch (Exception ex)
+                {
+                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
+                    message = ex.Message;
+                    Trace.WriteLineIf(AppController.traceSwitch.TraceError, "Error updating result: " + ex.Message);
+                }
+
+                return SetDefaultHeaders(Response.AsJson(message, statusCode));
+            };
+
+            Get["/finishers"] = parameters => SetDefaultHeaders(Response.AsJson(GetFinishers(controllerFactory)));
 
             Get["/winners"] = parameters => SetDefaultHeaders( Response.AsJson( GetWinners( controllerFactory ) ) );
+
+            Get["/teams"] = parameters => SetDefaultHeaders(Response.AsJson(GetTeams(controllerFactory)));
 
             Post["/addrunner"] = ( x ) =>
             {
@@ -274,7 +315,19 @@ namespace RedRat.RaceTiming.Core.Web
 			return new { raceResults = raceResults };
         }
 
-        protected object GetFinishers( ControllerFactory controllerFactory )
+        protected object GetResult(ControllerFactory controllerFactory, int position )
+        {
+            var result = controllerFactory.AppController.GetResults().FirstOrDefault( r => r.Position == position);
+            if ( result == null ) return null;
+            return new
+            {
+                position = position,
+                time = result.Time,
+                result.RaceNumber,
+            };
+        }
+
+        protected object GetFinishers(ControllerFactory controllerFactory)
         {
             var finishers = controllerFactory.AppController.GetFinishers();
             return new { finishers = finishers };
@@ -286,7 +339,13 @@ namespace RedRat.RaceTiming.Core.Web
             return new { winners = winners };
         }
 
-        private void CheckField( string field, string fieldname )
+        private object GetTeams(ControllerFactory controllerFactory)
+        {
+            var teams = controllerFactory.AppController.GetTeamResults();
+            return new { teams = teams };
+        }
+
+        private void CheckField(string field, string fieldname)
         {
             if ( string.IsNullOrEmpty( field ) )
             {

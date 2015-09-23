@@ -145,6 +145,7 @@
         $scope.dob = {
             value: new Date()
         };
+
         $scope.toggleDialog = function (number) {
             $scope.errormsg = "";
             $scope.runnerNumber = number;
@@ -214,7 +215,6 @@
 
     // FINISH POSITION ENTRY PAGE ***************************************************
     app.controller('ResultsController', function($scope, $http, $timeout) {
-
         $scope.position = {
             value: "",
             log: "",
@@ -236,6 +236,46 @@
             }
         }
 
+        // Shows the result editing dialog
+        $scope.toggleDialog = function (position) {
+            $scope.errormsg = "";
+
+            $scope.resultPosition = position;
+            $scope.raceResult = {};     // Not sure why need to declare here.
+            $scope.title = "Edit Result - Position " + $scope.resultPosition;
+
+            $http({
+                url: "/api/result",
+                method: "GET",
+                params: { position: position }
+            }).success(function (response) {
+                $scope.raceResult = response.raceResult;
+            });
+
+            $scope.showEditDialog = !$scope.showEditDialog;
+        };
+
+        // Updates the result
+        $scope.updateResult = function() {
+            $http.post('/api/updateresult', {
+                    'position': $scope.raceResult.position,
+                    'raceNumber': $scope.raceResult.raceNumber,
+                    'hours': $scope.raceResult.time.hours,
+                    'minutes': $scope.raceResult.time.minutes,
+                    'seconds': $scope.raceResult.time.seconds,
+                })
+                .success(function(data) {
+                    // Close dialog
+                    $scope.showEditDialog = !$scope.showEditDialog;
+                    // Reload runner data
+                    $scope.getData();
+                })
+                .error(function(data) {
+                    $scope.errormsg = "Error updating runner: " + data;
+                    console.log($scope.errormsg);
+                });
+        };
+
         // Function to get the data
         $scope.getData = function() {
             $http.get("/api/results")
@@ -244,13 +284,12 @@
                 });
         };
 
-
         // Function to replicate setInterval using $timeout service.
         $scope.intervalFunction = function() {
             $timeout(function() {
                 $scope.getData();
                 $scope.intervalFunction();
-            }, 500);
+            }, 1000);
         };
 
         // Kick off the interval
@@ -295,4 +334,19 @@
             ];
             });
     });
+
+    // TEAM RESULTS PAGE ********************************************************
+    app.controller('TeamsController', function ($scope, $http) {
+
+        $http.get("/api/raceinfo").
+            success(function(response) {
+                $scope.raceinfo = response;
+            });
+
+        $http.get("/api/teams")
+            .success(function (response) {
+                $scope.teams = response.teams;
+            });
+    });
+
 })();
