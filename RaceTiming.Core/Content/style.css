@@ -16,7 +16,7 @@ li {
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-    padding: 2px;
+    padding: 2px 2px 2px 8px;
     vertical-align: middle;
 }
 

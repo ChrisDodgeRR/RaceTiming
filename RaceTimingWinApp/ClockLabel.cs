@@ -16,6 +16,7 @@ namespace RedRat.RaceTimingWinApp
             Margin = new Padding( 0 );
             TextAlign = ContentAlignment.MiddleCenter;
             AutoSize = false;
+            MinimumSize = new Size(200, 100);   // Stop window minimization setting ClientRectangle to 0 height.
 
             SizeChanged += LabelSizeChanged;
         }

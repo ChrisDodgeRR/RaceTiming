@@ -9,19 +9,17 @@ General
 Race Entry
 ----------
 - Can we use ngAutocomplete for Club and Team fields?
-- Can we add client side validation?
+[- Can we add client side validation?]
 
 
 Finish Position Entry
 ---------------------  
 - Editing result:
-	- Need to be able to edit (and then save) the time and number.
 	- Should we be able to delete a time, and so shuffle the times?
 	- Should we be able to delete a number and so suffles the numbers down?
     - Should we be able to delete a whole result line?
+    - Inserting a new result???
 
-Prize Winners
--------------
-- Do the server side calculations for team results(C)
-- Test the prize calculations.
+- Dubious result management
 
+- Should the number of results displayed be limted?

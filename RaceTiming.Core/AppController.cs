@@ -396,9 +396,6 @@ namespace RedRat.RaceTiming.Core
                 new[] {AgeGroup.AgeGroupEnum.FV60, AgeGroup.AgeGroupEnum.FV70}, alreadyGotAPrize, 1 );
             winners.Add( AgeGroup.AgeGroupEnum.FV60.ToString(), catWinners );
 
-            //var teams = GetTeamNames( runners );
-            //var teamResults = GetTeamResults( teams, finishers );
-
             return winners;
         }
 
@@ -429,36 +426,8 @@ namespace RedRat.RaceTiming.Core
         public IList<TeamResult> GetTeamResults()
         {
             var finishers = GetFinishers();
-
-            var teamNames = GetTeamNames( finishers );
-            var teamResults = teamNames.Select( teamName => new TeamResult {Name = teamName} ).ToList();
-            return teamResults;
-        }
-
-        /// <summary>
-        /// Extracts teams from the entry list.
-        /// </summary>
-        public static List<string> GetTeamNames(IList<Finisher> finishers )
-        {
-            // 1. Find teams - needs 4 or more runners
-            var allTeams = finishers.Where( r=> !string.IsNullOrEmpty(r.Team) ).Select( r => r.Team.ToUpper() ).Distinct().ToList();
-            var teamList =
-                allTeams.Where(
-                    t =>
-                        finishers.Count(
-                            r => !string.IsNullOrEmpty( r.Team ) && r.Team.Equals( t, StringComparison.InvariantCultureIgnoreCase ) ) >= 4 );
-
-            // 2. Find clubs - 4 or more runners
-            var allClubs = finishers.Where(r => !string.IsNullOrEmpty(r.Club)).Select(r => r.Club.ToUpper()).Distinct().ToList();
-            var clubList =
-                allClubs.Where(
-                    t =>
-                        finishers.Count(
-                            r => !string.IsNullOrEmpty(r.Club) && r.Club.Equals(t, StringComparison.InvariantCultureIgnoreCase)) >= 4);
-
-            var list = teamList.ToList();
-            list.AddRange( clubList );
-            return list;
+            var teamResults = TeamCalc.GetTeamResults( finishers ).OrderBy( tr => tr.Score );
+            return teamResults.ToList();
         }
     }
 }

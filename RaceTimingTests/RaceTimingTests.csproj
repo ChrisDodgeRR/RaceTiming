@@ -56,7 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\AppControllerTests.cs" />
+    <Compile Include="Core\Util\TeamCalcTest.cs" />
     <Compile Include="Core\Util\AgeGroupTest.cs" />
     <Compile Include="Core\Util\DateParserTests.cs" />
     <Compile Include="Data\DbServiceTests.cs" />
