@@ -63,5 +63,16 @@ namespace RedRat.RaceTiming.Data.Model
             }
             return txt.ToString();
         }
+
+        /// <summary>
+        /// Transfers all state, apart from position.
+        /// </summary>
+        public static void TransferState( Result to, Result from )
+        {
+            to.Time = from.Time;
+            to.RaceNumber = from.RaceNumber;
+            to.WmaScore = from.WmaScore;
+            to.DubiousResult = from.DubiousResult;
+        }
     }
 }

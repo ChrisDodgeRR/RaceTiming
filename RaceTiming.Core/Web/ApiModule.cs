@@ -92,6 +92,33 @@ namespace RedRat.RaceTiming.Core.Web
                 return SetDefaultHeaders(Response.AsJson(message, statusCode));
             };
 
+            Post["/addresult"] = (x) =>
+            {
+                var appController = controllerFactory.AppController;
+                var message = "";
+                var statusCode = HttpStatusCode.OK;
+                var newResult = this.Bind<NewResult>();
+
+                try
+                {
+                    var result = new Result()
+                    {
+                        Position = newResult.Position,
+                        RaceNumber = newResult.RaceNumber,
+                        Time = new TimeSpan(newResult.Hours, newResult.Minutes, newResult.Seconds),
+                    };
+                    appController.DbService.InsertResult( result );
+                }
+                catch (Exception ex)
+                {
+                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
+                    message = ex.Message;
+                    Trace.WriteLineIf(AppController.traceSwitch.TraceError, "Error updating result: " + ex.Message);
+                }
+
+                return SetDefaultHeaders(Response.AsJson(message, statusCode));
+            };
+
             Get["/finishers"] = parameters => SetDefaultHeaders(Response.AsJson(GetFinishers(controllerFactory)));
 
             Get["/winners"] = parameters => SetDefaultHeaders( Response.AsJson( GetWinners( controllerFactory ) ) );

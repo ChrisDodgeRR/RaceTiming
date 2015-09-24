@@ -136,6 +136,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\bootstrap.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

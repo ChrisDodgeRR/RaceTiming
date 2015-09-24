@@ -433,7 +433,7 @@ namespace RedRat.RaceTimingWinApp
             {
                 try
                 {
-                    appController.DeleteResultTimeAtPosition(pos);
+                    appController.DeleteResultAtPosition(pos);
                 }
                 catch ( Exception ex )
                 {

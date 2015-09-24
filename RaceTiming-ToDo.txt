@@ -4,7 +4,6 @@ Race Timing Software - ToDo
 General
 -------
 - Export data in CSV/Excel format (C)
-- Backup DB??
 
 Race Entry
 ----------
@@ -19,7 +18,5 @@ Finish Position Entry
 	- Should we be able to delete a number and so suffles the numbers down?
     - Should we be able to delete a whole result line?
     - Inserting a new result???
-
-- Dubious result management
 
 - Should the number of results displayed be limted?

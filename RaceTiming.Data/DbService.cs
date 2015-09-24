@@ -416,41 +416,78 @@ namespace RedRat.RaceTiming.Data
         /// <summary>
         /// Deletes the result at the given position.
         /// </summary>
-        /// <param name="pos">Finishing position of result to delete</param>
-        /// <param name="deleteNumber">Should the finishing race be deleted as well? If not, then the race numbers are shuffled up.</param>
-        public void DeleteResultAtPosition( int pos, bool deleteNumber )
+        public void DeleteResultAtPosition( int pos )
         {
             CheckHaveDb();
             lock ( dbLock )
             {
-                var result = dbRoot.resultPositionIndex.FirstOrDefault( r => r.Position == pos );
+                var resultIndex = dbRoot.resultPositionIndex;
+                var result = resultIndex.FirstOrDefault( r => r.Position == pos );
                 if ( result == null )
                 {
                     var msg = string.Format( "No result found for position {0}", pos );
                     Trace.WriteLineIf( dbTraceSwitch.TraceWarning, msg );
                     throw new Exception( msg );
                 }
-                if ( result.RaceNumber == 0 )
+
+                // Shuffle all the results down...
+                var orderedResults = resultIndex.ToList().OrderBy( r => r.Position ).Where( r => r.Position >= pos ).ToList();
+                for ( var i = 0; i < orderedResults.Count - 1; i++ )
                 {
-                    // No associated result race number, so just delete the time.
-                    DeleteResultTimeAtPosition(dbRoot.resultPositionIndex, pos);
-                    db.Commit();
+                    Result.TransferState( orderedResults[i], orderedResults[i + 1] );
+                    orderedResults[i].Modify();
                 }
+                // Remove last result
+                var lastResult = resultIndex[resultIndex.Max( r => r.Position )];
+                resultIndex.Remove( lastResult.Position, lastResult );
+                db.Commit();
             }
         }
 
-        public static void DeleteResultTimeAtPosition( IIndex<int, Result> resultIndex, int position )
+        /// <summary>
+        /// Insert result at the given position contained in the result.
+        /// </summary>
+        public void InsertResult(Result newResult)
         {
-            var orderedResults = resultIndex.ToList().OrderBy( r => r.Position ).Where( r => r.Position >= position ).ToList();
-            for ( var i = 0; i < orderedResults.Count - 1; i++ )
+            CheckHaveDb();
+
+            if (newResult == null)
             {
-                // ToDo: Also copy race number???
-                orderedResults[i].Time = orderedResults[i + 1].Time;
-                orderedResults[i].Modify();
+                throw new ArgumentNullException("result");
             }
-            // Remove last result
-            var lastResult = resultIndex[resultIndex.Max( r => r.Position )];
-            resultIndex.Remove( lastResult.Position, lastResult );
+
+            if (newResult.Position == 0)
+            {
+                throw new Exception("Result position can't be zero.");
+            }
+
+            lock (dbLock)
+            {
+                var resultIndex = dbRoot.resultPositionIndex;
+
+                // Add empty result at end
+                var pos = GetNextPosition();
+
+                if (newResult.Position > pos )
+                {
+                    throw new Exception("Cannot insert past end of result set.");
+                }
+
+                resultIndex.Put(pos, new Result {Position = pos});
+
+                // Shuffle all the results up...
+                var orderedResults = resultIndex.ToList().OrderBy(r => r.Position).Where(r => r.Position >= newResult.Position).ToList();
+                for (var i = orderedResults.Count - 2; i >= 0; i-- )
+                {
+                    Result.TransferState(orderedResults[i + 1], orderedResults[i]);
+                    orderedResults[i + 1].Modify();
+                }
+
+                // Update new result
+                var resultToUpdate = resultIndex.First( r => r.Position == newResult.Position);
+                Result.TransferState( resultToUpdate, newResult );
+                db.Commit();
+            }
         }
         #endregion
     }

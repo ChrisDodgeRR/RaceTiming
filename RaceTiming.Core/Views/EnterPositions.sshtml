@@ -29,6 +29,31 @@
 	</modal>
 	</form>
 
+	<form ng-submit="addResult()">
+	<modal visible="showAddDialog">
+		<p>This will insert a new result at this position:</p>
+	    <table style="margin-left:120px">
+		<tbody>
+			<tr>
+				<td>Time:</td>
+				<td>
+					<input style="width:35px" class="tab" type="number" ng-model="raceResult.time.hours"> <b>H</b>
+					<input style="width:40px; margin-left: 10px" class="tab" type="number" ng-model="raceResult.time.minutes"> <b>M</b>
+					<input style="width:40px; margin-left: 10px" class="tab" type="number" ng-model="raceResult.time.seconds"> <b>S</b>
+				</td>
+			</tr>
+			<tr>
+				<td>Number:</td>
+				<td><input style="width:174px" class="tab" type="number" ng-model="raceResult.raceNumber"/></td>
+			</tr>
+		</tbody>
+		</table>
+		<br />
+		<p style="margin-left: 344px"><input type="submit" id="submit" value="Save" /></p>
+		<p class="tab red">{{errormsg}}</p>
+	</modal>
+	</form>
+
 	<p class="tab">Result position: <input type="number" ng-model="position.value" ng-enter="position.save()" />
 		<button ng-click="position.save()">Save</button>
 	</p>
@@ -42,7 +67,9 @@
         <th>Time</th>
         <th>Number</th>
         <th width="40%">Comment</th>
-        <th>Edit</th>
+        <th width="6%">Edit</th>
+        <th width="6%">Insert</th>
+        <th width="6%">Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -52,8 +79,18 @@
           <td data-title=" 'Number' ">{{ raceResult.raceNumber }}</td>
           <td data-title=" 'Comment' ">{{ raceResult.reason }}</td>
             <td>
-                <button style="display:inline-block" ng-click="toggleDialog(raceResult.position)">
+                <button style="display:inline-block" ng-click="toggleEditDialog(raceResult.position)">
                     <img src="/Content/Edit.png" title="Edit Result" alt="edit result">
+                </button>
+            </td>
+            <td>
+                <button style="display:inline-block" ng-click="toggleAddDialog(raceResult.position)">
+                    <img src="/Content/Add.png" title="Edit Result" alt="edit result">
+                </button>
+            </td>
+            <td>
+                <button style="display:inline-block" ng-click="toggleDeleteDialog(raceResult.position)">
+                    <img src="/Content/Delete.png" title="Edit Result" alt="edit result">
                 </button>
             </td>
          </tr>

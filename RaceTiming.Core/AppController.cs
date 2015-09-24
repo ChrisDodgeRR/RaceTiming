@@ -269,12 +269,11 @@ namespace RedRat.RaceTiming.Core
         }
 
         /// <summary>
-        /// Deletes the result time at the given position. If it contains a finishing number
-        /// then they are shuffled down.
+        /// Deletes the result time at the given position, even if it has a finishing position.
         /// </summary>
-        public void DeleteResultTimeAtPosition( int pos )
+        public void DeleteResultAtPosition( int pos )
         {
-            db.DeleteResultAtPosition( pos, false );
+            db.DeleteResultAtPosition( pos );
             OnResultDataChange();
         }
 

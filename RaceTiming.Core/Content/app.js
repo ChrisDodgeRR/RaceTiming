@@ -237,7 +237,7 @@
         }
 
         // Shows the result editing dialog
-        $scope.toggleDialog = function (position) {
+        $scope.toggleEditDialog = function (position) {
             $scope.errormsg = "";
 
             $scope.resultPosition = position;
@@ -255,9 +255,28 @@
             $scope.showEditDialog = !$scope.showEditDialog;
         };
 
-        // Updates the result
-        $scope.updateResult = function() {
-            $http.post('/api/updateresult', {
+        // Shows the result addition dialog
+        $scope.toggleAddDialog = function (position) {
+            $scope.errormsg = "";
+
+            $scope.resultPosition = position;
+            $scope.raceResult = {};     // Not sure why need to declare here.
+            $scope.title = "Add New Result - Position " + $scope.resultPosition;
+
+            /*$http({
+                url: "/api/result",
+                method: "GET",
+                params: { position: position }
+            }).success(function (response) {
+                $scope.raceResult = response.raceResult;
+            }); */
+
+            $scope.showAddDialog = !$scope.showAddDialog;
+        };
+
+        // Adds a new result
+        $scope.addResult = function() {
+            $http.post('/api/addresult', {
                     'position': $scope.raceResult.position,
                     'raceNumber': $scope.raceResult.raceNumber,
                     'hours': $scope.raceResult.time.hours,
@@ -266,12 +285,33 @@
                 })
                 .success(function(data) {
                     // Close dialog
-                    $scope.showEditDialog = !$scope.showEditDialog;
-                    // Reload runner data
+                    $scope.showAddDialog = !$scope.showAddDialog;
+                    // Reload result data
                     $scope.getData();
                 })
                 .error(function(data) {
-                    $scope.errormsg = "Error updating runner: " + data;
+                    $scope.errormsg = "Error adding result: " + data;
+                    console.log($scope.errormsg);
+                });
+        };
+
+        // Updates a result
+        $scope.updateResult = function () {
+            $http.post('/api/updateresult', {
+                'position': $scope.raceResult.position,
+                'raceNumber': $scope.raceResult.raceNumber,
+                'hours': $scope.raceResult.time.hours,
+                'minutes': $scope.raceResult.time.minutes,
+                'seconds': $scope.raceResult.time.seconds,
+            })
+                .success(function (data) {
+                    // Close dialog
+                    $scope.showEditDialog = !$scope.showEditDialog;
+                    // Reload result data
+                    $scope.getData();
+                })
+                .error(function (data) {
+                    $scope.errormsg = "Error updating result: " + data;
                     console.log($scope.errormsg);
                 });
         };
