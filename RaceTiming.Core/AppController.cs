@@ -56,6 +56,9 @@ namespace RedRat.RaceTiming.Core
             }
 
             clockTime.ClockRunningHandler += (s, b) => clockRunning = b;
+
+            // Initial check of results
+            db.CheckResults();
         }
 
         public string GetRootUrl()
@@ -119,6 +122,11 @@ namespace RedRat.RaceTiming.Core
             db.Open(dbFilename);
             logController.Open(Path.ChangeExtension(dbFilename, ".log"));
             options.LastFile = dbFilename;
+        }
+
+        public string BackupDb()
+        {
+            return !db.IsDbOpen ? null : db.BackupDb();
         }
 
         /// <summary>

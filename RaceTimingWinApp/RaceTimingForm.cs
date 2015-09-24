@@ -198,6 +198,26 @@ namespace RedRat.RaceTimingWinApp
             MessageBox.Show( msg, "Import Complete", MessageBoxButtons.OK, MessageBoxIcon.Information );
         }
 
+        private void BackupDbToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            try
+            {
+                if ( !CheckHaveDb() ) return;
+
+                var backupFilename = appController.BackupDb();
+                if ( backupFilename != null )
+                {
+                    var msg = string.Format( "Database backed up to '{0}'", backupFilename );
+                    MessageBox.Show( msg, "Backup Complete", MessageBoxButtons.OK, MessageBoxIcon.Information );
+                }
+            }
+            catch ( Exception ex )
+            {
+                var msg = string.Format( "Unable to backup database - {0}", ex.Message );
+                MessageBox.Show(msg, "Unable to Backup", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void OptionsToolStripMenuItemClick(object sender, EventArgs e)
         {
             var optionsDialog = new OptionsDialog( appController.Options )
@@ -422,5 +442,6 @@ namespace RedRat.RaceTimingWinApp
                 }
             }
         }
+
     }
 }

@@ -41,12 +41,12 @@
         <th>Position</th>
         <th>Time</th>
         <th>Number</th>
-        <th>Comment</th>
+        <th width="40%">Comment</th>
         <th>Edit</th>
       </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="raceResult in raceResults" ng-class="{'red':raceResult.dubiousResult == true}">
+        <tr ng-repeat="raceResult in raceResults" ng-class="{'red':raceResult.dubiousResult != 0}">
           <td data-title=" 'Position' ">{{ raceResult.position }}</td>
           <td data-title=" 'Time' ">{{ raceResult.time | date: 'HH:mm:ss' }}</td>
           <td data-title=" 'Number' ">{{ raceResult.raceNumber }}</td>

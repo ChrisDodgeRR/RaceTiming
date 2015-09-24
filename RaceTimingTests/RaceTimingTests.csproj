@@ -60,6 +60,7 @@
     <Compile Include="Core\Util\AgeGroupTest.cs" />
     <Compile Include="Core\Util\DateParserTests.cs" />
     <Compile Include="Data\DbServiceTests.cs" />
+    <Compile Include="Data\Model\ResultTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

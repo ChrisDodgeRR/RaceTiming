@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using RedRat.RaceTiming.Data.Model;
 using Volante;
@@ -102,6 +103,27 @@ namespace RedRat.RaceTiming.Data
             {
                 throw new NoDatabaseException( "No database." );
             }
+        }
+
+        public string BackupDb()
+        {
+            if (!IsDbOpen) return null;
+
+            var fileInfo = new FileInfo( dbFilename );
+            var timestamp = DateTime.Now.ToString( "dd-MM-yyyy HH.mm.ss" );
+            var backupFilename = fileInfo.FullName.Replace( 
+                fileInfo.Extension, 
+                string.Format(" Bck [{0}]{1}", timestamp, fileInfo.Extension) );
+
+            using ( var stream = new FileStream( backupFilename, FileMode.Create ) )
+            {
+                db.Backup( stream );
+                stream.Flush();
+                stream.Close();
+            }
+
+            Trace.WriteLineIf( dbTraceSwitch.TraceWarning, "Database backed up to: " + backupFilename );
+            return backupFilename;
         }
 
         public void Close()
@@ -284,54 +306,68 @@ namespace RedRat.RaceTiming.Data
                 }
                 nextResult.RaceNumber = number;
                 nextResult.Modify();
-                CheckResult( nextResult );
                 db.Commit();
             }
+            CheckResults();
         }
 
-        private void CheckAllResults()
+        public void CheckResults()
         {
             CheckHaveDb();
             lock ( dbLock )
             {
-                var dubiousResults = dbRoot.resultPositionIndex.Where( r => r.DubiousResult );
-                foreach ( var dubiousResult in dubiousResults )
-                {
-                    CheckResult( dubiousResult );
+                var results = dbRoot.resultPositionIndex.ToList();
+                var runners = dbRoot.runnerNumberIndex.ToList();
+
+                // == Duplicate numbers ==
+                // Clear
+                var currentDups = results.Where( r => r.DubiousResult.HasFlag( Result.DubiousResultEnum.DuplicateNumber ) );
+                foreach ( var duplicate in currentDups.Where( duplicate => Result.RemoveDubiousReason( duplicate, Result.DubiousResultEnum.DuplicateNumber ) ) ) {
+                    duplicate.Modify();
                 }
+
+                // Find duplicates
+                var duplicates = FindDuplicateResults( results );
+                foreach ( var duplicate in duplicates.Where( duplicate => Result.AddDubiousReason( duplicate, Result.DubiousResultEnum.DuplicateNumber ) ) ) {
+                    duplicate.Modify();
+                }
+
+                // == Unknown numbers ==
+                // Clear
+                var currentUnknownNums = results.Where(r => r.DubiousResult.HasFlag(Result.DubiousResultEnum.UnknownNumber));
+                foreach (var unknwonNum in currentUnknownNums.Where(unknwonNum => Result.RemoveDubiousReason(unknwonNum, Result.DubiousResultEnum.UnknownNumber)))
+                {
+                    unknwonNum.Modify();
+                }
+
+                // Flag unknowns
+                var unknownNums = FindUnknownNumbers(results, runners);
+                foreach (var unknownNum in unknownNums.Where(unknownNum => Result.AddDubiousReason(unknownNum, Result.DubiousResultEnum.UnknownNumber)))
+                {
+                    unknownNum.Modify();
+                }
+
                 db.Commit();
             }
         }
 
-        private void CheckResult( Result result )
+        public static IList<Result> FindDuplicateResults(IList<Result> results)
         {
-            // Note: Has to be called within a TX lock.
-            const string dupResultMsg = "Duplicate runner number";
+            // Selects any results which have a duplicate race number
+            var duplicates = results
+                .Where( r => r.RaceNumber != 0 )        // Ignore race number of 0 (no runner number added yet)
+                .GroupBy( r => r.RaceNumber )
+                .Where( g => g.Count() > 1 ).SelectMany( r => r );
+            return duplicates.ToList();
+        }
 
-            // Check to see if this number is a duplicate
-            var resultsWithNumber = dbRoot.resultPositionIndex
-                .Where( r => r.RaceNumber == result.RaceNumber )
-                .Where( r => r.Oid != result.Oid )      // Don't want to check ourselves
-                .ToList();
-            var haveDuplicate = false;
-            foreach ( var dupRes in resultsWithNumber )
-            {
-                haveDuplicate = true;
-                dupRes.DubiousResult = true;
-                dupRes.AppendReason(dupResultMsg);
-                dupRes.Modify();
-            }
-
-            if ( haveDuplicate )
-            {
-                result.DubiousResult = true;
-                result.AppendReason(dupResultMsg);
-            }
-            else
-            {
-                result.ClearDubiousFlag();
-            }
-            result.Modify();
+        public static IList<Result> FindUnknownNumbers(IList<Result> results, IList<Runner> runners)
+        {
+            var knownNumbers = runners.Select( r => r.Number );
+            var unknownNums = results
+                .Where(r => r.RaceNumber != 0)        // Ignore race number of 0 (no runner number added yet)
+                .Where(r => !knownNumbers.Contains(r.RaceNumber));
+            return unknownNums.ToList();
         }
 
         public IList<Result> GetResults()
@@ -371,11 +407,10 @@ namespace RedRat.RaceTiming.Data
                 dbResult.RaceNumber = result.RaceNumber;
                 dbResult.Time = result.Time;
                 dbResult.Modify();
-                CheckResult( dbResult );
                 db.Commit();
             }
 
-            CheckAllResults();
+            CheckResults();
         }
 
         /// <summary>

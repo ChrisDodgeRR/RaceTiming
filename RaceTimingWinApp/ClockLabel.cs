@@ -48,7 +48,12 @@ namespace RedRat.RaceTimingWinApp
 
         public void ClockChangeEventListener( object sender, TimeSpan time )
         {
-            Invoke( new Action( () => { Text = time.ToString( labelFormat ); } ) );
+            Invoke( new Action( () => SetTimeLabel(time) ) );
+        }
+
+        public void SetTimeLabel( TimeSpan time )
+        {
+            Text = time.ToString( labelFormat );
         }
 
         public void Blink()

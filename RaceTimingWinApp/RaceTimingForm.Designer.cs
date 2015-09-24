@@ -61,6 +61,7 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.backupDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -89,6 +90,7 @@
             this.openToolStripMenuItem,
             this.toolStripSeparator1,
             this.importRunnerDataToolStripMenuItem,
+            this.backupDBToolStripMenuItem,
             this.toolStripSeparator2,
             this.optionsToolStripMenuItem,
             this.toolStripSeparator3,
@@ -257,7 +259,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItemClick);
             // 
@@ -329,6 +331,13 @@
             this.columnHeader4.Text = "";
             this.columnHeader4.Width = 24;
             // 
+            // backupDBToolStripMenuItem
+            // 
+            this.backupDBToolStripMenuItem.Name = "backupDBToolStripMenuItem";
+            this.backupDBToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.backupDBToolStripMenuItem.Text = "Backup DB";
+            this.backupDBToolStripMenuItem.Click += new System.EventHandler(this.BackupDbToolStripMenuItemClick);
+            // 
             // RaceTimingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -390,6 +399,7 @@
         private System.Windows.Forms.ToolStripMenuItem raceEntrybrowserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem listAllFinishersbrowserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem prizeWinnersbrowserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem backupDBToolStripMenuItem;
     }
 }
 

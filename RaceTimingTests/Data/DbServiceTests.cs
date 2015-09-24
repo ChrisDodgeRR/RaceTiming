@@ -1,6 +1,8 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using RedRat.RaceTiming.Data;
 using RedRat.RaceTiming.Data.Model;
 using Xunit;
@@ -102,6 +104,31 @@ namespace RaceTimingTests.Data
                 Assert.Throws<Exception>( () => db.DeleteResultAtPosition( 0, false ) );
                 Assert.Throws<Exception>( () => db.DeleteResultAtPosition( 20, false ) );
             }
+        }
+
+        [Fact]
+        public void CanFindDuplicateResults()
+        {
+            var results = new List<Result>
+            {
+                new Result {RaceNumber = 12},
+                new Result {RaceNumber = 1},
+                new Result {RaceNumber = 2},
+                new Result {RaceNumber = 3},
+                new Result {RaceNumber = 12},
+                new Result {RaceNumber = 3},
+                new Result {RaceNumber = 4},
+                new Result {RaceNumber = 12},
+                new Result {RaceNumber = 0},    // Should not count
+                new Result {RaceNumber = 0},
+                new Result {RaceNumber = 0},
+            };
+
+            var duplicates = DbService.FindDuplicateResults( results );
+            Assert.Equal( 5, duplicates.Count );
+
+            Assert.Equal( 2, duplicates.Count( r => r.RaceNumber == 3 ) );
+            Assert.Equal( 3, duplicates.Count( r => r.RaceNumber == 12 ) );
         }
     }
 }

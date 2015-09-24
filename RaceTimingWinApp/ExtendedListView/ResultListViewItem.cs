@@ -19,14 +19,14 @@ namespace RedRat.RaceTimingWinApp.ExtendedListView
                 SubItems.Add("X");
             }
             // ToDo: Improve. The colour disappears on mouse over.
-            if (result.DubiousResult)
+            if ( result.DubiousResult != Result.DubiousResultEnum.None )
             {
                 BackColor = Color.Salmon;
                 foreach ( var subItem in SubItems.Cast<ListViewSubItem>() )
                 {
                     subItem.BackColor = Color.Salmon;
                 }
-            }            
+            }
         }
     }
 }

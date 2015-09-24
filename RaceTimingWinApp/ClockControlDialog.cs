@@ -23,10 +23,10 @@ namespace RedRat.RaceTimingWinApp
                 Location = new Point(20, 50),
                 Name = "clockLabel",
                 Size = new Size(270, 110),
-                //MinimumSize = Size,
             };
             clockControlGroupBox.Controls.Add(clockLabel);
             appController.ClockTime.ClockChangeHandler += clockLabel.ClockChangeEventListener;
+            clockLabel.SetTimeLabel( appController.ClockTime.CurrentTime );
             clockLabel.Redraw();
         }
 

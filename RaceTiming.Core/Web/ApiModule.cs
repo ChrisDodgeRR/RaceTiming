@@ -15,7 +15,17 @@ namespace RedRat.RaceTiming.Core.Web
     {
         public ApiModule( ControllerFactory controllerFactory ) : base("/api")
         {
-            Get["/raceinfo"] = parameters => SetDefaultHeaders( Response.AsJson( GetRaceInfo( controllerFactory ) ) );
+            Get["/raceinfo"] = parameters =>
+            {
+                try
+                {
+                    return SetDefaultHeaders( Response.AsJson( GetRaceInfo( controllerFactory ) ) );
+                }
+                catch ( Exception ex )
+                {
+                    return SetDefaultHeaders(Response.AsJson(ex.Message, HttpStatusCode.InternalServerError));                    
+                }
+            };
 
             Get["/runner"] = parameters =>
             {
@@ -24,14 +34,24 @@ namespace RedRat.RaceTiming.Core.Web
                 var statusCode = HttpStatusCode.OK;
                 if ( runner == null )
                 {
-                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???                    
+                    statusCode = HttpStatusCode.InternalServerError;
                 }
                 return SetDefaultHeaders(Response.AsJson( new {runner = runner}, statusCode));
             };
 
-            Get["/runners"] = parameters => SetDefaultHeaders(Response.AsJson(GetRunners(controllerFactory)));
+            Get["/runners"] = parameters => SetDefaultHeaders( Response.AsJson( GetRunners( controllerFactory ) ) );
 
-            Get["/results"] = parameters => SetDefaultHeaders( Response.AsJson( GetResults( controllerFactory ) ) );
+            Get["/results"] = parameters =>
+            {
+                try
+                {
+                    return SetDefaultHeaders( Response.AsJson( GetResults( controllerFactory ) ) );
+                }
+                catch ( Exception ex )
+                {
+                    return SetDefaultHeaders( Response.AsJson( ex.Message, HttpStatusCode.InternalServerError ) );
+                }
+            };
 
             Get["/result"] = parameters =>
             {
@@ -40,7 +60,7 @@ namespace RedRat.RaceTiming.Core.Web
                 var statusCode = HttpStatusCode.OK;
                 if (raceResult == null)
                 {
-                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???                    
+                    statusCode = HttpStatusCode.InternalServerError;
                 }
                 return SetDefaultHeaders(Response.AsJson(new { raceResult = raceResult }, statusCode));
             };
@@ -310,7 +330,7 @@ namespace RedRat.RaceTiming.Core.Web
                 Time = r.Time.TotalMilliseconds,
                 r.RaceNumber,
                 r.DubiousResult,
-                r.Reason,
+                reason = r.GetDubiousResultReason(),
             }).Cast<object>().ToList();
 			return new { raceResults = raceResults };
         }
