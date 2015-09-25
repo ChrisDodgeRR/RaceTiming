@@ -35,6 +35,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.importRunnerDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backupDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -61,7 +62,6 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.backupDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -124,6 +124,13 @@
             this.importRunnerDataToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.importRunnerDataToolStripMenuItem.Text = "Import Runner Data";
             this.importRunnerDataToolStripMenuItem.Click += new System.EventHandler(this.ImportRunnerDataToolStripMenuItemClick);
+            // 
+            // backupDBToolStripMenuItem
+            // 
+            this.backupDBToolStripMenuItem.Name = "backupDBToolStripMenuItem";
+            this.backupDBToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.backupDBToolStripMenuItem.Text = "Backup DB";
+            this.backupDBToolStripMenuItem.Click += new System.EventHandler(this.BackupDbToolStripMenuItemClick);
             // 
             // toolStripSeparator2
             // 
@@ -331,13 +338,6 @@
             this.columnHeader4.Text = "";
             this.columnHeader4.Width = 24;
             // 
-            // backupDBToolStripMenuItem
-            // 
-            this.backupDBToolStripMenuItem.Name = "backupDBToolStripMenuItem";
-            this.backupDBToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.backupDBToolStripMenuItem.Text = "Backup DB";
-            this.backupDBToolStripMenuItem.Click += new System.EventHandler(this.BackupDbToolStripMenuItemClick);
-            // 
             // RaceTimingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -352,6 +352,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Race Timing";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RaceTimingFormFormClosing);
+            this.Shown += new System.EventHandler(this.RaceTimingFormShown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RaceTimingFormKeyPress);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

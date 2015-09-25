@@ -28,7 +28,7 @@ namespace RaceTimingTests.Data
                 db.AddResultTime(new Result
                 {
                     Position = i + 1, 
-                    Time = new TimeSpan(0, 0, i + 1, 0), 
+                    Time = new TimeSpan(0, i + 1, 0), 
                     RaceNumber = i + 1, 
                     WmaScore = i + 1
                 });
@@ -49,7 +49,7 @@ namespace RaceTimingTests.Data
                     {
                         Position = insertPos,
                         RaceNumber = 20,
-                        Time = new TimeSpan( 0, 20, 0 ),
+                        Time = new TimeSpan( 0, insertPos, 0 ),
                         WmaScore = 20,
                     } );
 
@@ -72,7 +72,7 @@ namespace RaceTimingTests.Data
                         }
                         else if ( result.Position == insertPos )
                         {
-                            Assert.Equal( 20, result.Time.Minutes );
+                            Assert.Equal(insertPos, result.Time.Minutes);
                             Assert.Equal( 20, result.RaceNumber );
                             Assert.Equal( 20, result.WmaScore );
                         }
@@ -89,7 +89,7 @@ namespace RaceTimingTests.Data
         }
 
         [Fact]
-        public void CanDeleteResultPosition()
+        public void CanDeleteResultAtPosition()
         {
             using ( var db = CreateTestDb() )
             {
@@ -120,7 +120,7 @@ namespace RaceTimingTests.Data
         }
 
         [Fact]
-        public void CanDeleteLastResultPosition()
+        public void CanDeleteResultAtLastPosition()
         {
             using ( var db = CreateTestDb() )
             {
@@ -141,7 +141,7 @@ namespace RaceTimingTests.Data
         }
 
         [Fact]
-        public void CanDeleteFirstResultPosition()
+        public void CanDeleteResultAtFrirstPosition()
         {
             using ( var db = CreateTestDb() )
             {
@@ -157,6 +157,40 @@ namespace RaceTimingTests.Data
                     Assert.Equal( i + 2, result.Time.Minutes );
                     Assert.Equal( i + 2, result.RaceNumber );
                     Assert.Equal( i + 2, result.WmaScore );
+                }
+            }
+        }
+
+        [Fact]
+        public void CanDeleteResultNumber()
+        {
+            // This shifts all the numbers down.
+            foreach ( var delPos in new[] {1, 4, 10} )
+            {
+                using ( var db = CreateTestDb() )
+                {
+                    db.DeleteRunnerNumberShiftDown( delPos );
+
+                    var results = db.GetResults();
+                    Assert.Equal( 10, results.Count() );
+
+                    for ( var i = 0; i < results.Count; i++ )
+                    {
+                        var result = results[i];
+                        if ( i < delPos - 1 )
+                        {
+                            Assert.Equal( i + 1, result.RaceNumber );
+                        }
+                        else if ( i == results.Count - 1 )
+                        {
+                            // Last result has 0 shifted into it
+                            Assert.Equal( 0, result.RaceNumber );
+                        }
+                        else
+                        {
+                            Assert.Equal( i + 2, result.RaceNumber );
+                        }
+                    }
                 }
             }
         }

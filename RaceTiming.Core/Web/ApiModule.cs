@@ -45,7 +45,13 @@ namespace RedRat.RaceTiming.Core.Web
             {
                 try
                 {
-                    return SetDefaultHeaders( Response.AsJson( GetResults( controllerFactory ) ) );
+                    var resultsToList = 0;
+                    int.TryParse( Request.Query["resultsToList"], out resultsToList );
+                    if ( resultsToList == 0 )
+                    {
+                        resultsToList = int.MaxValue;
+                    }
+                    return SetDefaultHeaders( Response.AsJson( GetResults( controllerFactory, resultsToList ) ) );
                 }
                 catch ( Exception ex )
                 {
@@ -80,7 +86,7 @@ namespace RedRat.RaceTiming.Core.Web
                         RaceNumber = newResult.RaceNumber,
                         Time = new TimeSpan( newResult.Hours, newResult.Minutes, newResult.Seconds ),
                     };
-                    appController.DbService.UpdateResult( result );
+                    appController.UpdateResult( result );
                 }
                 catch (Exception ex)
                 {
@@ -107,7 +113,7 @@ namespace RedRat.RaceTiming.Core.Web
                         RaceNumber = newResult.RaceNumber,
                         Time = new TimeSpan(newResult.Hours, newResult.Minutes, newResult.Seconds),
                     };
-                    appController.DbService.InsertResult( result );
+                    appController.InsertResult( result );
                 }
                 catch (Exception ex)
                 {
@@ -117,6 +123,49 @@ namespace RedRat.RaceTiming.Core.Web
                 }
 
                 return SetDefaultHeaders(Response.AsJson(message, statusCode));
+            };
+
+            Post["/deleteresult"] = ( x ) =>
+            {
+                var appController = controllerFactory.AppController;
+                var message = "";
+                var statusCode = HttpStatusCode.OK;
+                var deleteResult = this.Bind<DeleteResult>();
+
+                try
+                {
+                    // Neither selected
+                    if ( !deleteResult.DeleteNumber && !deleteResult.DeleteTime )
+                    {
+                        throw new Exception("Nothing selected to delete...");
+                    }
+
+                    // Both selected
+                    if ( deleteResult.DeleteNumber && deleteResult.DeleteTime )
+                    {
+                        appController.DeleteResultAtPosition( deleteResult.Position );
+                    }
+
+                    // Delete just the number - shifting numbers down
+                    else if ( deleteResult.DeleteNumber && !deleteResult.DeleteTime )
+                    {
+                        appController.DeleteRunnerNumberShiftDown(deleteResult.Position);
+                    }
+
+                    // Delete the result time, shifting times down
+                    else if (!deleteResult.DeleteNumber && deleteResult.DeleteTime)
+                    {
+                        appController.DeleteTimeShiftDown(deleteResult.Position);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
+                    message = ex.Message;
+                    Trace.WriteLineIf(AppController.traceSwitch.TraceError, "Error updating result: " + ex.Message);
+                }
+
+                return SetDefaultHeaders(Response.AsJson(message, statusCode));            
             };
 
             Get["/finishers"] = parameters => SetDefaultHeaders(Response.AsJson(GetFinishers(controllerFactory)));
@@ -348,10 +397,10 @@ namespace RedRat.RaceTiming.Core.Web
         /// <summary>
         /// Returns the list of finishing times and positions
         /// </summary>
-        protected object GetResults(ControllerFactory controllerFactory)
+        protected object GetResults(ControllerFactory controllerFactory, int number)
         {
             var results = controllerFactory.AppController.GetResults();
-			var raceResults = results.OrderByDescending(r => r.Position).Select(r => new
+			var raceResults = results.OrderByDescending(r => r.Position).Take( number ).Select(r => new
             {
                 r.Position,
                 Time = r.Time.TotalMilliseconds,

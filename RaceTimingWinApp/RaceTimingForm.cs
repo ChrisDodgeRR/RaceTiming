@@ -57,6 +57,16 @@ namespace RedRat.RaceTimingWinApp
             webController.Start();
 		}
 
+
+        private void RaceTimingFormShown(object sender, EventArgs e)
+        {
+            if ( appController.IsDbOpen )
+            {
+                // On initial start, need to set clock time from file.
+                appController.ClockTime.CurrentTime = appController.CurrentRace.ClockTime;
+            }
+        }
+
         private void SetTitle()
         {
             var name = appController.IsDbOpen ? appController.CurrentRace.Name : "---";
@@ -171,6 +181,7 @@ namespace RedRat.RaceTimingWinApp
             }
             appController.OpenRace( openFileDlg.FileName );
             SetTitle();
+            ListResults();
         }
 
         private void ImportRunnerDataToolStripMenuItemClick( object sender, EventArgs e )
@@ -323,6 +334,8 @@ namespace RedRat.RaceTimingWinApp
         /// </summary>
         private void ResetRaceToolStripMenuItemClick(object sender, EventArgs e)
         {
+            if (!CheckHaveDb()) return;
+
             var res = MessageBox.Show( "This will delete all result data - do you want to continue?", 
                 "Delete Result Data?", MessageBoxButtons.YesNo, MessageBoxIcon.Question );
 
@@ -396,6 +409,10 @@ namespace RedRat.RaceTimingWinApp
 
             // OK - quit
             appController.ClockTime.Stop();
+            if ( appController.IsDbOpen )
+            {
+                appController.SaveClockTime();
+            }
         }
 
         private void ResultsQueueOnNewResult( object sender, EventArgs eventArgs )
@@ -409,7 +426,8 @@ namespace RedRat.RaceTimingWinApp
 				return;
 			}
             resultListView.Items.Clear();
-            var results = appController.GetResults().OrderByDescending( r => r.Position );
+            // Limit result presentation to 50 to ensure no GUI issues (not really tested yet).
+            var results = appController.GetResults().OrderByDescending( r => r.Position ).Take( 50 );
             foreach ( var result in results )
             {
                 resultListView.Items.Add( new ResultListViewItem( result ) );
@@ -442,6 +460,5 @@ namespace RedRat.RaceTimingWinApp
                 }
             }
         }
-
     }
 }

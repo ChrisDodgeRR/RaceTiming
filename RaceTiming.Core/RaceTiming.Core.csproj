@@ -73,6 +73,7 @@
     <Compile Include="Util\DateParser.cs" />
     <Compile Include="Util\TeamCalc.cs" />
     <Compile Include="Util\WmaCalculator.cs" />
+    <Compile Include="ViewModels\DeleteResult.cs" />
     <Compile Include="ViewModels\Finisher.cs" />
     <Compile Include="ViewModels\NewResult.cs" />
     <Compile Include="ViewModels\NewRunner.cs" />

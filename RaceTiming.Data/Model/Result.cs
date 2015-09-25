@@ -55,11 +55,11 @@ namespace RedRat.RaceTiming.Data.Model
             }
             if ( DubiousResult.HasFlag( DubiousResultEnum.UnknownNumber ) )
             {
-                addText("No runner with this number");
+                addText( "No runner with this number" );
             }
-            if (DubiousResult.HasFlag(DubiousResultEnum.EstimatedTime))
+            if ( DubiousResult.HasFlag( DubiousResultEnum.EstimatedTime ) )
             {
-                addText("This result has an estimated time");
+                addText( "This result has an estimated time" );
             }
             return txt.ToString();
         }

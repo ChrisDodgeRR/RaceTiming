@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using RedRat.RaceTiming.Data.Model;
 using Volante;
 
@@ -186,6 +187,23 @@ namespace RedRat.RaceTiming.Data
             }
         }
 
+        public void SaveClockTime( TimeSpan clockTime, int raceOid )
+        {
+            CheckHaveDb();
+            lock ( dbLock )
+            {
+                var race = GetRaces().FirstOrDefault( r => r.Oid == raceOid );
+                if ( race == null )
+                {
+                    throw new Exception( "No race object with oid " + raceOid );
+                }
+                race.ClockTime = clockTime;
+                race.Modify();
+                db.Commit();
+            }
+
+        }
+
         #endregion
 
         #region Runner Methods
@@ -301,8 +319,7 @@ namespace RedRat.RaceTiming.Data
                 var nextResult = dbRoot.resultPositionIndex.OrderBy( r => r.Time ).FirstOrDefault( r => r.RaceNumber == 0 );
                 if ( nextResult == null )
                 {
-                    // ToDo: Need to create a result and guess the time
-                    throw new Exception("No more results to add numbers to.");
+                    throw new NoMoreResultsException( "No more results to add a number to." );
                 }
                 nextResult.RaceNumber = number;
                 nextResult.Modify();
@@ -404,6 +421,17 @@ namespace RedRat.RaceTiming.Data
                 {
                     throw new Exception("Unable to find a result for position " + result.Position );
                 }
+
+                // Check the times - this result can't be set to have a time before or after surrounding results.
+                CheckBeforeAfterResult(dbRoot.resultPositionIndex.ToList(), result, insert: false);
+
+                // If the result has an estimated time, and the time is edited, we then assume that it's no
+                // longer as estimate
+                if ( ( dbResult.Time != result.Time ) && dbResult.DubiousResult.HasFlag( Result.DubiousResultEnum.EstimatedTime ) )
+                {
+                    Result.RemoveDubiousReason( dbResult, Result.DubiousResultEnum.EstimatedTime );
+                }
+
                 dbResult.RaceNumber = result.RaceNumber;
                 dbResult.Time = result.Time;
                 dbResult.Modify();
@@ -431,7 +459,7 @@ namespace RedRat.RaceTiming.Data
                 }
 
                 // Shuffle all the results down...
-                var orderedResults = resultIndex.ToList().OrderBy( r => r.Position ).Where( r => r.Position >= pos ).ToList();
+                var orderedResults = resultIndex.OrderBy( r => r.Position ).Where( r => r.Position >= pos ).ToList();
                 for ( var i = 0; i < orderedResults.Count - 1; i++ )
                 {
                     Result.TransferState( orderedResults[i], orderedResults[i + 1] );
@@ -442,6 +470,49 @@ namespace RedRat.RaceTiming.Data
                 resultIndex.Remove( lastResult.Position, lastResult );
                 db.Commit();
             }
+
+            CheckResults();
+        }
+
+        public void DeleteRunnerNumberShiftDown( int position )
+        {
+            CheckHaveDb();
+            lock ( dbLock )
+            {
+                var resultIndex = dbRoot.resultPositionIndex;
+                var orderedResults = resultIndex.OrderBy(r => r.Position).ToList();
+
+                for ( var i = position - 1; i < orderedResults.Count() - 1; i++ )
+                {
+                    orderedResults[i].RaceNumber = orderedResults[i + 1].RaceNumber;
+                    orderedResults[i].Modify();
+                }
+
+                // The last result needs a 0 inserted
+                orderedResults[orderedResults.Count() - 1].RaceNumber = 0;
+            }
+            CheckResults();
+        }
+
+        public void DeleteTimeShiftDown(int position)
+        {
+            CheckHaveDb();
+            lock (dbLock)
+            {
+                var resultIndex = dbRoot.resultPositionIndex;
+                var orderedResults = resultIndex.OrderBy(r => r.Position).ToList();
+
+                for (var i = position - 1; i < orderedResults.Count() - 1; i++)
+                {
+                    orderedResults[i].Time = orderedResults[i + 1].Time;
+                    orderedResults[i].Modify();
+                }
+
+                // The last result needs a time inserted, so what time do we give?
+                // Just leave it as it was, but flag as "estimated"
+                Result.AddDubiousReason( orderedResults[orderedResults.Count() - 1], Result.DubiousResultEnum.EstimatedTime );
+            }
+            CheckResults();
         }
 
         /// <summary>
@@ -465,6 +536,9 @@ namespace RedRat.RaceTiming.Data
             {
                 var resultIndex = dbRoot.resultPositionIndex;
 
+                // Check the times - this result needs to be inserted between times.
+                CheckBeforeAfterResult( resultIndex.ToList(), newResult, insert: true);
+
                 // Add empty result at end
                 var pos = GetNextPosition();
 
@@ -473,10 +547,11 @@ namespace RedRat.RaceTiming.Data
                     throw new Exception("Cannot insert past end of result set.");
                 }
 
-                resultIndex.Put(pos, new Result {Position = pos});
+                // Add empty result to end of list
+                resultIndex.Put(pos, new Result { Position = pos });
 
                 // Shuffle all the results up...
-                var orderedResults = resultIndex.ToList().OrderBy(r => r.Position).Where(r => r.Position >= newResult.Position).ToList();
+                var orderedResults = resultIndex.OrderBy(r => r.Position).Where(r => r.Position >= newResult.Position).ToList();
                 for (var i = orderedResults.Count - 2; i >= 0; i-- )
                 {
                     Result.TransferState(orderedResults[i + 1], orderedResults[i]);
@@ -486,8 +561,41 @@ namespace RedRat.RaceTiming.Data
                 // Update new result
                 var resultToUpdate = resultIndex.First( r => r.Position == newResult.Position);
                 Result.TransferState( resultToUpdate, newResult );
+                resultToUpdate.Modify();
+
                 db.Commit();
             }
+
+            CheckResults();
+        }
+
+        /// <summary>
+        /// When a result is inserted or updated, we check that it's in order. If being inserted, then
+        /// check "after" result against current position. If editing, then check again next position.
+        /// </summary>
+        private void CheckBeforeAfterResult( IList<Result> results, Result resultToCheck, bool insert )
+        {
+            // Check the times - this result needs to be inserted between times.
+            var insertPos = resultToCheck.Position;
+            var beforeResult = results.FirstOrDefault(r => r.Position == insertPos - 1);
+            if (beforeResult != null)
+            {
+                if (resultToCheck.Time < beforeResult.Time)
+                {
+                    throw new Exception(string.Format("Result can't have a time less than the previous result ({0}).",
+                        beforeResult.Time));
+                }
+            }
+            var afterPos = ( insert ) ? insertPos : insertPos + 1;
+            var afterResult = results.FirstOrDefault(r => r.Position == afterPos);
+            if (afterResult != null)
+            {
+                if (resultToCheck.Time > afterResult.Time)
+                {
+                    throw new Exception(string.Format("Result can't have a time greater than the next result ({0}).",
+                        afterResult.Time));
+                }
+            }            
         }
         #endregion
     }

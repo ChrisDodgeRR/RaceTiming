@@ -59,6 +59,11 @@ namespace RedRat.RaceTiming.Core
         public TimeSpan CurrentTime
         {
             get { return time; }
+            set
+            {
+                time = value;
+                NotifyClockChange();
+            }
         }
 
         public void AddTime( TimeSpan deltaTime, bool isSeconds )

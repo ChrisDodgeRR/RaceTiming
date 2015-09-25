@@ -58,7 +58,10 @@ namespace RedRat.RaceTiming.Core
             clockTime.ClockRunningHandler += (s, b) => clockRunning = b;
 
             // Initial check of results
-            db.CheckResults();
+            if ( db.IsDbOpen )
+            {
+                db.CheckResults();
+            }
         }
 
         public string GetRootUrl()
@@ -91,6 +94,14 @@ namespace RedRat.RaceTiming.Core
             get { return clockRunning; }
         }
 
+        public void SaveClockTime()
+        {
+            if ( db.IsDbOpen )
+            {
+                db.SaveClockTime( clockTime.CurrentTime, CurrentRace.Oid );
+            }
+        }
+
         public Options Options
         {
             get { return options; }
@@ -121,6 +132,7 @@ namespace RedRat.RaceTiming.Core
             }
             db.Open(dbFilename);
             logController.Open(Path.ChangeExtension(dbFilename, ".log"));
+            clockTime.CurrentTime = CurrentRace.ClockTime;
             options.LastFile = dbFilename;
         }
 
@@ -287,6 +299,45 @@ namespace RedRat.RaceTiming.Core
         }
 
         /// <summary>
+        /// Deletes the result number at the given position. This has the effect of moving all following result 
+        /// numbers up a position, i.e. giving them one better time.
+        /// </summary>
+        public void DeleteRunnerNumberShiftDown(int position)
+        {
+            db.DeleteRunnerNumberShiftDown( position );
+            OnResultDataChange();
+        }
+
+        /// <summary>
+        /// Deletes the time at the given position. This has the effect of moving all following result times down
+        /// i.e. giving runners the next slower time.
+        /// </summary>
+        public void DeleteTimeShiftDown(int position)
+        {
+            db.DeleteTimeShiftDown(position);
+            OnResultDataChange();
+        }
+
+        /// <summary>
+        /// Inserts a new result. It contains the position at which it should be inserted, so all
+        /// the remaining results are shuffled down.
+        /// </summary>
+        public void InsertResult( Result result )
+        {
+            db.InsertResult( result );
+            OnResultDataChange();
+        }
+
+        /// <summary>
+        /// Updates a result. The ID of the result to update is given in its position.
+        /// </summary>
+        public void UpdateResult( Result result )
+        {
+            db.UpdateResult( result );
+            OnResultDataChange();
+        }
+
+        /// <summary>
         /// Adds a new race result time.
         /// </summary>
         public void AddResultTime()
@@ -299,7 +350,24 @@ namespace RedRat.RaceTiming.Core
         /// </summary>
         public void AddResultRunnerNumber(int number)
         {
-            db.AddResultNumber( number );
+            try
+            {
+                db.AddResultNumber( number );
+            }
+            catch ( NoMoreResultsException )
+            {
+                // Create new result and add it with estimated time - assume 5 seconds to travel up the funnel.
+                var newResult = new Result
+                {
+                    Position = db.GetNextPosition(),
+                    RaceId = db.GetNextPosition(),
+                    RaceNumber = number,
+                    Time = clockTime.CurrentTime.Add( new TimeSpan( 0, 0, -5 ) )
+                };
+                Result.AddDubiousReason( newResult, Result.DubiousResultEnum.EstimatedTime );
+                db.AddResultTime( newResult );  // This adds the full result.
+                db.CheckResults();
+            }
             OnResultDataChange();
         }
 

@@ -10,5 +10,6 @@ namespace RedRat.RaceTiming.Data.Model
         public string Description { get; set; }
         public double Distance { get; set; }
         public DateTime Date { get; set; }
+        public TimeSpan ClockTime { get; set; }
     }
 }

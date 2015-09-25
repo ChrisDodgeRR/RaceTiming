@@ -49,16 +49,55 @@
 		</tbody>
 		</table>
 		<br />
-		<p style="margin-left: 344px"><input type="submit" id="submit" value="Save" /></p>
+		<p style="margin-left: 350px"><input type="submit" id="submit" value="Save" /></p>
 		<p class="tab red">{{errormsg}}</p>
 	</modal>
 	</form>
+
+	<form ng-submit="deleteResult()">
+	<modal visible="showDeleteDialog">
+		<p>Delete part or all of result at position {{ resultPosition }} - Number = {{ raceResult.raceNumber }}, 
+			Time = {{ raceResult.time.hours }}:{{raceResult.time.minutes}}:{{raceResult.time.seconds}}</p>
+	    <table style="margin-left:20px">
+		<tbody>
+			<tr>
+				<td width="12%"><b>Time:</b></td>
+				<td width="5%"><input type="checkbox" ng-model="deleteModel.deleteTime"/></td>
+				<td>
+					This will delete the time and shift all following runners to the next (slower) time.
+				</td>
+			</tr>
+			<tr style="height: 10px"><td></td><td></td><td></td></tr>
+			<tr>
+				<td><b>Number:</b></td>
+				<td><input type="checkbox" ng-model="deleteModel.deleteNumber"/></td>
+				<td>
+					This will delete this runner number and shift all following runners to the next (faster) time.
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		<br />
+		Select both time and number to delete result completely.
+		<hr />
+		<p style="margin-left: 244px"><input type="submit" id="submit" value="Delete" /></p>
+		<p class="tab red">{{errormsg}}</p>
+	</modal>
+	</form>
+
+	<div style="float:right; padding-right:40px" ng-show="showAllLink">
+	<a href="#" ng-click="resultsToList = 10000; showAllLink=false">Show all results</a>
+    </div>
+    <div style="float:right; padding-right:40px" ng-hide="showAllLink">
+	  <a href="#" ng-click="resultsToList = 20; showAllLink=true">Show fewer results</a>
+    </div>
 
 	<p class="tab">Result position: <input type="number" ng-model="position.value" ng-enter="position.save()" />
 		<button ng-click="position.save()">Save</button>
 	</p>
 	<p class="tab" ng-class="{red: position.colour == 'red', black: position.colour == 'black'}">{{position.log}}</p>
-	<hr/>
+	
+  <hr/>
 
   <table class="table table-striped">
     <thead>
@@ -80,21 +119,22 @@
           <td data-title=" 'Comment' ">{{ raceResult.reason }}</td>
             <td>
                 <button style="display:inline-block" ng-click="toggleEditDialog(raceResult.position)">
-                    <img src="/Content/Edit.png" title="Edit Result" alt="edit result">
+                    <img src="/Content/Edit.png" title="Edit Result" alt="Edit result">
                 </button>
             </td>
             <td>
                 <button style="display:inline-block" ng-click="toggleAddDialog(raceResult.position)">
-                    <img src="/Content/Add.png" title="Edit Result" alt="edit result">
+                    <img src="/Content/Add.png" title="Insert Result" alt="Insert new result">
                 </button>
             </td>
             <td>
                 <button style="display:inline-block" ng-click="toggleDeleteDialog(raceResult.position)">
-                    <img src="/Content/Delete.png" title="Edit Result" alt="edit result">
+                    <img src="/Content/Delete.png" title="Delete part of all of Result" alt="Delete part or complete result">
                 </button>
             </td>
          </tr>
       </tbody>
   </table>
+  <br />
 </div>
 @EndSection
