@@ -3,20 +3,15 @@ Race Timing Software - ToDo
 
 General
 -------
-- Export data in CSV/Excel format (C)
+- Clock drifts, so improve.
+- Convert all inputs to upper case.
 
 Race Entry
 ----------
 - Can we use ngAutocomplete for Club and Team fields?
 [- Can we add client side validation?]
 
+Runner's List
+-------------
+- Editing runners doesn't show number.
 
-Finish Position Entry
----------------------  
-- Editing result:
-	- Should we be able to delete a time, and so shuffle the times?
-	- Should we be able to delete a number and so suffles the numbers down?
-    - Should we be able to delete a whole result line?
-    - Inserting a new result???
-
-- Should the number of results displayed be limted?

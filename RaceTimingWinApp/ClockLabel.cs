@@ -8,6 +8,7 @@ namespace RedRat.RaceTimingWinApp
     public class ClockLabel : Label
     {
         public const string labelFormat = "hh\\:mm\\:ss";
+        private Color backColorSave;
 
         public ClockLabel()
         {
@@ -19,6 +20,7 @@ namespace RedRat.RaceTimingWinApp
             MinimumSize = new Size(200, 100);   // Stop window minimization setting ClientRectangle to 0 height.
 
             SizeChanged += LabelSizeChanged;
+            backColorSave = BackColor;
         }
 
         private void LabelSizeChanged( object sender, EventArgs e )
@@ -43,12 +45,17 @@ namespace RedRat.RaceTimingWinApp
                 textSize = TextRenderer.MeasureText(Text, newFont);
             }
 
-            Font = newFont;            
+            Font = newFont;
         }
 
         public void ClockChangeEventListener( object sender, TimeSpan time )
         {
-            Invoke( new Action( () => SetTimeLabel(time) ) );
+            // On closing the form, a race condition can occur when the form is being disposed of
+            // while this event is called.
+            if ( IsHandleCreated )
+            {
+                Invoke( new Action( () => SetTimeLabel( time ) ) );
+            }
         }
 
         public void SetTimeLabel( TimeSpan time )
@@ -58,10 +65,9 @@ namespace RedRat.RaceTimingWinApp
 
         public void Blink()
         {
-            var currentBackColor = BackColor;
             Invoke(new Action( () => BackColor = Color.Green ));
             Thread.Sleep(150);
-            Invoke(new Action(() => BackColor = currentBackColor));
+            Invoke(new Action(() => BackColor = backColorSave));
         }
     }
 }

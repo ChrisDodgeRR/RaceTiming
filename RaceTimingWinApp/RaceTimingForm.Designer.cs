@@ -50,6 +50,7 @@
             this.addFinishPositionsbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listAllFinishersbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.prizeWinnersbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.teamResultsbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clockControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetRaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +63,7 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.exportResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -91,6 +93,7 @@
             this.toolStripSeparator1,
             this.importRunnerDataToolStripMenuItem,
             this.backupDBToolStripMenuItem,
+            this.exportResultsToolStripMenuItem,
             this.toolStripSeparator2,
             this.optionsToolStripMenuItem,
             this.toolStripSeparator3,
@@ -180,7 +183,8 @@
             this.raceEntrantsToolStripMenuItem,
             this.addFinishPositionsbrowserToolStripMenuItem,
             this.listAllFinishersbrowserToolStripMenuItem,
-            this.prizeWinnersbrowserToolStripMenuItem});
+            this.prizeWinnersbrowserToolStripMenuItem,
+            this.teamResultsbrowserToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -231,6 +235,13 @@
             this.prizeWinnersbrowserToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
             this.prizeWinnersbrowserToolStripMenuItem.Text = "Prize Winners (browser)";
             this.prizeWinnersbrowserToolStripMenuItem.Click += new System.EventHandler(this.PrizeWinnersbrowserToolStripMenuItemClick);
+            // 
+            // teamResultsbrowserToolStripMenuItem
+            // 
+            this.teamResultsbrowserToolStripMenuItem.Name = "teamResultsbrowserToolStripMenuItem";
+            this.teamResultsbrowserToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.teamResultsbrowserToolStripMenuItem.Text = "Team Results (browser)";
+            this.teamResultsbrowserToolStripMenuItem.Click += new System.EventHandler(this.TeamResultsbrowserToolStripMenuItemClick);
             // 
             // timingToolStripMenuItem
             // 
@@ -338,6 +349,13 @@
             this.columnHeader4.Text = "";
             this.columnHeader4.Width = 24;
             // 
+            // exportResultsToolStripMenuItem
+            // 
+            this.exportResultsToolStripMenuItem.Name = "exportResultsToolStripMenuItem";
+            this.exportResultsToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.exportResultsToolStripMenuItem.Text = "Export Results";
+            this.exportResultsToolStripMenuItem.Click += new System.EventHandler(this.ExportResultsToolStripMenuItemClick);
+            // 
             // RaceTimingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -401,6 +419,8 @@
         private System.Windows.Forms.ToolStripMenuItem listAllFinishersbrowserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem prizeWinnersbrowserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem backupDBToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem teamResultsbrowserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportResultsToolStripMenuItem;
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -229,6 +230,43 @@ namespace RedRat.RaceTimingWinApp
             }
         }
 
+
+        private void ExportResultsToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            // Saves results to CSV file.
+            var saveFileDlg = new SaveFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*",
+                FileName = appController.CurrentRace.Name + "-Results.csv",
+                Title = "CSV file for the race results data...",
+                OverwritePrompt = true,
+            };
+
+            if (saveFileDlg.ShowDialog() != DialogResult.OK)
+            {
+                // OK - user wants to quit
+                return;
+            }
+
+            using ( var writer = new StreamWriter( saveFileDlg.FileName ) )
+            {
+                // Title lines
+                writer.WriteLine( "{0} - {1:D}", appController.CurrentRace.Name, appController.CurrentRace.Date );
+                writer.WriteLine( "Position, Name, Time, Race Number, Category, Category Position, WMA Score, Club" );
+
+                var finishers = appController.GetFinishers().OrderBy( f => f.Position );
+                foreach ( var finisher in finishers )
+                {
+                    writer.WriteLine( "{0},{1},{2},{3},{4},{5},{6},{7}",
+                        finisher.Position, finisher.Name, TimeSpan.FromMilliseconds( finisher.Time ).ToString( @"hh\:mm\:ss" ),
+                        finisher.Number,
+                        finisher.Category, finisher.CategoryPosition, finisher.Wma, finisher.Club );
+                }
+                writer.Close();
+            }
+        }
+
         private void OptionsToolStripMenuItemClick(object sender, EventArgs e)
         {
             var optionsDialog = new OptionsDialog( appController.Options )
@@ -304,6 +342,11 @@ namespace RedRat.RaceTimingWinApp
         private void PrizeWinnersbrowserToolStripMenuItemClick(object sender, EventArgs e)
         {
             StartWebBrowserAtPage(appController.GetRootUrl() + "winners");
+        }
+
+        private void TeamResultsbrowserToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            StartWebBrowserAtPage(appController.GetRootUrl() + "teams");
         }
 
         #endregion
