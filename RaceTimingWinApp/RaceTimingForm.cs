@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RedRat.RaceTiming.Core;
+using RedRat.RaceTiming.Core.Util;
 using RedRat.RaceTiming.Core.Web;
 using RedRat.RaceTiming.Data.Model;
 using RedRat.RaceTimingWinApp.ExtendedListView;
@@ -231,6 +232,42 @@ namespace RedRat.RaceTimingWinApp
         }
 
 
+        private void ExportEntrantsToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            // Saves entrants to CSV file.
+            var saveFileDlg = new SaveFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*",
+                FileName = appController.CurrentRace.Name + "-Entrants.csv",
+                Title = "CSV file for the race entry data...",
+                OverwritePrompt = true,
+            };
+
+            if (saveFileDlg.ShowDialog() != DialogResult.OK)
+            {
+                // OK - user wants to quit
+                return;
+            }
+
+            using (var writer = new StreamWriter(saveFileDlg.FileName))
+            {
+                // Title lines
+                writer.WriteLine("{0} - {1:D}", appController.CurrentRace.Name, appController.CurrentRace.Date);
+                writer.WriteLine("Number,First Name,Last Name,Gender,DoB,Category,Club,URN");
+
+                var entrants = appController.GetRunners().OrderBy( r => r.Number );
+                foreach (var entrant in entrants)
+                {
+                    writer.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7}",
+                        entrant.Number, entrant.FirstName, entrant.LastName, entrant.Gender, entrant.DateOfBirth.ToShortDateString(),
+                        AgeGroup.GetAgeGroup(appController.CurrentRace.Date, entrant.DateOfBirth, entrant.Gender),
+                        entrant.Club, entrant.Urn);
+                }
+                writer.Close();
+            }
+        }
+
         private void ExportResultsToolStripMenuItemClick(object sender, EventArgs e)
         {
             // Saves results to CSV file.
@@ -348,6 +385,23 @@ namespace RedRat.RaceTimingWinApp
         {
             StartWebBrowserAtPage(appController.GetRootUrl() + "teams");
         }
+
+        private void RaceStatsToolStripMenuItemClick( object sender, EventArgs e )
+        {
+            var stats = appController.GetRaceStats();
+            var msg = "RACE STATISTICS:\n\n" +
+                      "Number of entrants:\t\t" + stats.NumberEntrants + "\n" +
+                      "\t- Male:\t\t" + stats.NumberMaleEntrants + "\n" +
+                      "\t- Female:\t\t" + stats.NumberFemaleEntrants + "\n\n" +
+                      "Number of finishers:\t\t" + stats.NumberFinishers + "\n" +
+                      "\t- Male:\t\t" + stats.NumberMaleFinishers + "\n" +
+                      "\t- Female:\t\t" + stats.NumberFemaleFinishers + "\n\n" +
+                      "Entrant affiliation:\n" +
+                      "\t- Affiliated:\t" + stats.NumberAffiliatedEntrants + "\n" +
+                      "\t- Unaffiliated:\t" + stats.NumberUnaffiliatedEntrants + "\n";
+            MessageBox.Show( msg, "Race Statistics", MessageBoxButtons.OK, MessageBoxIcon.Information );
+        }
+
 
         #endregion
 

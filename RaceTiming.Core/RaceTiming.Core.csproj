@@ -78,6 +78,7 @@
     <Compile Include="ViewModels\NewResult.cs" />
     <Compile Include="ViewModels\NewRunner.cs" />
     <Compile Include="ViewModels\PositionResult.cs" />
+    <Compile Include="ViewModels\RaceStats.cs" />
     <Compile Include="ViewModels\RunnerNumber.cs" />
     <Compile Include="ViewModels\TeamResult.cs" />
     <Compile Include="Web\ApiModule.cs" />

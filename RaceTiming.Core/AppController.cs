@@ -504,5 +504,21 @@ namespace RedRat.RaceTiming.Core
             var teamResults = TeamCalc.GetTeamResults( finishers ).OrderBy( tr => tr.Score );
             return teamResults.ToList();
         }
+
+        public RaceStats GetRaceStats()
+        {
+            var raceStats = new RaceStats
+            {
+                NumberEntrants = GetRunners().Count(),
+                NumberMaleEntrants = GetRunners().Count( r => r.Gender == GenderEnum.Male ),
+                NumberFemaleEntrants = GetRunners().Count( r => r.Gender == GenderEnum.Female ),
+                NumberFinishers = GetFinishers().Count(),
+                NumberMaleFinishers = GetFinishers().Count( f => f.Gender == GenderEnum.Male ),
+                NumberFemaleFinishers = GetFinishers().Count( f => f.Gender == GenderEnum.Female ),
+                NumberAffiliatedEntrants = GetRunners().Count(r => !string.IsNullOrEmpty(r.Club.Trim())),
+                NumberUnaffiliatedEntrants = GetRunners().Count( r => string.IsNullOrEmpty( r.Club.Trim() ) ),
+            };
+            return raceStats;
+        }
     }
 }
