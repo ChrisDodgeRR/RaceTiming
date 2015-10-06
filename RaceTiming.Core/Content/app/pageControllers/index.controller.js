@@ -1,15 +1,15 @@
-(function() {
-	'use strict';
-	
-	angular
-		.module('RaceTiming')
-		.controller('IndexController', function($http) {
+(function () {
+    'use strict';
 
-	    $http.get("/api/raceinfo")
-            .success(function(response) {
-                this.raceinfo = response;
-            });
-                
-	});
-		
+    angular
+        .module('RaceTiming')
+		.controller('IndexController', function ($http) {
+            var indexModel = this;
+            $http.get("/api/raceinfo")
+                .success(function (response) {
+                    indexModel.raceinfo = response;
+                });
+
+		});
+
 })();

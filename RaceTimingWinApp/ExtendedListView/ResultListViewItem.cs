@@ -11,7 +11,7 @@ namespace RedRat.RaceTimingWinApp.ExtendedListView
         public ResultListViewItem( Result result )
         {
             Text = result.Position.ToString();
-            SubItems.Add(result.Time.ToString());
+            SubItems.Add(result.Time.ToString(@"hh\:mm\:ss"));
             SubItems.Add(result.RaceNumber.ToString());
             if (result.RaceNumber == 0)
             {

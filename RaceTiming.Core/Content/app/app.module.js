@@ -1,8 +1,7 @@
 (function () {
     'use strict';
 
-    angular
-	    .module('RaceTiming', []);
+    angular.module("RaceTiming", []);
 
 })();
 

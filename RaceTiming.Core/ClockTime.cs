@@ -2,7 +2,10 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace RedRat.RaceTiming.Core
 {
@@ -64,8 +67,8 @@ namespace RedRat.RaceTiming.Core
             get { return stopwatch.Elapsed + stopwatchOffset; }
             set
             {
-                // ToDo:...
-                //time = value;
+                stopwatchOffset = value;
+                stopwatch.Reset();
                 NotifyClockChange();
             }
         }
@@ -83,7 +86,7 @@ namespace RedRat.RaceTiming.Core
         private void ChangeTime( TimeSpan deltaTime )
         {
             stopwatchOffset = stopwatchOffset.Add(deltaTime);
-            NotifyClockChange();            
+            NotifyClockChange();
         }
 
         private void NotifyClockChange()

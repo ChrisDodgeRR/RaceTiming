@@ -4,4 +4,5 @@ bin/
 *.exe
 *.userprefs
 *.suo
+.suo
 .DS_Store
