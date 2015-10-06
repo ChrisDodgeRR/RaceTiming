@@ -1,10 +1,14 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
-<div ng-app="RaceTiming" ng-controller="IndexController">
+<script src="Content/app/pageControllers/index.controller.js"></script>
 
-	<h2 class="tab">{{ raceinfo.name }} - {{ raceinfo.date | date:'longDate' }}</h2>
+<div ng-app="RaceTiming" ng-controller="IndexController as index">
+
+	<h2 class="tab">{{ index.raceinfo.name }} - {{ index.raceinfo.date | date:'longDate' }}</h2> 
+	
 	<hr>
+
 
 	<div class="tab">
 		<ul>

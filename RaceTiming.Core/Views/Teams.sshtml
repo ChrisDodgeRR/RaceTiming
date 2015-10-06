@@ -1,5 +1,7 @@
 ﻿@Master['Master.sshtml']
 
+<script src="Content/app/pageControllers/teams.controller.js"></script>
+
 @Section['Content']
 <div ng-app="RaceTiming" ng-controller="TeamsController">
 	<h2 class="tab">Team Results - {{ raceinfo.name }} - {{ raceinfo.date | date:'longDate' }}</h2>

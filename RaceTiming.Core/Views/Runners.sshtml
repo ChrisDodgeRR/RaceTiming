@@ -1,5 +1,7 @@
 ﻿@Master['Master.sshtml']
 
+<script src="Content/app/pageControllers/entrants.controller.js"></script>
+
 @Section['Content']
 <h2 class="tab">Current Race Entrants</h2>
 <hr>

@@ -1,6 +1,8 @@
 ﻿@Master['Master.sshtml']
 
 @Section['Content']
+
+<script src="Content/app/pageControllers/entryForm.controller.js"></script>
 <h2 class="tab">New Race Entry</h2>
 <hr>
 
