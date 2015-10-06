@@ -3,4 +3,5 @@ bin/
 *.obj
 *.exe
 *.userprefs
+*.suo
 .DS_Store
