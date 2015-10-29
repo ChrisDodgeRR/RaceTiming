@@ -6,7 +6,7 @@
 <h2 class="tab">Race Position Entry</h2>
 <hr/>
 
-<div ng-app="RaceTiming" ng-controller="ResultsController">
+<div ng-app="RaceTiming" ng-controller="ResultsController as main">
 	<form ng-submit="updateResult()">
 	<modal visible="showEditDialog">
 	    <table style="margin-left:120px">

@@ -6,7 +6,10 @@
 		.controller('ResultsController', ResultsController);
 		
 	function ResultsController($scope, $http, $timeout) {
-		$scope.position = {
+
+		var vm = this;
+
+		vm.position = {
             value: "",
             log: "",
             colour: 'black',
