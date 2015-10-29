@@ -231,26 +231,27 @@ namespace RedRat.RaceTimingWinApp
             }
         }
 
-
-        private void ExportEntrantsToolStripMenuItemClick(object sender, EventArgs e)
+        private string GetCsvFilename(string dataType)
         {
-            // Saves entrants to CSV file.
             var saveFileDlg = new SaveFileDialog
             {
                 RestoreDirectory = true,
                 Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*",
-                FileName = appController.CurrentRace.Name + "-Entrants.csv",
-                Title = "CSV file for the race entry data...",
+                FileName = string.Format("{0}-{1}.csv", appController.CurrentRace.Name, dataType),
+                Title = "CSV file for the race results data...",
                 OverwritePrompt = true,
             };
 
-            if (saveFileDlg.ShowDialog() != DialogResult.OK)
-            {
-                // OK - user wants to quit
-                return;
-            }
+            return saveFileDlg.ShowDialog() != DialogResult.OK ? null : saveFileDlg.FileName;
+        }
 
-            using (var writer = new StreamWriter(saveFileDlg.FileName))
+        private void ExportEntrantsToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            // Saves entrants to CSV file.
+            var filename = GetCsvFilename("Entrants");
+            if (filename == null) return;
+
+            using (var writer = new StreamWriter(filename))
             {
                 // Title lines
                 writer.WriteLine("{0} - {1:D}", appController.CurrentRace.Name, appController.CurrentRace.Date);
@@ -271,22 +272,10 @@ namespace RedRat.RaceTimingWinApp
         private void ExportResultsToolStripMenuItemClick(object sender, EventArgs e)
         {
             // Saves results to CSV file.
-            var saveFileDlg = new SaveFileDialog
-            {
-                RestoreDirectory = true,
-                Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*",
-                FileName = appController.CurrentRace.Name + "-Results.csv",
-                Title = "CSV file for the race results data...",
-                OverwritePrompt = true,
-            };
+            var filename = GetCsvFilename("Results");
+            if ( filename == null ) return;
 
-            if (saveFileDlg.ShowDialog() != DialogResult.OK)
-            {
-                // OK - user wants to quit
-                return;
-            }
-
-            using ( var writer = new StreamWriter( saveFileDlg.FileName ) )
+            using ( var writer = new StreamWriter( filename ) )
             {
                 // Title lines
                 writer.WriteLine( "{0} - {1:D}", appController.CurrentRace.Name, appController.CurrentRace.Date );
@@ -299,6 +288,27 @@ namespace RedRat.RaceTimingWinApp
                         finisher.Position, finisher.Name, TimeSpan.FromMilliseconds( finisher.Time ).ToString( @"hh\:mm\:ss" ),
                         finisher.Number,
                         finisher.Category, finisher.CategoryPosition, finisher.Wma, finisher.Club );
+                }
+                writer.Close();
+            }
+        }
+
+        private void ExportEmailsToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            // Saves emails to CSV file.
+            var filename = GetCsvFilename("Emails");
+            if (filename == null) return;
+
+            using (var writer = new StreamWriter(filename))
+            {
+                // Title lines
+                writer.WriteLine("{0} - {1:D}", appController.CurrentRace.Name, appController.CurrentRace.Date);
+                writer.WriteLine("Name, Email");
+
+                var runners = appController.GetRunners();
+                foreach (var runner in runners.Where( r => !string.IsNullOrEmpty(r.Email) ) )
+                {
+                    writer.WriteLine("{0} {1},{2}", runner.FirstName, runner.LastName, runner.Email);
                 }
                 writer.Close();
             }

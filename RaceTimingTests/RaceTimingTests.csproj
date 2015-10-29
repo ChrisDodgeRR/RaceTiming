@@ -41,10 +41,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Volante, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Volante.dll</HintPath>
-    </Reference>
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
       <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
     </Reference>
@@ -53,6 +49,9 @@
     </Reference>
     <Reference Include="xunit.core, Version=2.0.0.2929, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
       <HintPath>..\packages\xunit.extensibility.core.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="Volante">
+      <HintPath>..\packages\Volante.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -69,7 +68,7 @@
       <Name>RaceTiming.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\RaceTiming.Data\RaceTiming.Data.csproj">
-      <Project>{1c3475a7-e6ad-4491-976b-8bb51da5ae02}</Project>
+      <Project>{1C3475A7-E6AD-4491-976B-8BB51DA5AE02}</Project>
       <Name>RaceTiming.Data</Name>
     </ProjectReference>
   </ItemGroup>

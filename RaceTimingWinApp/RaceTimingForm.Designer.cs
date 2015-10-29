@@ -54,6 +54,8 @@
             this.listAllFinishersbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.prizeWinnersbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.teamResultsbrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.raceStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clockControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetRaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,8 +68,7 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.raceStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportEmailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -143,7 +144,8 @@
             // 
             this.cSVExportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exportEntrantsToolStripMenuItem,
-            this.exportResultsToolStripMenuItem});
+            this.exportResultsToolStripMenuItem,
+            this.exportEmailsToolStripMenuItem});
             this.cSVExportToolStripMenuItem.Name = "cSVExportToolStripMenuItem";
             this.cSVExportToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.cSVExportToolStripMenuItem.Text = "CSV Export";
@@ -272,6 +274,18 @@
             this.teamResultsbrowserToolStripMenuItem.Text = "Team Results (browser)";
             this.teamResultsbrowserToolStripMenuItem.Click += new System.EventHandler(this.TeamResultsbrowserToolStripMenuItemClick);
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(236, 6);
+            // 
+            // raceStatsToolStripMenuItem
+            // 
+            this.raceStatsToolStripMenuItem.Name = "raceStatsToolStripMenuItem";
+            this.raceStatsToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.raceStatsToolStripMenuItem.Text = "Race Stats";
+            this.raceStatsToolStripMenuItem.Click += new System.EventHandler(this.RaceStatsToolStripMenuItemClick);
+            // 
             // timingToolStripMenuItem
             // 
             this.timingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -378,17 +392,12 @@
             this.columnHeader4.Text = "";
             this.columnHeader4.Width = 24;
             // 
-            // toolStripSeparator5
+            // exportEmailsToolStripMenuItem
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(236, 6);
-            // 
-            // raceStatsToolStripMenuItem
-            // 
-            this.raceStatsToolStripMenuItem.Name = "raceStatsToolStripMenuItem";
-            this.raceStatsToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
-            this.raceStatsToolStripMenuItem.Text = "Race Stats";
-            this.raceStatsToolStripMenuItem.Click += new System.EventHandler(this.RaceStatsToolStripMenuItemClick);
+            this.exportEmailsToolStripMenuItem.Name = "exportEmailsToolStripMenuItem";
+            this.exportEmailsToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.exportEmailsToolStripMenuItem.Text = "Export Emails";
+            this.exportEmailsToolStripMenuItem.Click += new System.EventHandler(this.ExportEmailsToolStripMenuItemClick);
             // 
             // RaceTimingForm
             // 
@@ -459,6 +468,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportEntrantsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem raceStatsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportEmailsToolStripMenuItem;
     }
 }
 
