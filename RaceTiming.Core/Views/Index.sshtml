@@ -5,7 +5,7 @@
 
 <div ng-app="RaceTiming" ng-controller="IndexController as indexModel">
 
-	<h2 class="tab">{{ indexModel.name }} - {{ indexModel.raceinfo.date | date:'longDate' }}</h2> 
+	<h2 class="tab">{{ raceinfo.name }} - {{ raceinfo.date | date:'longDate' }}</h2> 
 	
 	<hr>
 

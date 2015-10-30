@@ -3,9 +3,8 @@
 
     angular
         .module('RaceTiming')
-		.controller('IndexController', function ($http) {
+		.controller('IndexController', function ($scope, $http) {
 
-            var indexModel = this;
             $http.get("/api/raceinfo")
                 .success(function (response) {
                     $scope.raceinfo = response;
