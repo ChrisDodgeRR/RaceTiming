@@ -1,11 +1,12 @@
 ﻿@Master['Master.sshtml']
 
+@Section['Content']
+
 <script src="Content/app/pageControllers/prizeWinners.controller.js"></script>
 
-@Section['Content']
 <div ng-app="RaceTiming" ng-controller="PrizeWinnersController as main">
 
-	<h2 class="tab">Prize Winners - {{ main.raceinfo.name }} - {{ raceinfo.date | date:'longDate' }}</h2>
+	<h2 class="tab">Prize Winners - {{ raceinfo.name }} - {{ raceinfo.date | date:'longDate' }}</h2>
 	<hr />
 
 	  <div ng-repeat="categories in categorywinners">

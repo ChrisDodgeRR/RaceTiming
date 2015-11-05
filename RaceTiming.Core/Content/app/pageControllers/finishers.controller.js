@@ -5,7 +5,6 @@
 		.module('RaceTiming')
 		.controller('FinishersController', function($scope, $http) {
 
-	var FinishersController = this;
 		$http.get("/api/raceinfo")
             .success(function (response) {
                 $scope.raceinfo = response;
@@ -15,6 +14,7 @@
             .success(function(response) {
                 $scope.finishers = response.finishers;
             });
-	});
+		});
+
 
 })();
