@@ -13,11 +13,11 @@
 <tbody ng-init="clubAffiliated=false" ng-init="teamAffiliated=false">
 	<tr>
 		<td>First Name:</td>
-		<td><input style="width:200px" class="tab" type="text" ng-model="runner.firstname" /></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.firstname" onblur="this.style.textTransform='uppercase'" required /></td>
 	</tr>
 	<tr>
 		<td>Last Name:</td>
-		<td><input style="width:200px" class="tab" type="text" ng-model="runner.lastname"/></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.lastname"  onblur="this.style.textTransform='uppercase'" required/></td>
 	</tr>
 	<tr>
 		<td>Email:</td>
@@ -25,7 +25,7 @@
 	</tr>
 	<tr>
 		<td>Number:</td>
-		<td><input style="width:200px" class="tab" type="text" ng-model="runner.number"/></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.number" required/></td>
 	</tr>
 	<tr>
 	<td>Gender:</td>
@@ -38,19 +38,19 @@
 	</tr>
 	<tr>
 		<td>DoB:</td>
-		<td><input style="width:200px" type="date" class="tab" ng-model="runner.dob" placeholder="dd/MM/yyyy"/></td>
+		<td><input style="width:200px" type="date" class="tab" ng-model="runner.dob" placeholder="dd/MM/yyyy" required/></td>
 	</tr>
 	<tr> 
 		<td>Running Club:</td>
-		<td><input style="width:200px" class="tab" type="text" ng-model="runner.club"/></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.club"  onblur="this.style.textTransform='uppercase'"/></td>
 	</tr>
 	<tr>
 		<td>Team:</td>
-		<td><input style="width:200px" class="tab" type="text" ng-model="runner.team"/></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.team"  onblur="this.style.textTransform='uppercase'"/></td>
 	</tr>
 	<tr>
 		<td>URN:</td>
-		<td><input style="width:200px" class="tab" type="text" ng-model="runner.urn"/></td>
+		<td><input style="width:200px" class="tab" type="text" ng-model="runner.urn"  onblur="this.style.textTransform='uppercase'"/></td>
 	</tr>
 </tbody>
 </table>

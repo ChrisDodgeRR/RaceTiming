@@ -7,8 +7,6 @@
 
 		function EntryFormController($scope, $http) {
 
-			var vm = this;
-
 			$scope.runner = {
 	            firstname: "",
 	            lastname: "",
@@ -56,8 +54,12 @@
 	                        $scope.runner.colour = 'red';
 	                    });
 	            }
-	        }
-		});
+			}
+
+		}
+
+        
+        
 	
 	
 })();
