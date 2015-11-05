@@ -11,6 +11,8 @@
     <script data-require="bootstrap@*" data-semver="3.0.2" src="Content/bootstrap.min.js"></script>
     <script src="Content/app/app.module.js"></script>
 	<script src="Content/app/modal.directive.js"></script>
+	<script src="Content/app/ngConfirmClick.directive.js"></script>
+	<script src="Content/app/ngEnter.directive.js"></script>
     <link rel="stylesheet" href="Content/style.css" />
 </head>
 

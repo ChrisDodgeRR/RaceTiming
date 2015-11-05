@@ -7,9 +7,7 @@
 		
 	function ResultsController($scope, $http, $timeout) {
 
-		var vm = this;
-
-		vm.position = {
+		$scope.position = {
             value: "",
             log: "",
             colour: 'black',
@@ -177,7 +175,7 @@
                 $scope.getData();
                 $scope.intervalFunction();
             }, 1000);
-        };
+        }
 
         // Kick off the interval
         $scope.intervalFunction();
