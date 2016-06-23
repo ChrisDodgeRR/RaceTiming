@@ -19,7 +19,7 @@ namespace RedRat.RaceTiming.Core.Config.Unix
         {
             // Personal folder is "Documents" on windows and home directory on linux
             configFolderName = Environment.GetFolderPath( Environment.SpecialFolder.Personal ) + "/.redrat";
-            configFilePath = configFolderName + "/config";
+            configFilePath = configFolderName + "/racetimingconfig";
         }
 
         internal void LoadConfig()
