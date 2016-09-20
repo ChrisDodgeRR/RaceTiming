@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using RedRat.RaceTiming.Core.Config;
 using RedRat.RaceTiming.Core.Logging;
@@ -223,7 +224,7 @@ namespace RedRat.RaceTiming.Core
                     try
                     {
                         // Split line into array of info (\\s* removes space around object)
-                        var runnerInfo = line.Split(@",".ToCharArray()).Select( s => s.Replace( "\"", "" ).Trim() ).ToArray();
+                        var runnerInfo = SplitCSV( line ).ToArray();
 
                         var runner = new Runner
                         {
@@ -272,6 +273,38 @@ namespace RedRat.RaceTiming.Core
                 }		
             }
             return result;
+        }
+
+        /// <summary>
+        /// Splits the CVS file line into fields, delimited on commas. The subtelty is that a cell may contain
+        /// commas, and so it is surrounded/escaped by quotes, e.g. "some, thing".
+        /// </summary>
+        private IEnumerable<string> SplitCSV(string line)
+        {
+            var s = new StringBuilder();
+            bool escaped = false, inQuotes = false;
+            foreach (char c in line)
+            {
+                if (c == ',' && !inQuotes)
+                {
+                    yield return s.ToString();
+                    s.Clear();
+                }
+                else if (c == '\\' && !escaped)
+                {
+                    escaped = true;
+                }
+                else if (c == '"' && !escaped)
+                {
+                    inQuotes = !inQuotes;
+                }
+                else
+                {
+                    escaped = false;
+                    s.Append(c);
+                }
+            }
+            yield return s.ToString();
         }
 
         private string RemoveUnwantedAttributes(string field)
