@@ -7,16 +7,16 @@
 
 	function EntrantsController($scope, $http) {
 
-		var vm = this;
+		//var vm = this;
 
 		// Runner editor dialog
-		vm.showEditDialog = false;
-		vm.title = "";
-		vm.runnerNumber = "";
-		vm.dob = {
+		$scope.showEditDialog = false;
+		$scope.title = "";
+		$scope.runnerNumber = "";
+		$scope.dob = {
 			value: new Date()
 		};
-		vm.toggleDialog = toggleDialog;
+		$scope.toggleDialog = toggleDialog;
 
 		function toggleDialog(number) {
 			$scope.errormsg = "";
@@ -34,14 +34,14 @@
 			$scope.showEditDialog = !$scope.showEditDialog;
 		};
 
-		vm.loadRunners = function() {
+		$scope.loadRunners = function() {
 			$http.get("/api/runners")
 				.success(function (response) {
 					$scope.entrants = response.entrants;
 				});
 		}
 
-		vm.updateRunner = function () {
+		$scope.updateRunner = function () {
 			$http.post('/api/updaterunner', {
 					'number': $scope.runner.number,
 					'firstname': $scope.runner.firstName,
@@ -65,7 +65,7 @@
 				});
 		}
 
-		vm.deleteRunner = function(number) {
+		$scope.deleteRunner = function(number) {
 			console.log('Delete runner: ' + number);
 			$http.post('/api/deleterunner', {
 					'number': number,
@@ -80,8 +80,8 @@
 				});
 		}
 
-		vm.order = "number"; // Default
-		vm.loadRunners();
+		$scope.order = "number"; // Default
+		$scope.loadRunners();
 	}
 		
 })();

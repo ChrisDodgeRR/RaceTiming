@@ -3,7 +3,6 @@ Race Timing Software - ToDo
 
 General
 -------
-- Clock drifts, so improve.
 - Convert all inputs to upper case.
 
 Race Entry
