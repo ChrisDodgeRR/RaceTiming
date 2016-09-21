@@ -2,7 +2,7 @@
 	'use strict';
 	
 	angular
-		.module('RaceTiming');
+		.module('RaceTiming')
 		.directive('ngConfirmClick', ngConfirmClick);
 		
 	function ngConfirmClick() {
