@@ -15,14 +15,14 @@
 			<tr>
 				<td>Time:</td>
 				<td>
-					<input style="width:35px" class="tab" type="number" ng-model="raceResult.time.hours"> <b>H</b>
-					<input style="width:40px; margin-left: 10px" class="tab" type="number" ng-model="raceResult.time.minutes"> <b>M</b>
-					<input style="width:40px; margin-left: 10px" class="tab" type="number" ng-model="raceResult.time.seconds"> <b>S</b>
+					<input style="width:35px" class="tab" type="number" min="0" ng-model="raceResult.time.hours"> <b>H</b>
+					<input style="width:40px; margin-left: 10px" class="tab" type="number" min="0" ng-model="raceResult.time.minutes"> <b>M</b>
+					<input style="width:40px; margin-left: 10px" class="tab" type="number" min="0" ng-model="raceResult.time.seconds"> <b>S</b>
 				</td>
 			</tr>
 			<tr>
 				<td>Number:</td>
-				<td><input style="width:174px" class="tab" type="number" ng-model="raceResult.raceNumber"/></td>
+				<td><input style="width:174px" class="tab" type="number" min="0" ng-model="raceResult.raceNumber"/></td>
 			</tr>
 		</tbody>
 		</table>
@@ -40,14 +40,14 @@
 			<tr>
 				<td>Time:</td>
 				<td>
-					<input style="width:35px" class="tab" type="number" ng-model="raceResult.time.hours"> <b>H</b>
-					<input style="width:40px; margin-left: 10px" class="tab" type="number" ng-model="raceResult.time.minutes"> <b>M</b>
-					<input style="width:40px; margin-left: 10px" class="tab" type="number" ng-model="raceResult.time.seconds"> <b>S</b>
+					<input style="width:35px" class="tab" type="number" min="0" ng-model="raceResult.time.hours"> <b>H</b>
+					<input style="width:40px; margin-left: 10px" class="tab" type="number" min="0" ng-model="raceResult.time.minutes"> <b>M</b>
+					<input style="width:40px; margin-left: 10px" class="tab" type="number" min="0" ng-model="raceResult.time.seconds"> <b>S</b>
 				</td>
 			</tr>
 			<tr>
 				<td>Number:</td>
-				<td><input style="width:174px" class="tab" type="number" ng-model="raceResult.raceNumber"/></td>
+				<td><input style="width:174px" class="tab" type="number" min="0" ng-model="raceResult.raceNumber"/></td>
 			</tr>
 		</tbody>
 		</table>
@@ -95,10 +95,10 @@
 	  <a href="#" ng-click="resultsToList = 20; showAllLink=true">Show fewer results</a>
     </div>
 
-	<p class="tab">Result position: <input type="number" ng-model="position.value" ng-enter="position.save()" />
-		<button ng-click="position.save()">Save</button>
+	<p class="tab">Runner number: <input type="number" required ng-model="finisher.value" ng-enter="finisher.save()" />
+		<button ng-click="finisher.save()">Save</button>
 	</p>
-	<p class="tab" ng-class="{red: position.colour == 'red', black: position.colour == 'black'}">{{position.log}}</p>
+	<p class="tab" ng-class="{red: finisher.colour == 'red', black: finisher.colour == 'black'}">{{finisher.log}}</p>
 	
   <hr/>
 

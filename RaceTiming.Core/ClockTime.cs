@@ -85,7 +85,13 @@ namespace RedRat.RaceTiming.Core
 
         private void ChangeTime( TimeSpan deltaTime )
         {
+            var stopwatchOffsetSave = stopwatchOffset;
             stopwatchOffset = stopwatchOffset.Add(deltaTime);
+            // Don't allow it to be set to less than 0.
+            if ( stopwatchOffset < TimeSpan.Zero )
+            {
+                stopwatchOffset = stopwatchOffsetSave;
+            }
             NotifyClockChange();
         }
 

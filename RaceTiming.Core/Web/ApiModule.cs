@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using Nancy;
 using Nancy.ModelBinding;
 using RedRat.RaceTiming.Core.Util;
@@ -19,11 +20,11 @@ namespace RedRat.RaceTiming.Core.Web
             {
                 try
                 {
-                    return SetDefaultHeaders( Response.AsJson( GetRaceInfo( controllerFactory ) ) );
+                    return Response.AsJson( GetRaceInfo( controllerFactory ) );
                 }
                 catch ( Exception ex )
                 {
-                    return SetDefaultHeaders(Response.AsJson(ex.Message, HttpStatusCode.InternalServerError));                    
+                    return Response.AsJson(ex.Message, HttpStatusCode.InternalServerError);
                 }
             };
 
@@ -36,10 +37,10 @@ namespace RedRat.RaceTiming.Core.Web
                 {
                     statusCode = HttpStatusCode.InternalServerError;
                 }
-                return SetDefaultHeaders(Response.AsJson( new {runner = runner}, statusCode));
+                return Response.AsJson( new {runner = runner}, statusCode);
             };
 
-            Get["/runners"] = parameters => SetDefaultHeaders( Response.AsJson( GetRunners( controllerFactory ) ) );
+            Get["/runners"] = parameters => Response.AsJson( GetRunners( controllerFactory ) );
 
             Get["/results"] = parameters =>
             {
@@ -51,11 +52,11 @@ namespace RedRat.RaceTiming.Core.Web
                     {
                         resultsToList = int.MaxValue;
                     }
-                    return SetDefaultHeaders( Response.AsJson( GetResults( controllerFactory, resultsToList ) ) );
+                    return Response.AsJson( GetResults( controllerFactory, resultsToList ) );
                 }
                 catch ( Exception ex )
                 {
-                    return SetDefaultHeaders( Response.AsJson( ex.Message, HttpStatusCode.InternalServerError ) );
+                    return HandleException(ex);
                 }
             };
 
@@ -68,7 +69,7 @@ namespace RedRat.RaceTiming.Core.Web
                 {
                     statusCode = HttpStatusCode.InternalServerError;
                 }
-                return SetDefaultHeaders(Response.AsJson(new { raceResult = raceResult }, statusCode));
+                return Response.AsJson(new { raceResult = raceResult }, statusCode);
             };
 
             Post["/updateresult"] = ( x ) =>
@@ -76,10 +77,11 @@ namespace RedRat.RaceTiming.Core.Web
                 var appController = controllerFactory.AppController;
                 var message = "";
                 var statusCode = HttpStatusCode.OK;
-                var newResult = this.Bind<NewResult>();
 
                 try
                 {
+                    var newResult = this.Bind<NewResult>();
+
                     var result = new Result()
                     {
                         Position = newResult.Position,
@@ -87,42 +89,38 @@ namespace RedRat.RaceTiming.Core.Web
                         Time = new TimeSpan( newResult.Hours, newResult.Minutes, newResult.Seconds ),
                     };
                     appController.UpdateResult( result );
+                    return Response.AsJson(message, statusCode);
                 }
                 catch (Exception ex)
                 {
-                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
-                    message = ex.Message;
-                    Trace.WriteLineIf(AppController.traceSwitch.TraceError, "Error updating result: " + ex.Message);
+                    return HandleException(ex);
                 }
-
-                return SetDefaultHeaders(Response.AsJson(message, statusCode));
             };
 
-            Post["/addresult"] = (x) =>
+            Post["/addresult"] = ( x ) =>
             {
                 var appController = controllerFactory.AppController;
                 var message = "";
                 var statusCode = HttpStatusCode.OK;
-                var newResult = this.Bind<NewResult>();
 
                 try
                 {
+                    var newResult = this.Bind<NewResult>();
+
                     var result = new Result()
                     {
                         Position = newResult.Position,
                         RaceNumber = newResult.RaceNumber,
-                        Time = new TimeSpan(newResult.Hours, newResult.Minutes, newResult.Seconds),
+                        Time = new TimeSpan( newResult.Hours, newResult.Minutes, newResult.Seconds ),
                     };
                     appController.InsertResult( result );
-                }
-                catch (Exception ex)
-                {
-                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
-                    message = ex.Message;
-                    Trace.WriteLineIf(AppController.traceSwitch.TraceError, "Error updating result: " + ex.Message);
-                }
 
-                return SetDefaultHeaders(Response.AsJson(message, statusCode));
+                    return Response.AsJson( message, statusCode );
+                }
+                catch ( Exception ex )
+                {
+                    return HandleException( ex );
+                }
             };
 
             Post["/deleteresult"] = ( x ) =>
@@ -130,10 +128,11 @@ namespace RedRat.RaceTiming.Core.Web
                 var appController = controllerFactory.AppController;
                 var message = "";
                 var statusCode = HttpStatusCode.OK;
-                var deleteResult = this.Bind<DeleteResult>();
 
                 try
                 {
+                    var deleteResult = this.Bind<DeleteResult>();
+
                     // Neither selected
                     if ( !deleteResult.DeleteNumber && !deleteResult.DeleteTime )
                     {
@@ -157,32 +156,31 @@ namespace RedRat.RaceTiming.Core.Web
                     {
                         appController.DeleteTimeShiftDown(deleteResult.Position);
                     }
+
+                    return Response.AsJson(message, statusCode);
                 }
                 catch (Exception ex)
                 {
-                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
-                    message = ex.Message;
-                    Trace.WriteLineIf(AppController.traceSwitch.TraceError, "Error updating result: " + ex.Message);
+                    return HandleException( ex );
                 }
-
-                return SetDefaultHeaders(Response.AsJson(message, statusCode));            
             };
 
-            Get["/finishers"] = parameters => SetDefaultHeaders(Response.AsJson(GetFinishers(controllerFactory)));
+            Get["/finishers"] = parameters => Response.AsJson( GetFinishers( controllerFactory ) );
 
-            Get["/winners"] = parameters => SetDefaultHeaders( Response.AsJson( GetWinners( controllerFactory ) ) );
+            Get["/winners"] = parameters => Response.AsJson( GetWinners( controllerFactory ) );
 
-            Get["/teams"] = parameters => SetDefaultHeaders(Response.AsJson(GetTeams(controllerFactory)));
+            Get["/teams"] = parameters => Response.AsJson( GetTeams( controllerFactory ) );
 
             Post["/addrunner"] = ( x ) =>
             {
                 var appController = controllerFactory.AppController;
                 var message = "";
                 var statusCode = HttpStatusCode.OK;
-                var newRunner = this.Bind<NewRunner>();
 
                 try
                 {
+                    var newRunner = this.Bind<NewRunner>();
+
                     // Check fields
                     CheckField( newRunner.FirstName, "First Name" );
                     CheckField( newRunner.LastName, "Last Name" );
@@ -224,14 +222,12 @@ namespace RedRat.RaceTiming.Core.Web
                     {
                         throw new Exception(string.Format("'{0}' with this DoB already exists in database.", runner.ToString()));
                     }
+                    return Response.AsJson( message, statusCode );
                 }
                 catch ( Exception ex )
                 {
-                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
-                    message = ex.Message;
-                    Trace.WriteLineIf( AppController.traceSwitch.TraceError, "Error adding entry: " + ex.Message );
+                    return HandleException(ex);
                 }
-                return SetDefaultHeaders( Response.AsJson( message, statusCode ) );
             };
 
             Post["/updaterunner"] = ( x ) =>
@@ -239,30 +235,31 @@ namespace RedRat.RaceTiming.Core.Web
                 var appController = controllerFactory.AppController;
                 var message = "";
                 var statusCode = HttpStatusCode.OK;
-                var newRunner = this.Bind<NewRunner>();
 
                 try
                 {
+                    var newRunner = this.Bind<NewRunner>();
+
                     // Check fields
-                    CheckField(newRunner.FirstName, "First Name");
-                    CheckField(newRunner.LastName, "Last Name");
-                    CheckField(newRunner.Gender, "Gender");
-                    CheckField(newRunner.DoB, "DoB");
+                    CheckField( newRunner.FirstName, "First Name" );
+                    CheckField( newRunner.LastName, "Last Name" );
+                    CheckField( newRunner.Gender, "Gender" );
+                    CheckField( newRunner.DoB, "DoB" );
 
                     int number;
-                    if (!int.TryParse(newRunner.Number, out number))
+                    if ( !int.TryParse( newRunner.Number, out number ) )
                     {
-                        throw new Exception("Race number format is incorrect.");
+                        throw new Exception( "Race number format is incorrect." );
                     }
-                    
+
                     // Update
                     var runner = new Runner
                     {
                         Number = number,
                         FirstName = newRunner.FirstName,
                         LastName = newRunner.LastName,
-                        Gender = (newRunner.Gender == "Female") ? GenderEnum.Female : GenderEnum.Male,
-                        DateOfBirth = DateTime.Parse(newRunner.DoB),
+                        Gender = ( newRunner.Gender == "Female" ) ? GenderEnum.Female : GenderEnum.Male,
+                        DateOfBirth = DateTime.Parse( newRunner.DoB ),
                         Email = newRunner.Email,
                         Club = newRunner.Club,
                         Team = newRunner.Team,
@@ -270,14 +267,13 @@ namespace RedRat.RaceTiming.Core.Web
                     };
 
                     appController.DbService.UpdateRunner( runner );
+
+                    return Response.AsJson( message, statusCode );
                 }
                 catch ( Exception ex )
                 {
-                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
-                    message = ex.Message;
-                    Trace.WriteLineIf( AppController.traceSwitch.TraceError, "Error adding entry: " + ex.Message );
+                    return HandleException( ex );
                 }
-                return SetDefaultHeaders( Response.AsJson( message, statusCode ) );
             };
 
             Post["/deleterunner"] = ( x ) =>
@@ -285,31 +281,32 @@ namespace RedRat.RaceTiming.Core.Web
                 var appController = controllerFactory.AppController;
                 var message = "";
                 var statusCode = HttpStatusCode.OK;
-                var number = this.Bind<RunnerNumber>();
 
                 try
                 {
+                    var number = this.Bind<RunnerNumber>();
+
                     appController.DbService.DeleteRunner(number.Number);
                     Trace.WriteLineIf( AppController.traceSwitch.TraceInfo,
                         string.Format( "Runner with number {0} deleted.", number.Number ) );
+
+                    return Response.AsJson( message, statusCode );
                 }
                 catch ( Exception ex )
                 {
-                    statusCode = HttpStatusCode.InternalServerError; // Is this correct???
-                    message = ex.Message;
-                    Trace.WriteLineIf( AppController.traceSwitch.TraceError, "Error deleting runner: " + ex.Message );
+                    return HandleException(ex);
                 }
-                return SetDefaultHeaders( Response.AsJson( message, statusCode ) );
             };
 
-            Post["/addfinishposition"] = (x) =>
+            Post["/addfinishposition"] = ( x ) =>
             {
                 var appController = controllerFactory.AppController;
                 var message = "";
                 var statusCode = HttpStatusCode.OK;
-                var posResult = this.Bind<PositionResult>();
                 try
                 {
+                    var posResult = this.Bind<PositionResult>();
+
                     if ( !appController.IsClockRunning )
                     {
                         throw new Exception( "Race is not in progress (clock not running)." );
@@ -325,24 +322,56 @@ namespace RedRat.RaceTiming.Core.Web
                         appController.AddResultRunnerNumber( posResult.Position );
                         Trace.WriteLineIf( AppController.traceSwitch.TraceInfo, "Runner number added: " + posResult.Position );
                     }
+                    return Response.AsJson( message, statusCode );
                 }
                 catch ( Exception ex )
                 {
-                    message = ex.Message;
-                    statusCode = HttpStatusCode.InternalServerError;    // Is this correct???
-                    Trace.WriteLineIf( AppController.traceSwitch.TraceError, "Error adding runner number: " + ex.Message );
+                    return HandleException( ex );
                 }
-                return SetDefaultHeaders( Response.AsJson( message, statusCode ) );
             };
         }
 
-        protected Response SetDefaultHeaders( Response response )
+        protected Response HandleException(Exception ex)
         {
-            response.Headers = new Dictionary<string, string>
+            var aex = ex as AggregateException;
+            if (aex != null)
+            {
+                var str = AggregateExceptionToString(aex, true);
+                Trace.WriteLineIf( AppController.traceSwitch.TraceError, str);
+                return Response.AsJson(str, HttpStatusCode.InternalServerError);
+            }
+
+            Trace.WriteLineIf( AppController.traceSwitch.TraceError, ex );
+            return Response.AsJson(ex.Message, HttpStatusCode.InternalServerError);
+        }
+
+        /// <summary>
+        /// Converts an AggregateException to a printable form, including inner exceptions etc.
+        /// </summary>
+        public static string AggregateExceptionToString(AggregateException aex, bool includeStackTrace)
+        {
+            var sb = new StringBuilder();
+
+            aex.Handle(ex =>
+            {
+                if (ex is TargetInvocationException)
                 {
-                    {"Cache-Control", "no-cache" }
-                };
-            return response;           
+                    while (ex.InnerException != null)
+                    {
+                        sb.Append(ex.InnerException.Message + "\n");
+                        if (includeStackTrace) sb.Append(ex.InnerException.StackTrace + "\n");
+                        ex = ex.InnerException;
+                    }
+                }
+                else
+                {
+                    sb.Append(ex.Message + "\n");
+                    if (includeStackTrace) sb.Append(ex.StackTrace + "\n");
+                }
+                return true;
+            });
+
+            return sb.ToString();
         }
 
         protected object GetRaceInfo( ControllerFactory controllerFactory )

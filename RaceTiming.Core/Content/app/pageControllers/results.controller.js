@@ -7,26 +7,31 @@
 		
 	function ResultsController($scope, $http, $timeout) {
 
-		$scope.position = {
+		$scope.finisher = {
             value: "",
             log: "",
             colour: 'black',
 
             save: function() {
-                $http.post('/api/addfinishposition', { 'position': $scope.position.value })
-                    .success(function(data) {
-                        $scope.position.log = "Saved result: " + $scope.position.value;
-                        console.log($scope.position.log);
-                        $scope.position.value = "";
-                        $scope.position.colour = 'black';
-                    })
-                    .error(function(data) {
-                        $scope.position.log = "Error saving result: " + data;
-                        console.log($scope.position.log);
-                        $scope.position.colour = 'red';
-                    });
-            }
-        }
+                if (!$scope.finisher.value || $scope.finisher.value.length === 0) {
+		            $scope.finisher.log = "Please enter a valid race number.";
+		            $scope.finisher.colour = 'red';
+                } else {
+		            $http.post('/api/addfinishposition', { 'position': $scope.finisher.value })
+		                .success(function(data) {
+		                    $scope.finisher.log = "Saved result: " + $scope.finisher.value;
+		                    console.log($scope.finisher.log);
+		                    $scope.finisher.value = "";
+		                    $scope.finisher.colour = 'black';
+		                })
+		                .error(function(data) {
+		                    $scope.finisher.log = "Error saving result: " + data;
+		                    console.log($scope.finisher.log);
+		                    $scope.finisher.colour = 'red';
+		                });
+		        }
+		    }
+		}
 
         // Shows the result editing dialog
         $scope.toggleEditDialog = function (position) {

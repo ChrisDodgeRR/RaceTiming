@@ -23,5 +23,12 @@ using System.Runtime.InteropServices;
 
 // V1.00 - Initial version
 //       - Sept 2015.
-[assembly: AssemblyVersion("1.00.*")]
+//
+// V1.01 - A few fixes for 2016:
+//          - Added some extra validation for web form entry.
+//          - Clock time can't be set to a minus value.
+//          - Improved CSV file reading so that it can handle cells containing a comma.
+//          - Simplified HTTP API code.
+//
+[assembly: AssemblyVersion("1.01.*")]
 //[assembly: AssemblyFileVersion("1.0.*")]

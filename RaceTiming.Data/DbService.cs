@@ -582,7 +582,7 @@ namespace RedRat.RaceTiming.Data
             {
                 if (resultToCheck.Time < beforeResult.Time)
                 {
-                    throw new Exception(string.Format("Result can't have a time less than the previous result ({0}).",
+                    throw new Exception(string.Format("Result can't have a time less than the previous result ({0:hh\\:mm\\:ss}).",
                         beforeResult.Time));
                 }
             }
@@ -592,7 +592,7 @@ namespace RedRat.RaceTiming.Data
             {
                 if (resultToCheck.Time > afterResult.Time)
                 {
-                    throw new Exception(string.Format("Result can't have a time greater than the next result ({0}).",
+                    throw new Exception(string.Format("Result can't have a time greater than the next result ({0:hh\\:mm\\:ss}).",
                         afterResult.Time));
                 }
             }            

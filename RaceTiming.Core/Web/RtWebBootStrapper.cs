@@ -2,10 +2,6 @@
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 
-using System;
-
-using RedRat.RaceTiming.Data;
-
 namespace RedRat.RaceTiming.Core.Web
 {
 	public class RtWebBootStrapper: DefaultNancyBootstrapper
@@ -13,6 +9,12 @@ namespace RedRat.RaceTiming.Core.Web
 		protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
 		{
 			StaticConfiguration.DisableErrorTraces = false;
+
+            // Prevent result caching
+            pipelines.AfterRequest.AddItemToEndOfPipeline(ctx =>
+            {
+                ctx.Response.WithHeader("Cache-Control", "no-cache");
+            });
 		}
 	}
 }
