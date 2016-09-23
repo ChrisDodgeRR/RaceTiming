@@ -225,23 +225,72 @@ namespace RedRat.RaceTiming.Data
             CheckHaveDb();
             lock ( dbLock )
             {
-                var runner = dbRoot.runnerNumberIndex.FirstOrDefault( r => r.Number == updatedRunner.Number );
-                if ( runner == null )
+                // If we have a new number, check that there is currently no runner data with this number.
+                var newNumber = false;
+                if ( updatedRunner.HaveNewNumber && ( updatedRunner.Number != updatedRunner.NewNumber ) )
+                {
+                    var testRunner = dbRoot.runnerNumberIndex.FirstOrDefault( r => r.Number == updatedRunner.NewNumber );
+                    if ( testRunner != null )
+                    {
+                        throw new Exception( string.Format( "A runner with the number {0} already exists.", updatedRunner.NewNumber ) );
+                    }
+                    newNumber = true;
+                }
+
+                var dbRunner = dbRoot.runnerNumberIndex.FirstOrDefault( r => r.Number == updatedRunner.Number );
+                if ( dbRunner == null )
                 {
                     throw new Exception( "Unable to find runner with number: " + updatedRunner.Number );
                 }
-                runner.FirstName = updatedRunner.FirstName;
-                runner.LastName = updatedRunner.LastName;
-                runner.Gender = updatedRunner.Gender;
-                runner.DateOfBirth = updatedRunner.DateOfBirth;
-                runner.Email = updatedRunner.Email;
-                runner.Club = updatedRunner.Club;
-                runner.Team = updatedRunner.Team;
-                runner.Urn = updatedRunner.Urn;
-                // ToDo: Affiliated flag
 
-                runner.Modify();
-                db.Commit();
+                if ( newNumber )
+                {
+                    // Naughty - this is not a single Tx at the moment.
+                    DeleteRunner( dbRunner.Number );
+                    updatedRunner.Number = updatedRunner.NewNumber;
+                    updatedRunner.NewNumber = 0;
+                    AddRunner( updatedRunner );
+                }
+
+                else
+                {
+                    var firstNameChange = false;
+                    if ( dbRunner.FirstName != updatedRunner.FirstName )
+                    {
+                        dbRoot.runnerFirstNameIndex.Remove( dbRunner.FirstName, dbRunner );
+                        firstNameChange = true;
+                    }
+
+                    var lastNameChange = false;
+                    if ( dbRunner.LastName != updatedRunner.LastName )
+                    {
+                        dbRoot.runnerLastNameIndex.Remove( dbRunner.LastName, dbRunner );
+                        lastNameChange = true;
+                    }
+
+                    dbRunner.FirstName = updatedRunner.FirstName;
+                    dbRunner.LastName = updatedRunner.LastName;
+                    dbRunner.Gender = updatedRunner.Gender;
+                    dbRunner.DateOfBirth = updatedRunner.DateOfBirth;
+                    dbRunner.Email = updatedRunner.Email;
+                    dbRunner.Club = updatedRunner.Club;
+                    dbRunner.Team = updatedRunner.Team;
+                    dbRunner.Urn = updatedRunner.Urn;
+                    // ToDo: Affiliated flag
+
+                    dbRunner.Modify();
+
+                    if ( firstNameChange )
+                    {
+                        dbRoot.runnerFirstNameIndex.Put( dbRunner.FirstName, dbRunner );
+                    }
+                    if ( lastNameChange )
+                    {
+                        dbRoot.runnerLastNameIndex.Put( dbRunner.LastName, dbRunner );
+                    }
+
+                    db.Commit();
+                }
             }
         }
 

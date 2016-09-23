@@ -1,16 +1,8 @@
 Race Timing Software - ToDo
 ===========================
 
-General
--------
-- Convert all inputs to upper case.
-
 Race Entry
 ----------
 - Can we use ngAutocomplete for Club and Team fields?
 [- Can we add client side validation?]
-
-Runner's List
--------------
-- Editing runners doesn't show number.
 

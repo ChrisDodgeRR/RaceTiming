@@ -42,6 +42,8 @@
 		}
 
 		$scope.updateRunner = function () {
+
+
 			$http.post('/api/updaterunner', {
 					'number': $scope.runner.number,
 					'firstname': $scope.runner.firstName,
@@ -52,6 +54,7 @@
 					'club': $scope.runner.club,
 					'team': $scope.runner.team,
 					'urn': $scope.runner.urn,
+					'newNumber': $scope.runner.newNumber,
 				})
 				.success(function(data) {
 					// Close dialog
@@ -63,6 +66,7 @@
 					$scope.errormsg = "Error updating runner: " + data;
 					console.log($scope.errormsg);
 				});
+
 		}
 
 		$scope.deleteRunner = function(number) {
@@ -82,6 +86,7 @@
 
 		$scope.order = "number"; // Default
 		$scope.loadRunners();
+
 	}
 		
 })();

@@ -15,11 +15,11 @@
     <tbody>
 	<tr>
 		<td>First Name:</td>
-		<td><input style="width:260px" class="tab" type="text" ng-model="runner.firstName" required /></td>
+		<td><input style="width:260px" class="tab" type="text" ng-model="runner.firstName"></td>
 	</tr>
 	<tr>
 		<td>Last Name:</td>
-		<td><input style="width:260px" class="tab" type="text" ng-model="runner.lastName" required /></td>
+		<td><input style="width:260px" class="tab" type="text" ng-model="runner.lastName"/></td>
 	</tr>
 	<tr>
 		<td>Email:</td>
@@ -49,6 +49,17 @@
 	<tr>
 		<td>URN:</td>
 		<td><input style="width:260px" class="tab" type="text" ng-model="runner.urn"/></td>
+	</tr>
+	<tr>
+		<td>
+			<div class="checkbox">
+		  		<label><input type="checkbox" ng-model="check" ng-true-value="true" ng-false-value="false">Change Runner Number</label>
+			</div>
+		</td>
+	</tr>
+	<tr ng-show="check">
+		<td>New Runner Number</td>
+		<td><input style="width:260px" class="tab" type="number" ng-model="runner.newNumber"/></td>
 	</tr>
   </tbody>
 </table>
@@ -89,7 +100,7 @@
 				</button>
 			</td>
 			<td>
-				<button style="display:inline-block" ng-click="deleteRunner(entrant.number)" ng-confirm-click="You are sure you want to delete this runner?">
+				<button style="display:inline-block" ng-click="deleteRunner(entrant.number)" ng-confirm-click="Are you sure you want to delete this runner?">
 					<img src="/Content/Delete.png" title="Delete Runner" alt="delete runner">
 				</button>
 			</td>

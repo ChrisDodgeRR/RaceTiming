@@ -253,6 +253,17 @@ namespace RedRat.RaceTiming.Core.Web
                         throw new Exception( "Race number format is incorrect." );
                     }
 
+                    int newNumber = 0;
+                    var haveNewNumber = false;
+                    if ( !string.IsNullOrEmpty( newRunner.NewNumber ) )
+                    {
+                        if ( !int.TryParse( newRunner.NewNumber, out newNumber ) )
+                        {
+                            throw new Exception( "The format of the new race number is not correct." );
+                        }
+                        haveNewNumber = true;
+                    }
+
                     // Update
                     var runner = new Runner
                     {
@@ -265,6 +276,8 @@ namespace RedRat.RaceTiming.Core.Web
                         Club = newRunner.Club,
                         Team = newRunner.Team,
                         Urn = newRunner.Urn,
+                        HaveNewNumber = haveNewNumber,
+                        NewNumber = newNumber,
                     };
                     runner.ToUpperCase();
 

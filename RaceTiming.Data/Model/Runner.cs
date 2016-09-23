@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Diagnostics.Eventing.Reader;
 using Volante;
 
 namespace RedRat.RaceTiming.Data.Model
@@ -17,6 +18,10 @@ namespace RedRat.RaceTiming.Data.Model
         public string Address { get; set; }
         public string Email { get; set; }
         public int Number { get; set; }
+
+        // Has the runner's number been changed?
+        public int NewNumber { get; set; }
+        public bool HaveNewNumber { get; set; }
 
         public void ToUpperCase()
         {

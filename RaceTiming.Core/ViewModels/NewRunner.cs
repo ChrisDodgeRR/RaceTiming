@@ -15,5 +15,8 @@ namespace RedRat.RaceTiming.Core.ViewModels
         public string Urn { get; set; }
         public string Team { get; set; }
         public string Number { get; set; }
+
+        // If the runner's number is being changed
+        public string NewNumber { get; set; }
     }
 }
