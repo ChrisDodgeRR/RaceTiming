@@ -18,6 +18,14 @@ namespace RedRat.RaceTiming.Data.Model
         public string Email { get; set; }
         public int Number { get; set; }
 
+        public void ToUpperCase()
+        {
+            FirstName = FirstName.ToUpper();
+            LastName = LastName.ToUpper();
+            Club = Club.ToUpper();
+            Team = Team.ToUpper();
+        }
+
         public override string ToString()
         {
             return string.Format( "{0} {1} - {2}", FirstName, LastName, Gender );

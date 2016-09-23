@@ -211,6 +211,7 @@ namespace RedRat.RaceTiming.Core.Web
                         Team = newRunner.Team,
                         Urn = newRunner.Urn,
                     };
+                    runner.ToUpperCase();
 
                     var db = appController.DbService;
                     if ( !db.TestDuplicate( runner ) )
@@ -265,6 +266,7 @@ namespace RedRat.RaceTiming.Core.Web
                         Team = newRunner.Team,
                         Urn = newRunner.Urn,
                     };
+                    runner.ToUpperCase();
 
                     appController.DbService.UpdateRunner( runner );
 

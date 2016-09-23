@@ -15,11 +15,11 @@
     <tbody>
 	<tr>
 		<td>First Name:</td>
-		<td><input style="width:260px" class="tab" type="text" ng-model="runner.firstName"></td>
+		<td><input style="width:260px" class="tab" type="text" ng-model="runner.firstName" required /></td>
 	</tr>
 	<tr>
 		<td>Last Name:</td>
-		<td><input style="width:260px" class="tab" type="text" ng-model="runner.lastName"/></td>
+		<td><input style="width:260px" class="tab" type="text" ng-model="runner.lastName" required /></td>
 	</tr>
 	<tr>
 		<td>Email:</td>
