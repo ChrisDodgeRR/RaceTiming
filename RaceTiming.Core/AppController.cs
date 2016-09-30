@@ -542,14 +542,33 @@ namespace RedRat.RaceTiming.Core
         {
             var raceStats = new RaceStats
             {
-                NumberEntrants = GetRunners().Count(),
-                NumberMaleEntrants = GetRunners().Count( r => r.Gender == GenderEnum.Male ),
-                NumberFemaleEntrants = GetRunners().Count( r => r.Gender == GenderEnum.Female ),
-                NumberFinishers = GetFinishers().Count(),
-                NumberMaleFinishers = GetFinishers().Count( f => f.Gender == GenderEnum.Male ),
-                NumberFemaleFinishers = GetFinishers().Count( f => f.Gender == GenderEnum.Female ),
-                NumberAffiliatedEntrants = GetRunners().Count(r => !string.IsNullOrEmpty(r.Club.Trim())),
-                NumberUnaffiliatedEntrants = GetRunners().Count( r => string.IsNullOrEmpty( r.Club.Trim() ) ),
+                NumberEntrants = new RaceStats.RunnerBreakdown
+                {
+                    Total = GetRunners().Count,
+                    Male = GetRunners().Count( r => r.Gender == GenderEnum.Male ),
+                    Female = GetRunners().Count( r => r.Gender == GenderEnum.Female )
+                },
+
+                NumberFinishers = new RaceStats.RunnerBreakdown
+                {
+                    Total = GetFinishers().Count,
+                    Male = GetFinishers().Count( f => f.Gender == GenderEnum.Male ),
+                    Female = GetFinishers().Count( f => f.Gender == GenderEnum.Female )
+                },
+
+                NumberAffiliatedEntrants = new RaceStats.RunnerBreakdown
+                {
+                    Total = GetRunners().Count( r => !string.IsNullOrEmpty( r.Club.Trim() ) ),
+                    Male = GetRunners().Count( r => !string.IsNullOrEmpty( r.Club.Trim() ) && r.Gender == GenderEnum.Male ),
+                    Female = GetRunners().Count( r => !string.IsNullOrEmpty( r.Club.Trim() ) && r.Gender == GenderEnum.Female ),
+                },
+
+                NumberUnaffiliatedEntrants = new RaceStats.RunnerBreakdown
+                {
+                    Total = GetRunners().Count( r => string.IsNullOrEmpty( r.Club.Trim() ) ),
+                    Male = GetRunners().Count( r => string.IsNullOrEmpty( r.Club.Trim() ) && r.Gender == GenderEnum.Male ),
+                    Female = GetRunners().Count( r => string.IsNullOrEmpty( r.Club.Trim() ) && r.Gender == GenderEnum.Female ),
+                }
             };
             return raceStats;
         }

@@ -400,15 +400,21 @@ namespace RedRat.RaceTimingWinApp
         {
             var stats = appController.GetRaceStats();
             var msg = "RACE STATISTICS:\n\n" +
-                      "Number of entrants:\t\t" + stats.NumberEntrants + "\n" +
-                      "\t- Male:\t\t" + stats.NumberMaleEntrants + "\n" +
-                      "\t- Female:\t\t" + stats.NumberFemaleEntrants + "\n\n" +
-                      "Number of finishers:\t\t" + stats.NumberFinishers + "\n" +
-                      "\t- Male:\t\t" + stats.NumberMaleFinishers + "\n" +
-                      "\t- Female:\t\t" + stats.NumberFemaleFinishers + "\n\n" +
-                      "Entrant affiliation:\n" +
-                      "\t- Affiliated:\t" + stats.NumberAffiliatedEntrants + "\n" +
-                      "\t- Unaffiliated:\t" + stats.NumberUnaffiliatedEntrants + "\n";
+                      "Number of entrants:\t\t" + stats.NumberEntrants.Total + "\n" +
+                      "\t- Male:\t\t" + stats.NumberEntrants.Male + "\n" +
+                      "\t- Female:\t\t" + stats.NumberEntrants.Female + "\n\n" +
+
+                      "Number of finishers:\t\t" + stats.NumberFinishers.Total + "\n" +
+                      "\t- Male:\t\t" + stats.NumberFinishers.Male + "\n" +
+                      "\t- Female:\t\t" + stats.NumberFinishers.Female + "\n\n" +
+
+                      "Affiliated Entrants:\t\t" + stats.NumberAffiliatedEntrants.Total + "\n" +
+                      "\t- Male:\t\t" + stats.NumberAffiliatedEntrants.Male + "\n" +
+                      "\t- Female:\t\t" + stats.NumberAffiliatedEntrants.Female + "\n\n" +
+
+                      "Unaffiliated Entrants:\t\t" + stats.NumberUnaffiliatedEntrants.Total + "\n" +
+                      "\t- Male:\t\t" + stats.NumberUnaffiliatedEntrants.Male + "\n" +
+                      "\t- Female:\t\t" + stats.NumberUnaffiliatedEntrants.Female + "\n\n";
             MessageBox.Show( msg, "Race Statistics", MessageBoxButtons.OK, MessageBoxIcon.Information );
         }
 

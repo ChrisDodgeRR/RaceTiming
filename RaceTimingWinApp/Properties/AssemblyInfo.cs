@@ -30,5 +30,7 @@ using System.Runtime.InteropServices;
 //          - Improved CSV file reading so that it can handle cells containing a comma.
 //          - Simplified HTTP API code.
 //
-[assembly: AssemblyVersion("1.01.*")]
+// V1.02    - Additional male/female splits in race stats.
+//
+[assembly: AssemblyVersion("1.02.*")]
 //[assembly: AssemblyFileVersion("1.0.*")]
