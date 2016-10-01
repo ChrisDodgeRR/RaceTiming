@@ -6,3 +6,15 @@ Race Entry
 - Can we use ngAutocomplete for Club and Team fields?
 [- Can we add client side validation?]
 
+Race Timing
+-----------
+In 2016, a race number was enetered before the runner crossed the finish line, which
+lead to the system inserting an estimated finishing position. The space bar was then
+hit as the runner crossed the line and so an additional time was added, but with no
+runner.
+
+The extra, estimated time can be deleted, but then the system seemed to add another
+estimated time to the top of list. Apart from this, the deletion seemed to do the 
+right thing and all runner results were shifted up one OK.
+
+This needs fixing. Is it a locking problem?
