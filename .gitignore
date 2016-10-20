@@ -6,3 +6,6 @@ bin/
 *.suo
 .suo
 .DS_Store
+packages/
+.vs*
+
